@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turan Asia — Путешествия по Казахстану</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pri:#4f46e5;--pri-dark:#4338ca;--accent:#0ea5a4;--ink:#0f172a;--muted:#64748b;
+  --line:#e8ecf4;--bg:#ffffff;--alt:#f4f7fb;--navy:#0f172a;
+  --r:18px;--r-sm:12px;--shadow:0 18px 44px rgba(20,30,70,.12);--shadow-sm:0 8px 24px rgba(20,30,70,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
+.dm{font-family:'Montserrat',sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:11px;padding:14px 24px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-pri:hover{background:var(--pri-dark)}
+.btn-light{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn-light:hover{border-color:var(--pri);color:var(--pri)}
+.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#eef0fe;color:var(--pri);font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:50px}
+.sec{padding:70px 0}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:34px}
+.sec-h h2{font-size:34px;font-weight:700;letter-spacing:-.02em}
+.sec-h p{color:var(--muted);margin-top:8px;font-size:15px}
+.sec-h a{color:var(--pri);font-weight:600;font-size:14px}
+
+/* nav */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1200px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:11px}
+.logo svg{width:36px;height:36px}
+.logo .name{font-weight:800;letter-spacing:.16em;font-size:15px}
+.logo .name span{color:var(--pri)}
+.menu{display:flex;gap:30px;list-style:none}
+.menu a{font-size:15px;font-weight:500;color:#334155}
+.menu a:hover{color:var(--pri)}
+.nav-r{display:flex;align-items:center;gap:18px}
+.lang{display:flex;gap:7px;font-size:13px;font-weight:600;color:var(--muted)}
+.lang .on{color:var(--pri)}
+.burger{display:none;width:26px;height:26px;color:var(--ink);cursor:pointer}
+
+/* hero */
+.hero{padding:60px 0 40px}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
+.hero h1{font-size:58px;line-height:1.04;font-weight:800;letter-spacing:-.03em;margin:20px 0 18px}
+.hero h1 em{font-style:normal;color:var(--pri)}
+.hero .lead{font-size:18px;color:var(--muted);max-width:480px;margin-bottom:26px}
+.hero .acts{display:flex;gap:14px;flex-wrap:wrap}
+.hero .stats{display:flex;gap:34px;margin-top:34px}
+.hero .stats b{font-size:26px;font-weight:800;font-family:'Montserrat',sans-serif}
+.hero .stats span{display:block;font-size:13px;color:var(--muted)}
+.hero-art{position:relative}
+.hero-art .main{border-radius:24px;overflow:hidden;height:440px;box-shadow:var(--shadow)}
+.hero-art .chip{position:absolute;left:-26px;bottom:34px;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:14px 18px;display:flex;align-items:center;gap:12px}
+.hero-art .chip .dot{width:42px;height:42px;border-radius:12px;background:#eef0fe;color:var(--pri);display:flex;align-items:center;justify-content:center}
+.hero-art .chip b{font-size:14px}.hero-art .chip small{display:block;color:var(--muted);font-size:12px}
+
+/* search card */
+.searchbar{margin-top:34px;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);display:flex;padding:10px}
+.searchbar .f{flex:1;padding:12px 18px;border-right:1px solid var(--line)}
+.searchbar .f label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+.searchbar .f .v{margin-top:4px;color:#334155;font-size:15px}
+.searchbar .go{align-self:center;margin:0 6px 0 12px}
+
+/* bento destinations */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:200px 200px;gap:16px}
+.bento a{position:relative;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+.bento a img{transition:.5s}.bento a:hover img{transform:scale(1.06)}
+.bento a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,15,35,.78))}
+.bento a .cap{position:absolute;left:18px;bottom:16px;z-index:2;color:#fff}
+.bento a .cap b{font-size:18px;font-weight:700}.bento a .cap small{display:block;opacity:.85;font-size:12.5px;margin-top:2px}
+.bento .big{grid-row:span 2;grid-column:span 2}
+
+/* tours */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tc{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);transition:.25s}
+.tc:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.tc .ph{position:relative;height:200px;flex:none}
+.tc .pill{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.92);color:var(--ink);font-size:12px;font-weight:600;padding:6px 12px;border-radius:50px}
+.tc .b{padding:20px;display:flex;flex-direction:column;flex:1}
+.tc .b h4{font-size:18px;font-weight:700}
+.tc .b .d{color:var(--muted);font-size:13.5px;margin:6px 0 16px}
+.tc .b .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px}
+.tc .b .foot .p small{color:var(--muted);font-size:12px}.tc .b .foot .p b{display:block;font-size:18px;font-weight:800;font-family:'Montserrat',sans-serif}
+.tc .b .foot .btn{padding:9px 16px;font-size:13px}
+
+/* stats band */
+.statband{background:var(--pri);color:#fff;border-radius:24px;padding:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+.statband b{font-size:38px;font-weight:800;font-family:'Montserrat',sans-serif;display:block}
+.statband span{opacity:.85;font-size:14px}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.wc{background:var(--alt);border-radius:var(--r);padding:26px}
+.wc .chip{width:48px;height:48px;border-radius:14px;background:#fff;color:var(--pri);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:var(--shadow-sm)}
+.wc h4{font-size:16px;font-weight:700;margin-bottom:7px}
+.wc p{font-size:13.5px;color:var(--muted)}
+
+/* CTA */
+.cta{position:relative;border-radius:24px;overflow:hidden;color:#fff;text-align:center;padding:64px 30px}
+.cta::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(79,70,229,.94),rgba(14,165,164,.9)),url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80') center/cover}
+.cta-in{position:relative;z-index:2}
+.cta h2{font-size:38px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.cta p{opacity:.92;max-width:520px;margin:0 auto 26px}
+.cta .btn{background:#fff;color:var(--pri)}
+
+/* footer */
+footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
+.fg{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:34px;padding:56px 0 30px}
+.fg h5{color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.fg .logo{color:#fff;margin-bottom:14px}
+.fg p{font-size:13.5px;opacity:.75;line-height:1.6}
+.fg ul{list-style:none}.fg li{font-size:14px;opacity:.8;margin-bottom:9px}
+.fg .ct{font-size:13.5px;opacity:.8;margin-bottom:9px}
+.fbar{border-top:1px solid rgba(255,255,255,.1);padding:18px 0;display:flex;justify-content:space-between;font-size:12.5px;opacity:.65}
+.fbar .l{display:flex;gap:22px}
+
+/* switcher */
+.switcher{position:fixed;right:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50px;padding:8px 12px 8px 16px;box-shadow:0 10px 26px rgba(0,0,0,.2);font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
+.switcher .sw-t{color:#7a7a7a}
+.switcher a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#2a2420;text-decoration:none;transition:.18s}
+.switcher a:hover{background:#f0eee9}
+.switcher a.active{background:var(--pri);color:#fff}
+
+@media(max-width:980px){
+  .menu,.lang{display:none}.burger{display:block}
+  header.open .menu{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:6px 0;box-shadow:0 14px 30px rgba(0,0,0,.1);gap:0;border-top:1px solid var(--line)}
+  header.open .menu a{padding:13px 28px}
+  .hero-grid{grid-template-columns:1fr;gap:30px}.hero-art .main{height:320px}
+  .hero h1{font-size:42px}
+  .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}.bento .big{grid-column:span 2;grid-row:auto}.bento a{height:190px}
+  .tgrid{grid-template-columns:1fr 1fr}.statband{grid-template-columns:1fr 1fr;gap:28px 12px}
+  .why{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}
+  .searchbar{flex-wrap:wrap}.searchbar .f{flex:1 1 40%;border:none}
+}
+@media(max-width:600px){.tgrid{grid-template-columns:1fr}.bento{grid-template-columns:1fr}.bento .big{grid-column:auto}.why{grid-template-columns:1fr}.fg{grid-template-columns:1fr}.hero h1{font-size:34px}.cta h2{font-size:28px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="#">
+      <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#4f46e5" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#4f46e5" stroke-width="1.3" opacity=".75"/><circle cx="24" cy="24" r="6" fill="#4f46e5"/></svg>
+      <span class="name dm">TURAN<span>ASIA</span></span>
+    </a>
+    <ul class="menu">
+      <li><a href="#">Главная</a></li>
+      <li><a href="#">Туры</a></li>
+      <li><a href="#">Направления</a></li>
+      <li><a href="#">О нас</a></li>
+      <li><a href="#">Контакты</a></li>
+    </ul>
+    <div class="nav-r">
+      <div class="lang"><span class="on">RU</span><span>KZ</span><span>EN</span></div>
+      <a class="btn btn-pri" href="#" style="padding:10px 18px;font-size:14px">Связаться</a>
+      <svg class="burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">✦ Туроператор №1 по приёму в Казахстане</span>
+      <h1 class="dm">Откройте <em>Казахстан</em> по-настоящему</h1>
+      <p class="lead">Уникальная природа, богатая культура и незабываемые приключения в сердце Евразии. Авторские маршруты с местными гидами.</p>
+      <div class="acts">
+        <a class="btn btn-pri" href="#">Смотреть туры</a>
+        <a class="btn btn-light" href="#">Связаться с нами</a>
+      </div>
+      <div class="stats">
+        <div><b class="dm">12+</b><span>лет опыта</span></div>
+        <div><b class="dm">250+</b><span>авторских туров</span></div>
+        <div><b class="dm">15 000+</b><span>довольных гостей</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="main"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1000&q=80"></div>
+      <div class="chip"><div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>50+ направлений</b><small>по Казахстану и ЦА</small></div></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="searchbar">
+      <div class="f"><label>Направление</label><div class="v">Любое направление</div></div>
+      <div class="f"><label>Длительность</label><div class="v">Любая</div></div>
+      <div class="f"><label>Цена</label><div class="v">Любая</div></div>
+      <div class="f"><label>Даты</label><div class="v">Любые</div></div>
+      <button class="btn btn-pri go">Найти туры <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-h"><div><h2 class="dm">Популярные направления</h2><p>Самые любимые места наших путешественников</p></div><a href="#">Все направления →</a></div>
+    <div class="bento">
+      <a class="big" href="#"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80"><span class="cap"><b>Кольсайские озёра</b><small>Жемчужины Тянь-Шаня</small></span></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Алматы</b><small>Сердце гор</small></span></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Чарын</b><small>Шедевр природы</small></span></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Мангистау</b><small>Неземные пейзажи</small></span></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Астана</b><small>Город будущего</small></span></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div><h2 class="dm">Популярные туры</h2><p>Готовые маршруты с вылетами круглый год</p></div><a href="#">Все туры →</a></div>
+    <div class="tgrid">
+      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"><span class="pill">5 дней · Группа</span></div><div class="b"><h4>Алматы и Кольсайские озёра</h4><div class="d">Горы, озёра и свежий воздух</div><div class="foot"><div class="p"><small>от</small><b>245 000 ₸</b></div><a class="btn btn-pri" href="#">Подробнее</a></div></div></article>
+      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=700&q=80"><span class="pill">2 дня · Группа</span></div><div class="b"><h4>Приключение в Чарынском каньоне</h4><div class="d">Каньоны, долины и степь</div><div class="foot"><div class="p"><small>от</small><b>120 000 ₸</b></div><a class="btn btn-pri" href="#">Подробнее</a></div></div></article>
+      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"><span class="pill">4 дня · Группа</span></div><div class="b"><h4>Экспедиция в Мангистау</h4><div class="d">Марсианские пейзажи Казахстана</div><div class="foot"><div class="p"><small>от</small><b>310 000 ₸</b></div><a class="btn btn-pri" href="#">Подробнее</a></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="statband">
+      <div><b class="dm">12+</b><span>лет на рынке</span></div>
+      <div><b class="dm">250+</b><span>уникальных туров</span></div>
+      <div><b class="dm">15 000+</b><span>довольных гостей</span></div>
+      <div><b class="dm">50+</b><span>направлений</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div><h2 class="dm">Почему Turan Asia</h2><p>Всё для вашего комфортного путешествия</p></div></div>
+    <div class="why">
+      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h4>Надёжность</h4><p>Лицензированный туроператор, работаем с 2010 года</p></div>
+      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></div><h4>Лучшие маршруты</h4><p>Продуманные программы от местных экспертов</p></div>
+      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/></svg></div><h4>Поддержка 24/7</h4><p>Мы всегда на связи до, во время и после поездки</p></div>
+      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></div><h4>Честная цена</h4><p>Без скрытых комиссий и переплат</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta">
+      <div class="cta-in">
+        <h2 class="dm">Готовы к путешествию?</h2>
+        <p>Оставьте заявку — подберём идеальный маршрут под ваши даты, бюджет и интересы.</p>
+        <a class="btn" href="#">Оставить заявку</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div>
+        <a class="logo" href="#"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#fff" stroke-width="1.3" opacity=".7"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg><span class="name dm">TURAN<span style="color:#818cf8">ASIA</span></span></a>
+        <p>Современный туроператор по Казахстану и Центральной Азии. Авторские маршруты, местные гиды, забота на каждом этапе.</p>
+      </div>
+      <div><h5>Контакты</h5><div class="ct">+7 702 123 45 67</div><div class="ct">info@turan-asia.kz</div><div class="ct">Алматы, пр. Абая 117/6</div><div class="ct">Пн–Пт: 9:00–18:00</div></div>
+      <div><h5>Меню</h5><ul><li><a href="#">Главная</a></li><li><a href="#">Туры</a></li><li><a href="#">Направления</a></li><li><a href="#">О нас</a></li><li><a href="#">Контакты</a></li></ul></div>
+      <div><h5>Мы в соцсетях</h5><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#">YouTube</a></li><li><a href="#">Telegram</a></li></ul></div>
+    </div>
+    <div class="fbar"><span>© 2025 Turan Asia. Все права защищены.</span><span class="l"><a href="#">Политика конфиденциальности</a><a href="#">Условия</a></span></div>
+  </div>
+</footer>
+
+<script>
+(function(){var b=document.querySelector('.burger'),h=document.querySelector('header');if(b)b.addEventListener('click',function(){h.classList.toggle('open');});})();
+</script>
+
+<div class="switcher">
+  <span class="sw-t">Дизайн</span>
+  <a href="index.html">1</a>
+  <a href="design2.html">2</a>
+  <a href="design3.html" class="active">3</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turan Asia — Откройте Казахстан</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@600;700;800&family=Prata&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#b5532e;        /* terracotta primary */
+  --teal-dark:#8f3f22;   /* terracotta dark */
+  --deep:#34291f;        /* warm brown footer */
+  --ink:#2a2420;
+  --muted:#8a7d72;
+  --line:#ece4d8;
+  --bg:#ffffff;
+  --bg-alt:#f7f1e8;      /* cream */
+  --gold:#b9863f;
+  --ov:181,83,46;
+  --hero-font:'Playfair Display',Georgia,serif;
+  --radius:14px;
+  --shadow:0 12px 34px rgba(60,40,20,.10);
+  --shadow-sm:0 4px 16px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:13px 22px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal-dark)}
+.btn-ghost{background:transparent;color:var(--teal);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.sec{padding:62px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px}
+.sec-head h2{font-size:30px;font-weight:600;letter-spacing:-.02em}
+.sec-head a{color:var(--teal);font-weight:600;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+.eyebrow{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+
+/* ===== Header ===== */
+header{position:absolute;top:0;left:0;right:0;z-index:30}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;max-width:1200px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:12px;color:#fff}
+.logo .mark{width:38px;height:38px;flex:none}
+.logo .name{font-weight:700;letter-spacing:.2em;font-size:15px;line-height:1.15}
+.logo .name span{font-weight:300;display:block;letter-spacing:.34em;font-size:11px;opacity:.92}
+.menu{display:flex;gap:34px;list-style:none}
+.menu a{color:#fff;font-size:15px;font-weight:500;opacity:.92;padding-bottom:4px}
+.menu a.active{border-bottom:2px solid var(--gold);opacity:1}
+.menu a:hover{opacity:1}
+.lang{display:flex;align-items:center;gap:6px;color:#fff;font-size:13px;font-weight:600}
+.lang span{opacity:.8;cursor:pointer}
+.lang .on{border:1px solid rgba(255,255,255,.6);border-radius:7px;padding:5px 10px;opacity:1}
+.burger{display:none}
+
+/* ===== Hero ===== */
+.hero{position:relative;min-height:540px;display:flex;align-items:center;color:#fff}
+.hero::before{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(25,20,12,.5) 0%,rgba(25,20,12,.18) 50%,rgba(25,20,12,0) 100%),
+  url('sharyn.png') center/cover;}
+.hero-inner{position:relative;z-index:2;padding-top:54px;width:100%;text-align:left}
+.hero h1{font-family:var(--hero-font);font-weight:600;font-size:78px;line-height:1.04;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.25)}
+.hero p{margin-top:20px;font-size:18px;font-weight:300;max-width:460px;opacity:.95}
+
+/* ===== Search bar ===== */
+.search{position:relative;z-index:5;margin:-44px auto 0;max-width:1144px;background:#fff;border-radius:16px;box-shadow:var(--shadow);display:flex;align-items:stretch;padding:10px;gap:0}
+.search .field{flex:1;padding:12px 18px;border-right:1px solid var(--line)}
+.search .field label{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.search .field .val{margin-top:5px;font-size:15px;color:var(--muted);display:flex;align-items:center;justify-content:space-between}
+.search .field .val .chev{font-size:11px}
+.search .go{align-self:center;margin-left:10px;margin-right:6px}
+.ic{width:15px;height:15px;flex:none}
+
+/* ===== Cards: destinations ===== */
+.dest-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.dest{position:relative;border-radius:var(--radius);overflow:hidden;height:228px;box-shadow:var(--shadow-sm)}
+.dest img{transition:.5s}
+.dest:hover img{transform:scale(1.06)}
+.dest::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,rgba(15,25,25,.84))}
+.dest .cap{position:absolute;left:16px;right:16px;bottom:15px;z-index:2;color:#fff}
+.dest .cap b{font-size:17px;font-weight:600}
+.dest .cap small{display:flex;align-items:center;gap:5px;opacity:.88;font-size:12px;margin-top:3px}
+
+/* ===== Directions split ===== */
+.dir-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:38px;align-items:start}
+.dir-col h3{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dir-col h3::after{content:"→";color:var(--gold)}
+.dir-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.divider{width:1px;align-self:stretch;background:var(--line)}
+
+/* ===== Tours ===== */
+.tour-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.tour{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:.25s}
+.tour:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.tour .ph{position:relative;height:172px;flex:none}
+.tour .badge{position:absolute;top:12px;left:12px;background:rgba(15,30,30,.78);color:#fff;font-size:12px;font-weight:600;padding:5px 11px;border-radius:7px}
+.tour .body{display:flex;flex-direction:column;flex:1;padding:18px 18px 16px}
+.tour .body h4{font-size:16px;font-weight:600}
+.tour .desc{color:var(--muted);font-size:13px;margin-top:4px}
+.tour .meta{display:flex;gap:18px;color:var(--muted);font-size:13px;margin:12px 0 14px}
+.tour .meta span{display:flex;align-items:center;gap:5px}
+.tour .foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:14px;margin-top:auto}
+.tour .price small{display:block;color:var(--muted);font-size:11px}
+.tour .price b{font-size:16px;color:var(--teal-dark)}
+.tour .foot .btn{padding:9px 16px;font-size:13px}
+
+/* ===== Special offer ===== */
+.offer{position:relative;border-radius:18px;overflow:hidden;min-height:230px;display:flex;align-items:center;color:#fff}
+.offer::before{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(var(--ov),.94) 0%,rgba(var(--ov),.55) 58%,rgba(var(--ov),.08) 100%),
+  url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80') center/cover}
+.offer .oc{position:relative;z-index:2;padding:46px 52px;max-width:640px}
+.offer small{letter-spacing:.14em;text-transform:uppercase;font-size:12px;opacity:.85;font-weight:600}
+.offer h3{font-size:32px;font-weight:600;margin:8px 0 10px}
+.offer p{opacity:.92;margin-bottom:22px}
+.offer .badge-off{position:absolute;right:64px;top:50%;transform:translateY(-50%);z-index:2;width:118px;height:118px;border-radius:50%;background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1;box-shadow:var(--shadow)}
+.offer .badge-off b{font-size:34px;font-weight:700}
+.offer .badge-off span{font-size:11px;letter-spacing:.1em;margin-top:4px}
+.offer .badge-off em{font-size:11px;font-style:normal;opacity:.7;margin-bottom:4px}
+.offer .btn-primary{background:#fff;color:var(--teal-dark)}
+
+/* ===== Advantages ===== */
+.adv{display:grid;grid-template-columns:repeat(5,1fr);text-align:center}
+.adv .item{padding:0 20px;border-right:1px solid var(--line)}
+.adv .item:last-child{border:none}
+.adv .ico{width:40px;height:40px;margin:0 auto 14px;color:var(--gold)}
+.adv h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.adv p{font-size:12.5px;color:var(--muted)}
+.center-head{text-align:center;margin-bottom:42px}
+.center-head h2{font-size:30px;font-weight:600}
+
+/* ===== Licenses ===== */
+.lic-wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center;background:var(--bg-alt);border-radius:18px;padding:44px 48px}
+.lic-wrap .about h3{font-size:22px;font-weight:600;margin-bottom:14px}
+.lic-wrap .about p{color:var(--muted);font-size:14.5px;margin-bottom:12px}
+.lic-list{display:flex;flex-direction:column;gap:18px}
+.lic-list .eyebrow{margin-bottom:4px}
+.lic-row{display:flex;align-items:center;gap:14px}
+.lic-row .lg{width:54px;height:38px;background:#fff;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--teal-dark);flex:none}
+.lic-row b{font-size:14px}
+.lic-row small{display:block;color:var(--muted);font-size:12.5px}
+
+/* ===== Reviews ===== */
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.rev{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm)}
+.rev .top{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.rev .av{width:48px;height:48px;border-radius:50%;overflow:hidden;flex:none}
+.rev .top b{font-size:15px}
+.rev .top small{display:block;color:var(--muted);font-size:12.5px}
+.rev .stars{color:var(--gold);font-size:14px;margin-top:2px}
+.rev p{color:#43504f;font-size:14px;font-style:italic}
+
+/* ===== Footer ===== */
+footer{background:var(--deep);color:#e6ddd2}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:36px;padding:54px 0 30px}
+.foot-grid h5{color:#fff;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;font-weight:600}
+.foot-grid .logo{color:#fff;margin-bottom:16px}
+.foot-grid p{font-size:13.5px;opacity:.8;line-height:1.6}
+.foot-grid ul{list-style:none}
+.foot-grid li{margin-bottom:9px;font-size:14px;opacity:.85}
+.foot-grid li:hover{opacity:1}
+.foot-grid .ct{display:flex;align-items:flex-start;gap:9px;margin-bottom:11px;font-size:13.5px;opacity:.85}
+.foot-grid .ct .ic{margin-top:3px;opacity:.7}
+.socials{display:flex;gap:10px;margin-top:14px}
+.socials a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;opacity:.85}
+.socials a:hover{opacity:1;border-color:#fff}
+.map{border-radius:12px;overflow:hidden;height:150px;border:1px solid rgba(255,255,255,.15)}
+.foot-bar{border-top:1px solid rgba(255,255,255,.13);padding:18px 0;display:flex;justify-content:space-between;font-size:12.5px;opacity:.7}
+.foot-bar .links{display:flex;gap:24px}
+
+@media(max-width:980px){
+  .hero h1{font-size:48px}
+  .dest-grid{grid-template-columns:repeat(2,1fr)}
+  .tour-grid{grid-template-columns:repeat(2,1fr)}
+  .adv{grid-template-columns:repeat(2,1fr);gap:28px 0}
+  .adv .item:nth-child(2){border:none}
+  .dir-wrap{grid-template-columns:1fr;gap:30px}
+  .divider{display:none}
+  .lic-wrap{grid-template-columns:1fr;gap:30px;padding:32px}
+  .rev-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:28px}
+}
+@media(max-width:760px){
+  .menu,.lang{display:none}
+  .burger{display:block;color:#fff;cursor:pointer}
+  header.open .menu{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:6px 0;box-shadow:0 14px 30px rgba(0,0,0,.16);gap:0}
+  header.open .menu a{color:var(--ink);opacity:1;padding:13px 28px;border:none}
+  header.open .menu a.active{color:var(--teal)}
+  .search{flex-direction:column;margin-top:-30px}
+  .search .field{border-right:none;border-bottom:1px solid var(--line)}
+  .search .go{width:100%;justify-content:center;margin:6px 0 0}
+  .hero h1{font-size:40px}
+  .dest-grid{grid-template-columns:1fr 1fr}
+  .dir-cards{grid-template-columns:1fr 1fr}
+  .offer .badge-off{display:none}
+  .offer .oc{padding:34px}
+  .foot-grid{grid-template-columns:1fr}
+}
+
+/* ===== Design switcher ===== */
+.switcher{position:fixed;right:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50px;padding:8px 12px 8px 16px;box-shadow:0 10px 26px rgba(0,0,0,.2);font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
+.switcher .sw-t{color:#7a7a7a}
+.switcher a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#2a2420;text-decoration:none;transition:.18s}
+.switcher a:hover{background:#f0eee9}
+.switcher a.active{background:#2a2420;color:#fff}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <nav class="nav">
+    <a class="logo" href="#">
+      <svg class="mark" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#fff" stroke-width="1.4" opacity=".85"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg>
+      <span class="name">TURAN<span>ASIA</span></span>
+    </a>
+    <ul class="menu">
+      <li><a class="active" href="#">Главная</a></li>
+      <li><a href="#tours">Туры</a></li>
+      <li><a href="#destinations">Направления</a></li>
+      <li><a href="#about">О нас</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+    <div class="lang"><span class="on">RU</span><span>KZ</span><span>EN</span></div>
+    <svg class="burger ic" style="width:26px;height:26px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <h1>Откройте<br>Казахстан</h1>
+    <p>Уникальная природа, богатая культура и незабываемые приключения ждут вас в сердце Евразии.</p>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="wrap">
+  <div class="search">
+    <div class="field">
+      <label><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Направление</label>
+      <div class="val">Любое направление <span class="chev">▾</span></div>
+    </div>
+    <div class="field">
+      <label><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Длительность</label>
+      <div class="val">Любая <span class="chev">▾</span></div>
+    </div>
+    <div class="field">
+      <label><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10h18"/></svg>Цена</label>
+      <div class="val">Любая <span class="chev">▾</span></div>
+    </div>
+    <div class="field">
+      <label><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Даты</label>
+      <div class="val">Любые <span class="chev">▾</span></div>
+    </div>
+    <button class="btn btn-primary go">Найти туры <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+  </div>
+</div>
+
+<!-- POPULAR DESTINATIONS -->
+<section class="sec" id="destinations" style="padding-top:56px">
+  <div class="wrap">
+    <div class="sec-head"><h2>Популярные направления</h2><a href="#">Все направления →</a></div>
+    <div class="dest-grid">
+      <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt=""><span class="cap"><b>Алматы</b><small>📍 Сердце гор</small></span></a>
+      <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80" alt=""><span class="cap"><b>Чарынский каньон</b><small>📍 Шедевр природы</small></span></a>
+      <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80" alt=""><span class="cap"><b>Кольсайские озёра</b><small>📍 Жемчужины Тянь-Шаня</small></span></a>
+      <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt=""><span class="cap"><b>Мангистау</b><small>📍 Край неземных пейзажей</small></span></a>
+      <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80" alt=""><span class="cap"><b>Астана</b><small>📍 Город будущего</small></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTIONS (split KZ / abroad) -->
+<section class="sec" id="directions" style="padding-top:0">
+  <div class="wrap">
+    <div class="center-head"><h2>Направления туров</h2></div>
+    <div class="dir-wrap">
+      <div class="dir-col">
+        <h3>Туры по Казахстану</h3>
+        <div class="dir-cards">
+          <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=600&q=80" alt=""><span class="cap"><b>Алматы и Кольсай</b><small>Горы и альпийские озёра</small></span></a>
+          <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?auto=format&fit=crop&w=600&q=80" alt=""><span class="cap"><b>Чарынский каньон</b><small>Шедевр природы</small></span></a>
+          <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80" alt=""><span class="cap"><b>Астана</b><small>Город будущего</small></span></a>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="dir-col">
+        <h3>Туры за рубеж</h3>
+        <div class="dir-cards">
+          <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?auto=format&fit=crop&w=600&q=80" alt=""><span class="cap"><b>Узбекистан</b><small>Города Шёлкового пути</small></span></a>
+          <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80" alt=""><span class="cap"><b>Кыргызстан</b><small>Край высоких гор</small></span></a>
+          <a class="dest" href="#"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt=""><span class="cap"><b>Таджикистан</b><small>Древние цивилизации</small></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR TOURS -->
+<section class="sec" id="tours" style="background:var(--bg-alt)">
+  <div class="wrap">
+    <div class="sec-head"><h2>Популярные туры</h2><a href="#">Все туры →</a></div>
+    <div class="tour-grid">
+      <article class="tour">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80" alt=""><span class="badge">5 дней</span></div>
+        <div class="body">
+          <h4>Алматы и Кольсайские озёра</h4>
+          <div class="desc">Горы, озёра и свежий воздух</div>
+          <div class="meta"><span>🕓 5 дней</span><span>👥 Групповой тур</span></div>
+          <div class="foot"><div class="price"><small>от</small><b>245 000 ₸</b></div><button class="btn btn-primary">Подробнее</button></div>
+        </div>
+      </article>
+      <article class="tour">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?auto=format&fit=crop&w=700&q=80" alt=""><span class="badge">2 дня</span></div>
+        <div class="body">
+          <h4>Приключение в Чарынском каньоне</h4>
+          <div class="desc">Каньоны, долины и степь</div>
+          <div class="meta"><span>🕓 2 дня</span><span>👥 Групповой тур</span></div>
+          <div class="foot"><div class="price"><small>от</small><b>120 000 ₸</b></div><button class="btn btn-primary">Подробнее</button></div>
+        </div>
+      </article>
+      <article class="tour">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80" alt=""><span class="badge">4 дня</span></div>
+        <div class="body">
+          <h4>Экспедиция в Мангистау</h4>
+          <div class="desc">Марсианские пейзажи Казахстана</div>
+          <div class="meta"><span>🕓 4 дня</span><span>👥 Групповой тур</span></div>
+          <div class="foot"><div class="price"><small>от</small><b>310 000 ₸</b></div><button class="btn btn-primary">Подробнее</button></div>
+        </div>
+      </article>
+      <article class="tour">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=700&q=80" alt=""><span class="badge">3 дня</span></div>
+        <div class="body">
+          <h4>Обзорный тур по Астане</h4>
+          <div class="desc">Современная архитектура и культура</div>
+          <div class="meta"><span>🕓 3 дня</span><span>👥 Групповой тур</span></div>
+          <div class="foot"><div class="price"><small>от</small><b>165 000 ₸</b></div><button class="btn btn-primary">Подробнее</button></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIAL OFFER -->
+<section class="sec">
+  <div class="wrap">
+    <div class="offer">
+      <div class="oc">
+        <small>Спецпредложение</small>
+        <h3>Скидка за раннее бронирование</h3>
+        <p>Забронируйте тур за 60 дней и получите скидку до 15%!</p>
+        <button class="btn btn-primary">Выбрать тур</button>
+      </div>
+      <div class="badge-off"><em>ДО</em><b>15%</b><span>СКИДКА</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="center-head"><h2>Почему Turan Asia?</h2></div>
+    <div class="adv">
+      <div class="item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <h4>Надёжность</h4><p>Лицензированный туроператор, работаем с 2010 года</p>
+      </div>
+      <div class="item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>
+        <h4>Лучшие маршруты</h4><p>Продуманные маршруты от местных экспертов</p>
+      </div>
+      <div class="item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/><path d="M20 19a4 4 0 0 1-4 4h-2"/></svg>
+        <h4>Поддержка 24/7</h4><p>Мы всегда на связи и готовы помочь</p>
+      </div>
+      <div class="item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.4 1.3-4.2 3.5-4.8"/></svg>
+        <h4>Малые группы</h4><p>Комфортные поездки небольшими группами</p>
+      </div>
+      <div class="item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg>
+        <h4>Честная цена</h4><p>Без скрытых комиссий и переплат</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT + LICENSES -->
+<section class="sec" id="about" style="padding-top:0">
+  <div class="wrap">
+    <div class="lic-wrap">
+      <div class="about">
+        <h3>О компании</h3>
+        <p>Turan Asia — лицензированный туроператор из Казахстана. Мы создаём аутентичные путешествия, которые знакомят вас с природой, культурой и людьми нашей страны.</p>
+        <p>Наша команда местных экспертов обеспечивает индивидуальный подход, безопасность и незабываемые путешествия по Казахстану и Центральной Азии.</p>
+        <a class="btn btn-ghost" href="#" style="margin-top:8px">Подробнее о нас</a>
+      </div>
+      <div class="lic-list">
+        <div class="eyebrow">Лицензии и членство</div>
+        <div class="lic-row"><div class="lg">IATA</div><div><b>Аккредитованный агент IATA</b><small>№ 96-2 2500 1234</small></div></div>
+        <div class="lic-row"><div class="lg">TURSAB</div><div><b>Член TURSAB</b><small>№ 12345</small></div></div>
+        <div class="lic-row"><div class="lg" style="color:var(--gold)">TO</div><div><b>Лицензия туроператора</b><small>№ 2300932</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><h2>Отзывы наших клиентов</h2><a href="#">Все отзывы →</a></div>
+    <div class="rev-grid">
+      <div class="rev">
+        <div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=45" alt=""></div><div><b>Мария</b><small>США</small><div class="stars">★★★★★</div></div></div>
+        <p>«Поездка в Алматы и на Кольсайские озёра была потрясающей! Великолепная природа, отличная организация и прекрасные гиды.»</p>
+      </div>
+      <div class="rev">
+        <div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=12" alt=""></div><div><b>Дэвид</b><small>Великобритания</small><div class="stars">★★★★★</div></div></div>
+        <p>«Чарынский каньон обязателен к посещению! Turan Asia взяли на себя всё. Очень рекомендую!»</p>
+      </div>
+      <div class="rev">
+        <div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=32" alt=""></div><div><b>Айгерим</b><small>Казахстан</small><div class="stars">★★★★★</div></div></div>
+        <p>«Профессиональная команда, отличный сервис и незабываемые эмоции. Обязательно поедем снова!»</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacts">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#">
+          <svg class="mark" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#fff" stroke-width="1.4" opacity=".85"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg>
+          <span class="name">TURAN<span>ASIA</span></span>
+        </a>
+        <p>Turan Asia — туристическая компания, специализирующаяся на уникальных турах по Казахстану. Откройте с нами красоту, культуру и гостеприимство сердца Евразии.</p>
+        <div class="socials">
+          <a href="#"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M13 21v-7h2.5l.5-3H13V9c0-.9.3-1.5 1.6-1.5H16V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1V11H7v3h2.6v7z"/></svg></a>
+          <a href="#"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7.5c0-1.6-1.3-2.8-2.8-3C17 4 12 4 12 4s-5 0-7.2.5C3.3 4.7 2 5.9 2 7.5 1.5 9.3 1.5 12 1.5 12s0 2.7.5 4.5c0 1.6 1.3 2.8 2.8 3C7 20 12 20 12 20s5 0 7.2-.5c1.5-.2 2.8-1.4 2.8-3 .5-1.8.5-4.5.5-4.5s0-2.7-.5-4.5zM10 15V9l5 3z"/></svg></a>
+          <a href="#"><svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.5 2.5 11.8c-1 .4-1 1.7.1 2l4.8 1.5 1.8 5.6c.3.9 1.4 1 1.9.3l2.6-3.3 4.9 3.6c.7.5 1.7.1 1.9-.7l3-14.6c.2-1-.8-1.8-1.8-1.4zM9.6 14.2l8.6-5.3-7 6.2c-.2.2-.3.4-.3.7l-.3 2.7z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>Контакты</h5>
+        <div class="ct"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h3l2 5-2 1c1 2 2 3 4 4l1-2 5 2v3c0 1-1 2-2 2C11 22 2 13 2 6c0-1 1-2 2-2z"/></svg>+7 702 123 45 67</div>
+        <div class="ct"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>info@turan-asia.kz</div>
+        <div class="ct"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>г. Алматы, пр. Абая 117/6, Казахстан</div>
+        <div class="ct"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Пн – Пт: 9:00 – 18:00</div>
+      </div>
+      <div>
+        <h5>Меню</h5>
+        <ul>
+          <li><a href="#">Главная</a></li>
+          <li><a href="#tours">Туры</a></li>
+          <li><a href="#destinations">Направления</a></li>
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Мы на карте</h5>
+        <div class="map"><iframe title="map" width="100%" height="100%" style="border:0" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=76.92%2C43.23%2C76.96%2C43.26&amp;layer=mapnik&amp;marker=43.245%2C76.94"></iframe></div>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>© 2025 Turan Asia. Все права защищены.</span>
+      <span class="links"><a href="#">Политика конфиденциальности</a><a href="#">Условия использования</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){var b=document.querySelector('.burger'),h=document.querySelector('header');if(b)b.addEventListener('click',function(){h.classList.toggle('open');});})();
+</script>
+
+<!-- DESIGN SWITCHER -->
+<div class="switcher">
+  <span class="sw-t">Дизайн</span>
+  <a href="index.html" class="active">1</a>
+  <a href="design2.html">2</a>
+  <a href="design3.html">3</a>
+</div>
+
+</body>
+</html>
