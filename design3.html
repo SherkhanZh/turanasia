@@ -38,6 +38,12 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdro
 .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1200px;margin:0 auto}
 .logo{display:flex;align-items:center;gap:11px}
 .logo svg{width:36px;height:36px}
+.logo-mark{height:44px;width:auto;display:block}
+.logo-word{height:28px;width:auto;display:block}
+.fg .logo-mark{height:48px}
+.fg .logo-word{height:30px}
+/* тёмная версия лого для светлой шапки */
+.logo-on-light img{filter:brightness(0) saturate(0);opacity:.82}
 .logo .name{font-weight:800;letter-spacing:.16em;font-size:15px}
 .logo .name span{color:var(--pri)}
 .menu{display:flex;gap:30px;list-style:none}
@@ -149,10 +155,7 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
 
 <header>
   <nav class="nav">
-    <a class="logo" href="#">
-      <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#4f46e5" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#4f46e5" stroke-width="1.3" opacity=".75"/><circle cx="24" cy="24" r="6" fill="#4f46e5"/></svg>
-      <span class="name dm">TURAN<span>ASIA</span></span>
-    </a>
+    <a class="logo logo-on-light" href="#"><img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word"></a>
     <ul class="menu">
       <li><a href="#">Главная</a></li>
       <li><a href="#">Туры</a></li>
@@ -263,7 +266,7 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
   <div class="wrap">
     <div class="fg">
       <div>
-        <a class="logo" href="#"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#fff" stroke-width="1.3" opacity=".7"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg><span class="name dm">TURAN<span style="color:#818cf8">ASIA</span></span></a>
+        <a class="logo" href="#"><img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word"></a>
         <p>Современный туроператор по Казахстану и Центральной Азии. Авторские маршруты, местные гиды, забота на каждом этапе.</p>
       </div>
       <div><h5>Контакты</h5><div class="ct">+7 702 123 45 67</div><div class="ct">info@turan-asia.kz</div><div class="ct">Алматы, пр. Абая 117/6</div><div class="ct">Пн–Пт: 9:00–18:00</div></div>

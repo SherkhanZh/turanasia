@@ -48,6 +48,10 @@ header{position:absolute;top:0;left:0;right:0;z-index:30}
 .logo .mark{width:38px;height:38px;flex:none}
 .logo .name{font-weight:700;letter-spacing:.2em;font-size:15px;line-height:1.15}
 .logo .name span{font-weight:300;display:block;letter-spacing:.34em;font-size:11px;opacity:.92}
+.logo-mark{height:50px;width:auto;display:block}
+.logo-word{height:32px;width:auto;display:block}
+.foot-grid .logo-mark{height:48px}
+.foot-grid .logo-word{height:30px}
 .menu{display:flex;gap:34px;list-style:none}
 .menu a{color:#fff;font-size:15px;font-weight:500;opacity:.92;padding-bottom:4px}
 .menu a.active{border-bottom:2px solid var(--gold);opacity:1}
@@ -215,8 +219,7 @@ footer{background:var(--deep);color:#e6ddd2}
 <header>
   <nav class="nav">
     <a class="logo" href="#">
-      <svg class="mark" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#fff" stroke-width="1.4" opacity=".85"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg>
-      <span class="name">TURAN<span>ASIA</span></span>
+      <img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word">
     </a>
     <ul class="menu">
       <li><a class="active" href="#">Главная</a></li>
@@ -437,8 +440,7 @@ footer{background:var(--deep);color:#e6ddd2}
     <div class="foot-grid">
       <div>
         <a class="logo" href="#">
-          <svg class="mark" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2"/><path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="#fff" stroke-width="1.4" opacity=".85"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg>
-          <span class="name">TURAN<span>ASIA</span></span>
+          <img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word">
         </a>
         <p>Turan Asia — туристическая компания, специализирующаяся на уникальных турах по Казахстану. Откройте с нами красоту, культуру и гостеприимство сердца Евразии.</p>
         <div class="socials">
