@@ -206,11 +206,15 @@ footer{background:var(--deep);color:#e6ddd2}
 }
 
 /* ===== Design switcher ===== */
-.switcher{position:fixed;right:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50px;padding:8px 12px 8px 16px;box-shadow:0 10px 26px rgba(0,0,0,.2);font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
-.switcher .sw-t{color:#7a7a7a}
-.switcher a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#2a2420;text-decoration:none;transition:.18s}
-.switcher a:hover{background:#f0eee9}
-.switcher a.active{background:#2a2420;color:#fff}
+.switcher{position:fixed;right:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;display:flex;align-items:center;gap:6px;background:#1c2230;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:50px;padding:8px 12px 8px 16px;box-shadow:0 10px 30px rgba(0,0,0,.4);font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
+.switcher .sw-t{color:#aeb6c4}
+.switcher a{min-width:30px;height:30px;padding:0 4px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#e9edf3;text-decoration:none;transition:.18s}
+.switcher a:hover{background:rgba(255,255,255,.14)}
+.switcher a.active{background:#fff;color:#15181f}
+@media(max-width:760px){
+  .switcher{left:0;right:0;bottom:0;top:auto;transform:none;width:100%;justify-content:center;border-radius:0;border:none;border-top:1px solid rgba(255,255,255,.15);padding:12px 14px calc(12px + env(safe-area-inset-bottom));font-size:16px;gap:12px;box-shadow:0 -6px 24px rgba(0,0,0,.3)}
+  .switcher a{min-width:40px;height:40px}
+}
 </style>
 </head>
 <body>
@@ -484,12 +488,13 @@ footer{background:var(--deep);color:#e6ddd2}
 </script>
 
 <!-- DESIGN SWITCHER -->
-<div class="switcher">
+<nav class="switcher" aria-label="Переключатель дизайна">
   <span class="sw-t">Дизайн</span>
-  <a href="index.html" class="active">1</a>
-  <a href="design2.html">2</a>
-  <a href="design3.html">3</a>
-</div>
+  <a href="index.html" class="active" aria-label="Дизайн 1">1</a>
+  <a href="design2.html" aria-label="Дизайн 2">2</a>
+  <a href="design3.html" aria-label="Дизайн 3">3</a>
+  <a href="design4.html" aria-label="Дизайн 4">4</a>
+</nav>
 
 </body>
 </html>

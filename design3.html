@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pri:#4f46e5;--pri-dark:#4338ca;--accent:#0ea5a4;--ink:#0f172a;--muted:#64748b;
+  --pri:#004283;--pri-dark:#00305f;--accent:#c8893f;--ink:#0f172a;--muted:#64748b;
   --line:#e8ecf4;--bg:#ffffff;--alt:#f4f7fb;--navy:#0f172a;
   --r:18px;--r-sm:12px;--shadow:0 18px 44px rgba(20,30,70,.12);--shadow-sm:0 8px 24px rgba(20,30,70,.08);
 }
@@ -26,7 +26,7 @@ a{text-decoration:none;color:inherit}
 .btn-light{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
 .btn-light:hover{border-color:var(--pri);color:var(--pri)}
 .ic{width:16px;height:16px;flex:none}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#eef0fe;color:var(--pri);font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:50px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#e7eef6;color:var(--pri);font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:50px}
 .sec{padding:70px 0}
 .sec-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:34px}
 .sec-h h2{font-size:34px;font-weight:700;letter-spacing:-.02em}
@@ -113,7 +113,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdro
 
 /* CTA */
 .cta{position:relative;border-radius:24px;overflow:hidden;color:#fff;text-align:center;padding:64px 30px}
-.cta::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(79,70,229,.94),rgba(14,165,164,.9)),url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80') center/cover}
+.cta::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,66,131,.94),rgba(176,138,62,.9)),url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80') center/cover}
 .cta-in{position:relative;z-index:2}
 .cta h2{font-size:38px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
 .cta p{opacity:.92;max-width:520px;margin:0 auto 26px}
@@ -131,11 +131,15 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
 .fbar .l{display:flex;gap:22px}
 
 /* switcher */
-.switcher{position:fixed;right:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:50px;padding:8px 12px 8px 16px;box-shadow:0 10px 26px rgba(0,0,0,.2);font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
-.switcher .sw-t{color:#7a7a7a}
-.switcher a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#2a2420;text-decoration:none;transition:.18s}
-.switcher a:hover{background:#f0eee9}
-.switcher a.active{background:var(--pri);color:#fff}
+.switcher{position:fixed;right:16px;bottom:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;display:flex;align-items:center;gap:6px;background:#1c2230;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:50px;padding:8px 12px 8px 16px;box-shadow:0 10px 30px rgba(0,0,0,.4);font-family:'Inter',sans-serif;font-size:13px;font-weight:600}
+.switcher .sw-t{color:#aeb6c4}
+.switcher a{min-width:30px;height:30px;padding:0 4px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#e9edf3;text-decoration:none;transition:.18s}
+.switcher a:hover{background:rgba(255,255,255,.14)}
+.switcher a.active{background:#fff;color:#15181f}
+@media(max-width:760px){
+  .switcher{left:0;right:0;bottom:0;top:auto;transform:none;width:100%;justify-content:center;border-radius:0;border:none;border-top:1px solid rgba(255,255,255,.15);padding:12px 14px calc(12px + env(safe-area-inset-bottom));font-size:16px;gap:12px;box-shadow:0 -6px 24px rgba(0,0,0,.3)}
+  .switcher a{min-width:40px;height:40px}
+}
 
 @media(max-width:980px){
   .menu,.lang{display:none}.burger{display:block}
@@ -281,12 +285,13 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
 (function(){var b=document.querySelector('.burger'),h=document.querySelector('header');if(b)b.addEventListener('click',function(){h.classList.toggle('open');});})();
 </script>
 
-<div class="switcher">
+<nav class="switcher" aria-label="Переключатель дизайна">
   <span class="sw-t">Дизайн</span>
-  <a href="index.html">1</a>
-  <a href="design2.html">2</a>
-  <a href="design3.html" class="active">3</a>
-</div>
+  <a href="index.html" aria-label="Дизайн 1">1</a>
+  <a href="design2.html" aria-label="Дизайн 2">2</a>
+  <a href="design3.html" class="active" aria-label="Дизайн 3">3</a>
+  <a href="design4.html" aria-label="Дизайн 4">4</a>
+</nav>
 
 </body>
 </html>
