@@ -35,8 +35,8 @@ Route::prefix('v1')->group(function () {
     Route::get('baikonur/faq', [BaikonurController::class, 'faq']);
     Route::get('baikonur/gallery', [BaikonurController::class, 'gallery']);
 
-    // Приём заявки с сайта
-    Route::post('leads', [LeadController::class, 'store']);
+    // Приём заявки с сайта (антиспам: не более 8 заявок в минуту с IP)
+    Route::post('leads', [LeadController::class, 'store'])->middleware('throttle:8,1');
 
     // Авторизация в админку
     Route::post('auth/login', [AuthController::class, 'login']);
@@ -53,6 +53,9 @@ Route::prefix('v1/admin')
         Route::get('me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('stats', [Admin\StatsController::class, 'index']);
+
+        // Загрузка изображений
+        Route::post('media', [Admin\MediaController::class, 'store']);
 
         // Туры
         Route::get('tours', [Admin\TourController::class, 'index']);

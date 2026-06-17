@@ -42,8 +42,9 @@ class TourController extends Controller
         $tour = new Tour;
         $this->fill($tour, $data);
         $tour->save();
+        $this->syncDates($tour, $data['dates'] ?? null);
 
-        return response()->json(AdminSerializer::make($tour), 201);
+        return response()->json(AdminSerializer::make($tour->load('dates')), 201);
     }
 
     public function update(Request $request, Tour $tour)
@@ -51,8 +52,31 @@ class TourController extends Controller
         $data = $this->validateData($request, $tour->id);
         $this->fill($tour, $data);
         $tour->save();
+        $this->syncDates($tour, $data['dates'] ?? null);
 
-        return response()->json(AdminSerializer::make($tour));
+        return response()->json(AdminSerializer::make($tour->load('dates')));
+    }
+
+    /**
+     * Перезаписать даты выездов тура (дата/места/цена за выезд).
+     */
+    private function syncDates(Tour $tour, $dates): void
+    {
+        if ($dates === null) {
+            return;
+        }
+        $tour->dates()->delete();
+        foreach ($dates as $d) {
+            if (empty($d['start_date'])) {
+                continue;
+            }
+            $tour->dates()->create([
+                'start_date' => $d['start_date'],
+                'end_date' => $d['end_date'] ?? null,
+                'seats' => $d['seats'] ?? null,
+                'price_override' => $d['price_override'] ?? null,
+            ]);
+        }
     }
 
     /**
@@ -98,11 +122,18 @@ class TourController extends Controller
             'booking_enabled' => ['boolean'],
             'is_featured' => ['boolean'],
             'sort' => ['nullable', 'integer'],
+            'dates' => ['nullable', 'array'],
+            'dates.*.start_date' => ['required', 'date'],
+            'dates.*.end_date' => ['nullable', 'date'],
+            'dates.*.seats' => ['nullable', 'integer', 'min:0'],
+            'dates.*.price_override' => ['nullable', 'integer', 'min:0'],
         ]);
     }
 
     private function fill(Tour $tour, array $data): void
     {
+        unset($data['dates']); // обрабатываются отдельно в syncDates
+
         $translatable = ['title', 'short_description', 'description', 'program', 'included', 'extras'];
 
         foreach ($translatable as $field) {

@@ -1,13 +1,17 @@
 <?php
 
 return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
+    // Все маршруты API
+    'paths' => ['api/*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        env('FRONTEND_URL', 'http://localhost:5173'),
-    ],
+    /*
+     | Админ-панель и фронтенд обращаются к API по Bearer-токену (Sanctum),
+     | без cookie-сессии, поэтому разрешаем любой источник и НЕ используем
+     | credentials. Для продакшена при желании сузьте список доменов.
+     */
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
@@ -17,5 +21,5 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 ];

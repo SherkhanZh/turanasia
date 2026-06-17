@@ -23,8 +23,8 @@ a{text-decoration:none;color:inherit}
 .btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:11px;padding:14px 24px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
 .btn-pri{background:var(--pri);color:#fff}
 .btn-pri:hover{background:var(--pri-dark)}
-.btn-light{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
-.btn-light:hover{border-color:var(--pri);color:var(--pri)}
+.btn-light{background:#fff;color:var(--pri);border:1.5px solid var(--pri)}
+.btn-light:hover{background:var(--pri);color:#fff}
 .ic{width:16px;height:16px;flex:none}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#e7eef6;color:var(--pri);font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:50px}
 .sec{padding:70px 0}
@@ -34,25 +34,28 @@ a{text-decoration:none;color:inherit}
 .sec-h a{color:var(--pri);font-weight:600;font-size:14px}
 
 /* nav */
-header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;max-width:1200px;margin:0 auto}
+header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px solid rgba(255,255,255,.12)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:32px;padding:16px 28px;max-width:1200px;margin:0 auto}
 .logo{display:flex;align-items:center;gap:11px}
 .logo svg{width:36px;height:36px}
 .logo-mark{height:44px;width:auto;display:block}
 .logo-word{height:28px;width:auto;display:block}
 .fg .logo-mark{height:48px}
 .fg .logo-word{height:30px}
-/* тёмная версия лого для светлой шапки */
-.logo-on-light img{filter:brightness(0) saturate(0);opacity:.82}
+/* лого золотое на тёмной шапке */
+.logo-on-light img{filter:none;opacity:1}
 .logo .name{font-weight:800;letter-spacing:.16em;font-size:15px}
 .logo .name span{color:var(--pri)}
-.menu{display:flex;gap:30px;list-style:none}
-.menu a{font-size:15px;font-weight:500;color:#334155}
-.menu a:hover{color:var(--pri)}
-.nav-r{display:flex;align-items:center;gap:18px}
-.lang{display:flex;gap:7px;font-size:13px;font-weight:600;color:var(--muted)}
-.lang .on{color:var(--pri)}
-.burger{display:none;width:26px;height:26px;color:var(--ink);cursor:pointer}
+.menu{display:flex;gap:22px;list-style:none}
+.menu a{font-size:15px;font-weight:500;color:#cdd9ea;white-space:nowrap}
+.menu a:hover{color:#fff}
+.menu a.active{color:var(--accent)}
+.nav-r{display:flex;align-items:center;gap:22px}
+.nav-r .btn-pri{background:#fff;color:var(--pri)}
+.nav-r .btn-pri:hover{background:#e9eff6;color:var(--pri-dark)}
+.lang{display:flex;gap:9px;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);padding-left:22px;border-left:1px solid rgba(255,255,255,.18)}
+.lang .on{color:#fff}
+.burger{display:none;width:26px;height:26px;color:#fff;cursor:pointer}
 
 /* hero */
 .hero{padding:60px 0 40px}
@@ -120,7 +123,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdro
 .cta .btn{background:#fff;color:var(--pri)}
 
 /* footer */
-footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
+footer{background:var(--pri);color:#cdd9ea;margin-top:20px}
 .fg{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:34px;padding:56px 0 30px}
 .fg h5{color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
 .fg .logo{color:#fff;margin-bottom:14px}
@@ -143,7 +146,7 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
 
 @media(max-width:980px){
   .menu,.lang{display:none}.burger{display:block}
-  header.open .menu{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:6px 0;box-shadow:0 14px 30px rgba(0,0,0,.1);gap:0;border-top:1px solid var(--line)}
+  header.open .menu{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#004283;padding:6px 0;box-shadow:0 14px 30px rgba(0,0,0,.25);gap:0;border-top:1px solid rgba(255,255,255,.12)}
   header.open .menu a{padding:13px 28px}
   .hero-grid{grid-template-columns:1fr;gap:30px}.hero-art .main{height:320px}
   .hero h1{font-size:42px}
@@ -153,7 +156,40 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
   .searchbar{flex-wrap:wrap}.searchbar .f{flex:1 1 40%;border:none}
 }
 @media(max-width:600px){.tgrid{grid-template-columns:1fr}.bento{grid-template-columns:1fr}.bento .big{grid-column:auto}.why{grid-template-columns:1fr}.fg{grid-template-columns:1fr}.hero h1{font-size:34px}.cta h2{font-size:28px}}
+
+/* ===== Тёмная тема (синий фон) ===== */
+.theme-btn{width:38px;height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.theme-btn:hover{background:rgba(255,255,255,.12)}
+.theme-btn.on{background:rgba(200,137,63,.2);border-color:var(--accent);color:var(--accent)}
+.theme-btn svg{width:18px;height:18px}
+body.dark{--bg:#06203a;--ink:#e9eff7;--muted:#9fb1c9;--line:rgba(255,255,255,.12);--alt:#0b2c4d;background:#06203a}
+body.dark .tc,
+body.dark .searchbar,
+body.dark .hero-art .chip{background:#0c2b49;color:var(--ink)}
+body.dark .wc{background:#0b2746}
+body.dark .wc .chip{background:#11375c;color:#cfe0f5}
+body.dark .eyebrow{background:rgba(90,160,225,.18);color:#bcd6f2}
+body.dark .searchbar .f .v{color:#c2d0e4}
 </style>
+<!-- hreflang (домен будет финализирован при интеграции) -->
+<link rel="alternate" hreflang="ru" href="https://turan-asia.kz/?lang=ru">
+<link rel="alternate" hreflang="kk" href="https://turan-asia.kz/?lang=kz">
+<link rel="alternate" hreflang="en" href="https://turan-asia.kz/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://turan-asia.kz/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Turan Asia",
+  "url": "https://turan-asia.kz",
+  "logo": "https://turan-asia.kz/logo.svg",
+  "description": "Туроператор по Казахстану и Центральной Азии: туры по Казахстану, Байконур, зарубежные групповые туры, индивидуальные путешествия.",
+  "address": { "@type": "PostalAddress", "streetAddress": "пр. Абая 117/6", "addressLocality": "Алматы", "addressCountry": "KZ" },
+  "telephone": "+7 702 123 45 67",
+  "email": "info@turan-asia.kz",
+  "sameAs": ["https://instagram.com/turanasia.kz", "https://t.me/turanasia"]
+}
+</script>
 </head>
 <body>
 
@@ -161,15 +197,16 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
   <nav class="nav">
     <a class="logo logo-on-light" href="#"><img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word"></a>
     <ul class="menu">
-      <li><a href="#">Главная</a></li>
-      <li><a href="#">Туры</a></li>
-      <li><a href="#">Направления</a></li>
-      <li><a href="#">О нас</a></li>
-      <li><a href="#">Контакты</a></li>
+      <li><a class="active" href="design3.html">Главная</a></li>
+      <li><a href="tours.html">Туры по Казахстану</a></li>
+      <li><a href="foreign.html">Зарубежные туры</a></li>
+      <li><a href="baikonur.html">Байконур</a></li>
+      <li><a href="about.html">О компании</a></li>
+      <li><a href="contacts.html">Контакты</a></li>
     </ul>
     <div class="nav-r">
       <div class="lang"><span class="on">RU</span><span>KZ</span><span>EN</span></div>
-      <a class="btn btn-pri" href="#" style="padding:10px 18px;font-size:14px">Связаться</a>
+      <a class="btn btn-pri" href="contacts.html" style="padding:10px 18px;font-size:14px">Связаться</a>
       <svg class="burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </div>
   </nav>
@@ -182,8 +219,8 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
       <h1 class="dm">Откройте <em>Казахстан</em> по-настоящему</h1>
       <p class="lead">Уникальная природа, богатая культура и незабываемые приключения в сердце Евразии. Авторские маршруты с местными гидами.</p>
       <div class="acts">
-        <a class="btn btn-pri" href="#">Смотреть туры</a>
-        <a class="btn btn-light" href="#">Связаться с нами</a>
+        <a class="btn btn-pri" href="tours.html">Смотреть туры</a>
+        <a class="btn btn-light" href="contacts.html">Связаться с нами</a>
       </div>
       <div class="stats">
         <div><b class="dm">12+</b><span>лет опыта</span></div>
@@ -196,20 +233,11 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
       <div class="chip"><div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>50+ направлений</b><small>по Казахстану и ЦА</small></div></div>
     </div>
   </div>
-  <div class="wrap">
-    <div class="searchbar">
-      <div class="f"><label>Направление</label><div class="v">Любое направление</div></div>
-      <div class="f"><label>Длительность</label><div class="v">Любая</div></div>
-      <div class="f"><label>Цена</label><div class="v">Любая</div></div>
-      <div class="f"><label>Даты</label><div class="v">Любые</div></div>
-      <button class="btn btn-pri go">Найти туры <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
-    </div>
-  </div>
 </section>
 
 <section class="sec">
   <div class="wrap">
-    <div class="sec-h"><div><h2 class="dm">Популярные направления</h2><p>Самые любимые места наших путешественников</p></div><a href="#">Все направления →</a></div>
+    <div class="sec-h"><div><h2 class="dm">Популярные направления</h2><p>Самые любимые места наших путешественников</p></div><a href="tours.html">Все направления →</a></div>
     <div class="bento">
       <a class="big" href="#"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80"><span class="cap"><b>Кольсайские озёра</b><small>Жемчужины Тянь-Шаня</small></span></a>
       <a href="#"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Алматы</b><small>Сердце гор</small></span></a>
@@ -222,11 +250,24 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-h"><div><h2 class="dm">Популярные туры</h2><p>Готовые маршруты с вылетами круглый год</p></div><a href="#">Все туры →</a></div>
+    <div class="sec-h"><div><h2 class="dm">Популярные туры</h2><p>Готовые маршруты с вылетами круглый год</p></div><a href="tours.html">Все туры →</a></div>
     <div class="tgrid">
-      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"><span class="pill">5 дней · Группа</span></div><div class="b"><h4>Алматы и Кольсайские озёра</h4><div class="d">Горы, озёра и свежий воздух</div><div class="foot"><div class="p"><small>от</small><b>245 000 ₸</b></div><a class="btn btn-pri" href="#">Подробнее</a></div></div></article>
-      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=700&q=80"><span class="pill">2 дня · Группа</span></div><div class="b"><h4>Приключение в Чарынском каньоне</h4><div class="d">Каньоны, долины и степь</div><div class="foot"><div class="p"><small>от</small><b>120 000 ₸</b></div><a class="btn btn-pri" href="#">Подробнее</a></div></div></article>
-      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"><span class="pill">4 дня · Группа</span></div><div class="b"><h4>Экспедиция в Мангистау</h4><div class="d">Марсианские пейзажи Казахстана</div><div class="foot"><div class="p"><small>от</small><b>310 000 ₸</b></div><a class="btn btn-pri" href="#">Подробнее</a></div></div></article>
+      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"><span class="pill">5 дней · Группа</span></div><div class="b"><h4>Алматы и Кольсайские озёра</h4><div class="d">Горы, озёра и свежий воздух</div><div class="foot"><div class="p"><small>от</small><b>245 000 ₸</b></div><a class="btn btn-pri" href="tour.html">Подробнее</a></div></div></article>
+      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=700&q=80"><span class="pill">2 дня · Группа</span></div><div class="b"><h4>Приключение в Чарынском каньоне</h4><div class="d">Каньоны, долины и степь</div><div class="foot"><div class="p"><small>от</small><b>120 000 ₸</b></div><a class="btn btn-pri" href="tour.html">Подробнее</a></div></div></article>
+      <article class="tc"><div class="ph"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"><span class="pill">4 дня · Группа</span></div><div class="b"><h4>Экспедиция в Мангистау</h4><div class="d">Марсианские пейзажи Казахстана</div><div class="foot"><div class="p"><small>от</small><b>310 000 ₸</b></div><a class="btn btn-pri" href="tour.html">Подробнее</a></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div><h2 class="dm">Найти свой тур</h2><p>Подберите тур по направлению, длительности, цене и датам</p></div></div>
+    <div class="searchbar" style="margin-top:0">
+      <div class="f"><label>Направление</label><div class="v">Любое направление</div></div>
+      <div class="f"><label>Длительность</label><div class="v">Любая</div></div>
+      <div class="f"><label>Цена</label><div class="v">Любая</div></div>
+      <div class="f"><label>Даты</label><div class="v">Любые</div></div>
+      <button class="btn btn-pri go">Найти туры <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
     </div>
   </div>
 </section>
@@ -260,7 +301,7 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
       <div class="cta-in">
         <h2 class="dm">Готовы к путешествию?</h2>
         <p>Оставьте заявку — подберём идеальный маршрут под ваши даты, бюджет и интересы.</p>
-        <a class="btn" href="#">Оставить заявку</a>
+        <a class="btn" href="contacts.html">Оставить заявку</a>
       </div>
     </div>
   </div>
@@ -282,16 +323,23 @@ footer{background:var(--navy);color:#cbd5e1;margin-top:20px}
 </footer>
 
 <script>
-(function(){var b=document.querySelector('.burger'),h=document.querySelector('header');if(b)b.addEventListener('click',function(){h.classList.toggle('open');});})();
+(function(){
+  var b=document.querySelector('.burger'),h=document.querySelector('header');
+  if(b)b.addEventListener('click',function(){h.classList.toggle('open');});
+  var MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  var SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  if(localStorage.getItem('ta-dark')==='1')document.body.classList.add('dark');
+  var nr=document.querySelector('.nav-r');
+  if(nr){
+    var tb=document.createElement('button');
+    tb.className='theme-btn';tb.type='button';tb.setAttribute('aria-label','Переключить тему');
+    function syncTheme(){var dark=document.body.classList.contains('dark');tb.innerHTML=dark?SUN:MOON;tb.classList.toggle('on',dark);tb.title=dark?'Светлая тема':'Тёмная тема';tb.setAttribute('aria-pressed',dark?'true':'false');}
+    tb.addEventListener('click',function(){var d=document.body.classList.toggle('dark');localStorage.setItem('ta-dark',d?'1':'0');syncTheme();});
+    nr.insertBefore(tb,nr.firstChild);
+    syncTheme();
+  }
+})();
 </script>
-
-<nav class="switcher" aria-label="Переключатель дизайна">
-  <span class="sw-t">Дизайн</span>
-  <a href="index.html" aria-label="Дизайн 1">1</a>
-  <a href="design2.html" aria-label="Дизайн 2">2</a>
-  <a href="design3.html" class="active" aria-label="Дизайн 3">3</a>
-  <a href="design4.html" aria-label="Дизайн 4">4</a>
-</nav>
 
 </body>
 </html>
