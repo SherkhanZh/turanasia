@@ -38,6 +38,8 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .logo{display:flex;align-items:center;gap:11px}
 .logo-mark{height:42px;width:auto;display:block}
 .logo-word{height:27px;width:auto;display:block}
+.logo-img{height:58px;width:auto;display:block}
+.fg .logo-img{height:64px}
 .logo-on-light img{filter:none;opacity:1}
 .menu{display:flex;gap:22px;list-style:none}
 .menu a{font-size:15px;font-weight:500;color:#cdd9ea;white-space:nowrap}
@@ -290,3 +292,4 @@ body.dark .lead-p,
 body.dark .rev-card p{color:#c2d0e4}
 body.dark .socials a{color:#bcd6f2}
 body.dark .pager a{color:var(--ink)}
+body.dark .sec-h a{color:#7fb0e6}

@@ -40,8 +40,10 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .logo svg{width:36px;height:36px}
 .logo-mark{height:44px;width:auto;display:block}
 .logo-word{height:28px;width:auto;display:block}
+.logo-img{height:58px;width:auto;display:block}
 .fg .logo-mark{height:48px}
 .fg .logo-word{height:30px}
+.fg .logo-img{height:64px}
 /* лого золотое на тёмной шапке */
 .logo-on-light img{filter:none;opacity:1}
 .logo .name{font-weight:800;letter-spacing:.16em;font-size:15px}
@@ -59,7 +61,7 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 
 /* hero */
 .hero{padding:60px 0 40px}
-.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:50px;align-items:center}
 .hero h1{font-size:58px;line-height:1.04;font-weight:800;letter-spacing:-.03em;margin:20px 0 18px}
 .hero h1 em{font-style:normal;color:var(--pri)}
 .hero .lead{font-size:18px;color:var(--muted);max-width:480px;margin-bottom:26px}
@@ -72,6 +74,15 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .hero-art .chip{position:absolute;left:-26px;bottom:34px;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:14px 18px;display:flex;align-items:center;gap:12px}
 .hero-art .chip .dot{width:42px;height:42px;border-radius:12px;background:#eef0fe;color:var(--pri);display:flex;align-items:center;justify-content:center}
 .hero-art .chip b{font-size:14px}.hero-art .chip small{display:block;color:var(--muted);font-size:12px}
+.slider{position:relative;border-radius:24px;overflow:hidden;height:440px;box-shadow:var(--shadow)}
+.slider .slides{display:flex;height:100%;transition:transform .5s ease}
+.slider .slides img{min-width:100%;height:100%;object-fit:cover}
+.sl-arr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.85);color:var(--ink);font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sl-arr.prev{left:14px}.sl-arr.next{right:14px}
+.sl-arr:hover{background:#fff}
+.sl-dots{position:absolute;bottom:14px;left:0;right:0;display:flex;gap:7px;justify-content:center}
+.sl-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer;transition:.2s}
+.sl-dots span.on{background:#fff;width:22px;border-radius:5px}
 
 /* search card */
 .searchbar{margin-top:34px;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);display:flex;padding:10px}
@@ -170,6 +181,8 @@ body.dark .wc{background:#0b2746}
 body.dark .wc .chip{background:#11375c;color:#cfe0f5}
 body.dark .eyebrow{background:rgba(90,160,225,.18);color:#bcd6f2}
 body.dark .searchbar .f .v{color:#c2d0e4}
+body.dark .hero h1 em{color:var(--accent)}
+body.dark .sec-h a{color:#7fb0e6}
 </style>
 <!-- hreflang (домен будет финализирован при интеграции) -->
 <link rel="alternate" hreflang="ru" href="https://turan-asia.kz/?lang=ru">
@@ -195,7 +208,7 @@ body.dark .searchbar .f .v{color:#c2d0e4}
 
 <header>
   <nav class="nav">
-    <a class="logo logo-on-light" href="#"><img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word"></a>
+    <a class="logo logo-on-light" href="#"><img src="logo_gold.png" alt="Turan Asia" class="logo-img"></a>
     <ul class="menu">
       <li><a class="active" href="design3.html">Главная</a></li>
       <li><a href="tours.html">Туры по Казахстану</a></li>
@@ -215,35 +228,39 @@ body.dark .searchbar .f .v{color:#c2d0e4}
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow">✦ Туроператор №1 по приёму в Казахстане</span>
+      <span class="eyebrow">✦ С 1994 года</span>
       <h1 class="dm">Откройте <em>Казахстан</em> по-настоящему</h1>
       <p class="lead">Уникальная природа, богатая культура и незабываемые приключения в сердце Евразии. Авторские маршруты с местными гидами.</p>
       <div class="acts">
         <a class="btn btn-pri" href="tours.html">Смотреть туры</a>
         <a class="btn btn-light" href="contacts.html">Связаться с нами</a>
       </div>
-      <div class="stats">
-        <div><b class="dm">12+</b><span>лет опыта</span></div>
-        <div><b class="dm">250+</b><span>авторских туров</span></div>
-        <div><b class="dm">15 000+</b><span>довольных гостей</span></div>
-      </div>
     </div>
     <div class="hero-art">
-      <div class="main"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1000&q=80"></div>
-      <div class="chip"><div class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>50+ направлений</b><small>по Казахстану и ЦА</small></div></div>
+      <div class="slider" id="heroSlider">
+        <div class="slides">
+          <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80">
+          <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1000&q=80">
+          <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1000&q=80">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=80">
+        </div>
+        <button class="sl-arr prev" aria-label="Назад">‹</button>
+        <button class="sl-arr next" aria-label="Вперёд">›</button>
+        <div class="sl-dots"></div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="sec">
   <div class="wrap">
-    <div class="sec-h"><div><h2 class="dm">Популярные направления</h2><p>Самые любимые места наших путешественников</p></div><a href="tours.html">Все направления →</a></div>
+    <div class="sec-h"><div><h2 class="dm">Куда отправимся</h2><p>Выберите формат путешествия</p></div></div>
     <div class="bento">
-      <a class="big" href="#"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80"><span class="cap"><b>Кольсайские озёра</b><small>Жемчужины Тянь-Шаня</small></span></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Алматы</b><small>Сердце гор</small></span></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Чарын</b><small>Шедевр природы</small></span></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Мангистау</b><small>Неземные пейзажи</small></span></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Астана</b><small>Город будущего</small></span></a>
+      <a class="big" href="tours.html"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80"><span class="cap"><b>Туры по Казахстану</b><small>Многодневные и однодневные</small></span></a>
+      <a href="baikonur.html"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Байконур</b><small>Запуски ракет</small></span></a>
+      <a href="foreign.html"><img src="https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Зарубежные туры</b><small>Групповые поездки</small></span></a>
+      <a href="hotels.html"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Отели</b><small>Скоро</small></span></a>
+      <a href="individual.html"><img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=600&q=80"><span class="cap"><b>Индивидуальные</b><small>Авторские маршруты</small></span></a>
     </div>
   </div>
 </section>
@@ -274,29 +291,6 @@ body.dark .searchbar .f .v{color:#c2d0e4}
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
-    <div class="statband">
-      <div><b class="dm">12+</b><span>лет на рынке</span></div>
-      <div><b class="dm">250+</b><span>уникальных туров</span></div>
-      <div><b class="dm">15 000+</b><span>довольных гостей</span></div>
-      <div><b class="dm">50+</b><span>направлений</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-h"><div><h2 class="dm">Почему Turan Asia</h2><p>Всё для вашего комфортного путешествия</p></div></div>
-    <div class="why">
-      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h4>Надёжность</h4><p>Лицензированный туроператор, работаем с 2010 года</p></div>
-      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></div><h4>Лучшие маршруты</h4><p>Продуманные программы от местных экспертов</p></div>
-      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/></svg></div><h4>Поддержка 24/7</h4><p>Мы всегда на связи до, во время и после поездки</p></div>
-      <div class="wc"><div class="chip"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></div><h4>Честная цена</h4><p>Без скрытых комиссий и переплат</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec" style="padding-top:0">
-  <div class="wrap">
     <div class="cta">
       <div class="cta-in">
         <h2 class="dm">Готовы к путешествию?</h2>
@@ -307,11 +301,22 @@ body.dark .searchbar .f .v{color:#c2d0e4}
   </div>
 </section>
 
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="statband">
+      <div><b class="dm">30+</b><span>лет на рынке</span></div>
+      <div><b class="dm">250+</b><span>уникальных туров</span></div>
+      <div><b class="dm">15 000+</b><span>довольных гостей</span></div>
+      <div><b class="dm">50+</b><span>направлений</span></div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="fg">
       <div>
-        <a class="logo" href="#"><img src="logo-mark.svg" alt="" class="logo-mark"><img src="logo-word.svg" alt="Turan Asia" class="logo-word"></a>
+        <a class="logo" href="#"><img src="logo_gold.png" alt="Turan Asia" class="logo-img"></a>
         <p>Современный туроператор по Казахстану и Центральной Азии. Авторские маршруты, местные гиды, забота на каждом этапе.</p>
       </div>
       <div><h5>Контакты</h5><div class="ct">+7 702 123 45 67</div><div class="ct">info@turan-asia.kz</div><div class="ct">Алматы, пр. Абая 117/6</div><div class="ct">Пн–Пт: 9:00–18:00</div></div>
@@ -338,6 +343,17 @@ body.dark .searchbar .f .v{color:#c2d0e4}
     nr.insertBefore(tb,nr.firstChild);
     syncTheme();
   }
+})();
+(function(){
+  var sl=document.getElementById('heroSlider'); if(!sl)return;
+  var slides=sl.querySelector('.slides'), n=slides.children.length, dots=sl.querySelector('.sl-dots'), i=0, t;
+  for(var k=0;k<n;k++){var s=document.createElement('span'); if(!k)s.className='on'; dots.appendChild(s);}
+  function go(x){i=(x+n)%n; slides.style.transform='translateX(-'+i*100+'%)'; [].forEach.call(dots.children,function(d,j){d.classList.toggle('on',j===i);});}
+  function reset(){clearInterval(t); t=setInterval(function(){go(i+1);},4500);}
+  sl.querySelector('.next').addEventListener('click',function(){go(i+1);reset();});
+  sl.querySelector('.prev').addEventListener('click',function(){go(i-1);reset();});
+  dots.addEventListener('click',function(e){var j=[].indexOf.call(dots.children,e.target); if(j>=0){go(j);reset();}});
+  reset();
 })();
 </script>
 
