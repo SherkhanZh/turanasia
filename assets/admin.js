@@ -83,9 +83,9 @@
     api('/admin/me').then(function (me) {
       ME = me;
       el('login').classList.add('hidden'); el('app').classList.remove('hidden');
-      el('meName').textContent = me.name;
+      el('meName').textContent = me.email;
       el('meRole').textContent = (me.roles && me.roles.indexOf('admin') >= 0) ? 'Администратор' : 'Контент-менеджер';
-      el('meAv').textContent = (me.name || 'A').trim().slice(0, 2).toUpperCase();
+      el('meAv').textContent = (me.email || 'A').trim().slice(0, 2).toUpperCase();
       var isAdmin = me.roles && me.roles.indexOf('admin') >= 0;
       el('nav-staff').style.display = isAdmin ? '' : 'none';
       el('nav-audit').style.display = isAdmin ? '' : 'none';
