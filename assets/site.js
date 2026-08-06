@@ -62,6 +62,7 @@
       'find.title':'Найти свой тур','find.sub':'Подберите тур по направлению, длительности, цене и датам','find.dest':'Направление','find.any_dest':'Любое направление','find.dur':'Длительность','find.any_f':'Любая','find.price':'Цена','find.dates':'Даты','find.any_p':'Любые','find.btn':'Найти туры',
       'cta.title':'Готовы к путешествию?','cta.sub':'Оставьте заявку — подберём идеальный маршрут под ваши даты, бюджет и интересы.','cta.btn':'Оставить заявку',
       'stat.years':'лет на рынке','stat.tours':'уникальных туров','stat.guests':'довольных гостей','stat.dests':'направлений',
+      'val.1':'Индивидуальный подход','val.2':'Экспертность','val.3':'Забота о каждом туристе','val.4':'Надёжность и качество',
       'foot.about':'С 1994 года — туроператор по Казахстану и миру.','foot.tours':'Туры','foot.company':'Компания','foot.contacts':'Контакты','foot.menu':'Меню','foot.social':'Мы в соцсетях','foot.kz':'По Казахстану','foot.foreign':'Зарубежные','foot.individual':'Индивидуальные','foot.reviews':'Отзывы','foot.hotels':'Отели','foot.cruises':'Круизы','foot.dests':'Направления','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, ул. Желтоксан, 111а','foot.rights':'© 2026 Turan Asia. Все права защищены.','foot.privacy':'Политика конфиденциальности','foot.terms':'Условия'
     },
     kz: {
@@ -75,6 +76,7 @@
       'find.title':'Өз туріңізді табыңыз','find.sub':'Бағыт, ұзақтық, баға және күндер бойынша тур таңдаңыз','find.dest':'Бағыт','find.any_dest':'Кез келген бағыт','find.dur':'Ұзақтығы','find.any_f':'Кез келген','find.price':'Бағасы','find.dates':'Күндері','find.any_p':'Кез келген','find.btn':'Турларды табу',
       'cta.title':'Саяхатқа дайынсыз ба?','cta.sub':'Өтінім қалдырыңыз — күндеріңізге, бюджетіңізге және қызығушылығыңызға сай бағыт таңдаймыз.','cta.btn':'Өтінім қалдыру',
       'stat.years':'жыл нарықта','stat.tours':'бірегей тур','stat.guests':'риза қонақ','stat.dests':'бағыт',
+      'val.1':'Жеке көзқарас','val.2':'Кәсібилік','val.3':'Әрбір саяхатшыға қамқорлық','val.4':'Сенімділік пен сапа',
       'foot.about':'1994 жылдан бері — Қазақстан және әлем бойынша туроператор.','foot.tours':'Турлар','foot.company':'Компания','foot.contacts':'Байланыс','foot.menu':'Мәзір','foot.social':'Әлеуметтік желілерде','foot.kz':'Қазақстан бойынша','foot.foreign':'Шетелдік','foot.individual':'Жеке','foot.reviews':'Пікірлер','foot.hotels':'Қонақүйлер','foot.cruises':'Круиздер','foot.dests':'Бағыттар','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, Желтоқсан к-сі, 111а','foot.rights':'© 2026 Turan Asia. Барлық құқықтар қорғалған.','foot.privacy':'Құпиялылық саясаты','foot.terms':'Шарттар'
     },
     en: {
@@ -88,6 +90,7 @@
       'find.title':'Find your tour','find.sub':'Search by destination, duration, price and dates','find.dest':'Destination','find.any_dest':'Any destination','find.dur':'Duration','find.any_f':'Any','find.price':'Price','find.dates':'Dates','find.any_p':'Any','find.btn':'Search tours',
       'cta.title':'Ready to travel?','cta.sub':"Send us a request — we'll craft the perfect itinerary for your dates, budget and interests.",'cta.btn':'Send a request',
       'stat.years':'years in business','stat.tours':'unique tours','stat.guests':'happy guests','stat.dests':'destinations',
+      'val.1':'Personalized approach','val.2':'Expertise','val.3':'Care for every traveler','val.4':'Reliability and quality',
       'foot.about':'Since 1994 — Kazakhstan & Worldwide Tour Operator.','foot.tours':'Tours','foot.company':'Company','foot.contacts':'Contacts','foot.menu':'Menu','foot.social':'Follow us','foot.kz':'In Kazakhstan','foot.foreign':'International','foot.individual':'Tailor-made','foot.reviews':'Reviews','foot.hotels':'Hotels','foot.cruises':'Cruises','foot.dests':'Destinations','foot.hours':'09:00 – 19:00','foot.addr':'Almaty, 111a Zheltoksan St.','foot.rights':'© 2026 Turan Asia. All rights reserved.','foot.privacy':'Privacy Policy','foot.terms':'Terms'
     }
   };

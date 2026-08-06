@@ -119,6 +119,11 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .statband{background:var(--pri);color:#fff;border-radius:24px;padding:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
 .statband b{font-size:38px;font-weight:800;font-family:'Montserrat',sans-serif;display:block}
 .statband span{opacity:.85;font-size:14px}
+.statband.values{grid-template-columns:repeat(4,1fr);padding:44px 40px}
+.statband.values .vi{width:42px;height:42px;margin:0 auto 14px;color:var(--accent)}
+.statband.values span{display:block;font-size:16px;font-weight:600;opacity:1;line-height:1.35}
+@media(max-width:980px){.statband.values{grid-template-columns:1fr 1fr;gap:30px 12px}}
+@media(max-width:600px){.statband.values{grid-template-columns:1fr}}
 
 /* why */
 .why{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
@@ -305,11 +310,23 @@ body.dark .sec-h a{color:#7fb0e6}
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
-    <div class="statband">
-      <div><b class="dm">30+</b><span data-i18n="stat.years">лет на рынке</span></div>
-      <div><b class="dm">250+</b><span data-i18n="stat.tours">уникальных туров</span></div>
-      <div><b class="dm">15 000+</b><span data-i18n="stat.guests">довольных гостей</span></div>
-      <div><b class="dm">50+</b><span data-i18n="stat.dests">направлений</span></div>
+    <div class="statband values">
+      <div>
+        <svg class="vi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7.8" r="3.2"/><circle cx="17.2" cy="9.3" r="2.4"/><path d="M3.2 19.6c0-3.1 2.6-5.6 5.8-5.6s5.8 2.5 5.8 5.6"/><path d="M16.4 14.3c2.5.2 4.4 2.3 4.4 4.9"/></svg>
+        <span data-i18n="val.1">Индивидуальный подход</span>
+      </div>
+      <div>
+        <svg class="vi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.9 5.7 3.9 9s-1.4 6.4-3.9 9c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>
+        <span data-i18n="val.2">Экспертность</span>
+      </div>
+      <div>
+        <svg class="vi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 6.2c-1-1.7-3.6-1.4-3.6.8 0 1.7 2.3 3.2 3.6 4 1.3-.8 3.6-2.3 3.6-4 0-2.2-2.6-2.5-3.6-.8z"/><path d="M11.3 20.2H8.6c-.9 0-1.8-.5-2.2-1.4l-2.2-4.4c-.4-.8-.1-1.8.7-2.2.8-.4 1.7-.1 2.1.7l1.3 2.2"/><path d="M12.7 20.2h2.7c.9 0 1.8-.5 2.2-1.4l2.2-4.4c.4-.8.1-1.8-.7-2.2-.8-.4-1.7-.1-2.1.7l-1.3 2.2"/></svg>
+        <span data-i18n="val.3">Забота о каждом туристе</span>
+      </div>
+      <div>
+        <svg class="vi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="5"/><path d="M9 13.4L7.5 21l4.5-2.6 4.5 2.6-1.5-7.6"/></svg>
+        <span data-i18n="val.4">Надёжность и качество</span>
+      </div>
     </div>
   </div>
 </section>
