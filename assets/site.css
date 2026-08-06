@@ -144,15 +144,17 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 /* ===== accordion (разделы карточки тура) ===== */
 .acc details{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;background:#fff;overflow:hidden;transition:box-shadow .18s}
 .acc details[open]{box-shadow:var(--shadow-sm)}
-.acc summary{padding:16px 20px;font-weight:700;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none;-webkit-user-select:none}
+.acc summary{padding:18px 20px;font-weight:700;font-size:20px;color:var(--pri);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none;-webkit-user-select:none}
 .acc summary::-webkit-details-marker{display:none}
 .acc summary::after{content:"+";color:var(--pri);font-size:24px;line-height:1;font-weight:400;flex:none}
 .acc details[open] summary::after{content:"–"}
-.acc summary:hover{color:var(--pri)}
+.acc summary:hover{color:var(--pri-dark)}
 .acc .acc-b{padding:0 20px 20px;color:#475569}
 .acc .acc-b .prog{margin-top:4px}
 body.dark .acc details{background:#0c2b49}
 body.dark .acc .acc-b{color:#c2d0e4}
+body.dark .acc summary{color:#7fb0e6}
+body.dark .acc summary:hover{color:#a8cbf0}
 
 /* ===== FAQ accordion ===== */
 .faq{max-width:840px;margin:0 auto}
