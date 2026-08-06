@@ -9,7 +9,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
 
-PAGES="tours tour foreign baikonur individual about reviews contacts hotels cruises admin"
+PAGES="tours tour foreign baikonur launch individual about reviews contacts hotels cruises admin"
 
 rm -rf "$DIST"
 mkdir -p "$DIST/assets"

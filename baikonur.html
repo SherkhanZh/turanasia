@@ -59,54 +59,15 @@
   <div class="wrap">
     <div class="sec-h"><div><h2 class="dm">Ближайшие запуски</h2><p>Календарь пусков и туров</p></div></div>
 
-    <div class="launch">
-      <div class="lph"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=600&q=80"></div>
-      <div class="lb">
-        <span class="date">🚀 9 сентября 2026, 21:14</span>
-        <h4>Пуск «Союз-2.1а» с ТГК «Прогресс МС-35»</h4>
-        <p>3 дня / 2 ночи. Кызылорда — Казалы — Байконур. Гагаринский старт, командный пункт 1003, корабли «Буря» и «Буран», наблюдение за пуском с площадки «ЮРТА».</p>
-      </div>
-      <div class="lr">
-        <div class="seats">Документы до 15 августа</div>
-        <div class="price">585 000 ₸</div>
-        <a class="btn btn-pri" href="contacts.html" style="margin-top:10px">Забронировать</a>
-      </div>
-    </div>
-
-    <div class="center" style="margin-top:6px;color:var(--muted);font-size:13px">Дети 10–18 лет при размещении со взрослым (DBL) — 385 000 ₸. Онлайн-бронирование и оплата появятся на следующем этапе; сейчас бронь оформляется через менеджера.</div>
-  </div>
-</section>
-
-<section class="sec" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-h"><div><h2 class="dm">Программа тура</h2><p>8–10 сентября 2026</p></div></div>
-    <ul class="prog">
-      <li><b>День 1 — 08.09, Кызылорда – Казалы</b><p>Встреча в аэропорту или в городе Кызылорда (возможна встреча на станции Казалы). 15:00 — выезд в отель, 400 км / 4 часа. Ужин и ночь в ZHEBE HOTEL 4*.</p></li>
-      <li><b>День 2 — 09.09, Байконур: ПУСК</b><p>Завтрак. 10:30 — заезд в город через КПП-1. Нулевой квартал и Гагаринская беседка, музей истории Байконура, Космопарк, фотостопы у памятников. Обед. Переезд на КПП-7, площадка 1: Гагаринский старт и подземный командный пункт 1003. Площадка 112: ангар МЗК с кораблями «Буря» и «Буран», стенд РН «Энергия». Наблюдательная площадка «ЮРТА» (пл. 31), ужин в ланч-боксах. 21:14 — наблюдение за пуском. Ночь в ZHEBE HOTEL 4*.</p></li>
-      <li><b>День 3 — 10.09, Казалы – Кызылорда</b><p>Завтрак, трансфер в аэропорт Кызылорды (400 км / 4 часа). Вылеты в Алматы и Астану. Окончание групповой программы.</p></li>
-    </ul>
-
-    <div class="sec-h" style="margin-top:44px"><div><h2 class="dm">Что включено</h2></div></div>
-    <div class="inc-grid">
-      <ul class="inc">
-        <li>Оформление допуска на Байконур</li>
-        <li>Гид и транспорт по программе</li>
-        <li>2 ночи в отеле 4* (одноместный номер)</li>
-        <li>Питание: 2 завтрака, 2 обеда, 2 ужина</li>
-      </ul>
-      <ul class="exc">
-        <li>Авиа- и ж/д билеты</li>
-        <li>Медицинская страховка</li>
-        <li>Питание и личные расходы вне программы</li>
-      </ul>
-    </div>
+    <div id="launches"><div class="empty">Загрузка…</div></div>
+    <div class="center" style="margin-top:6px;color:var(--muted);font-size:13px">Онлайн-бронирование и оплата появятся на следующем этапе; сейчас бронь оформляется через менеджера.</div>
   </div>
 </section>
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
     <div class="sec-h center" style="justify-content:center;text-align:center;display:block"><h2 class="dm">Частые вопросы</h2></div>
-    <div class="faq">
+    <div class="faq" id="faq">
       <details open><summary>Нужны ли пропуска на космодром?</summary><p>Да. Пропуска оформляются заранее, нужен действующий паспорт. Все документы готовим мы — от вас потребуются только данные.</p></details>
       <details><summary>Можно ли фотографировать запуск?</summary><p>Да, на разрешённых точках наблюдения. Профессиональную съёмку согласуем отдельно.</p></details>
       <details><summary>Гарантируется ли, что пуск состоится в дату?</summary><p>Даты пусков могут сдвигаться по техническим и погодным причинам. Мы заранее предупреждаем и помогаем скорректировать поездку.</p></details>
@@ -118,11 +79,7 @@
 <section class="sec" style="padding-top:0">
   <div class="wrap">
     <div class="sec-h"><div><h2 class="dm">Галерея</h2></div></div>
-    <div class="ggrid">
-      <a href="#"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=700&q=80"></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1457364887197-9150188c107b?auto=format&fit=crop&w=700&q=80"></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=700&q=80"></a>
-    </div>
+    <div class="ggrid" id="gallery"></div>
   </div>
 </section>
 
@@ -159,6 +116,54 @@
   </div>
 </footer>
 
+<script src="assets/api.js"></script>
 <script src="assets/site.js"></script>
+<script>
+(function () {
+  var box = document.getElementById('launches');
+
+  TA.get('/baikonur/launches').then(function (r) {
+    var rows = TA.list(r);
+    if (!rows.length) { box.innerHTML = '<div class="empty">Ближайшие запуски скоро появятся.</div>'; return; }
+    box.innerHTML = rows.map(function (l) {
+      var img = (l.photos && l.photos[0]) || 'https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=600&q=80';
+      var when = TA.date(l.launch_date) + (l.launch_time ? ', ' + TA.esc(String(l.launch_time).slice(0, 5)) : '');
+      var url = 'launch.html?slug=' + encodeURIComponent(l.slug);
+      return '<div class="launch">' +
+        '<a class="lph" href="' + url + '"><img src="' + TA.esc(img) + '" alt="' + TA.esc(l.title) + '"></a>' +
+        '<div class="lb">' +
+          (when ? '<span class="date">🚀 ' + when + '</span>' : '') +
+          '<h4><a href="' + url + '">' + TA.esc(l.title) + '</a></h4>' +
+          (l.rocket ? '<p><b>' + TA.esc(l.rocket) + '</b></p>' : '') +
+          (l.description ? '<p>' + TA.esc(String(l.description).slice(0, 190)) + (String(l.description).length > 190 ? '…' : '') + '</p>' : '') +
+        '</div>' +
+        '<div class="lr">' +
+          (l.seats ? '<div class="seats">Мест: ' + TA.esc(l.seats) + '</div>' : '') +
+          (l.price ? '<div class="price">' + TA.money(l.price, l.currency) + '</div>' : '') +
+          '<a class="btn btn-pri" href="' + url + '" style="margin-top:10px">Подробнее</a>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }).catch(function () { TA.fail(box, 'Не удалось загрузить список запусков.'); });
+
+  var faq = document.getElementById('faq');
+  TA.get('/baikonur/faq').then(function (r) {
+    var rows = TA.list(r);
+    if (rows.length) {
+      faq.innerHTML = rows.map(function (f, i) {
+        return '<details' + (i ? '' : ' open') + '><summary>' + TA.esc(f.question) + '</summary><p>' + TA.text(f.answer) + '</p></details>';
+      }).join('');
+    }
+  }).catch(function () {});
+
+  var g = document.getElementById('gallery');
+  TA.get('/baikonur/gallery').then(function (r) {
+    var rows = TA.list(r);
+    if (rows.length) {
+      g.innerHTML = rows.map(function (u) { return '<a href="' + TA.esc(u) + '" target="_blank"><img src="' + TA.esc(u) + '" alt=""></a>'; }).join('');
+    } else { g.closest('section').style.display = 'none'; }
+  }).catch(function () { g.closest('section').style.display = 'none'; });
+})();
+</script>
 </body>
 </html>
