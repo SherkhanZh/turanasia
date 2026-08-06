@@ -49,7 +49,8 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .nav-r .btn-pri{background:#fff;color:var(--pri)}
 .nav-r .btn-pri:hover{background:#e9eff6;color:var(--pri-dark)}
 .lang{display:flex;gap:9px;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);padding-left:22px;border-left:1px solid rgba(255,255,255,.18)}
-.lang span{cursor:pointer}
+.lang span{cursor:pointer;user-select:none;-webkit-user-select:none;transition:color .15s}
+.lang span:hover{color:#fff}
 .lang .on{color:#fff}
 .burger{display:none;width:26px;height:26px;color:#fff;cursor:pointer}
 
