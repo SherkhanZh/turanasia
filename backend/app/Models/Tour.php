@@ -85,6 +85,11 @@ class Tour extends Model
             $query->where('trip_type', $f['trip_type']);
         }
 
+        // Режим дат: fixed (с датами) | on_request (под запрос)
+        if (! empty($f['date_mode'])) {
+            $query->where('date_mode', $f['date_mode']);
+        }
+
         if (! empty($f['direction_id'])) {
             $query->where('direction_id', $f['direction_id']);
         }
