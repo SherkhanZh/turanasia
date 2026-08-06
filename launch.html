@@ -97,18 +97,19 @@
     var gallery = '<div class="gallery"><div class="gmain"><img src="' + TA.esc(main) + '" alt="' + TA.esc(l.title) + '"></div>' +
       photos.slice(1, 5).map(function (u) {
         return '<div class="gthumb"><img src="' + TA.esc(u) + '" alt=""></div>';
-      }).join('') + '</div>' +
-      ((l.videos && l.videos.length)
-        ? '<div class="block" style="margin-top:22px"><h3>Видео</h3>' + l.videos.map(function (v) {
-            return '<p><a href="' + TA.esc(v) + '" target="_blank" rel="noopener" style="color:var(--pri);font-weight:600">▶ ' + TA.esc(v) + '</a></p>';
-          }).join('') + '</div>'
-        : '');
+      }).join('') + '</div>';
 
-    function block(title, body) {
-      return body ? '<div class="block"><h3>' + title + '</h3><p style="color:#475569">' + TA.text(body) + '</p></div>' : '';
+    // Аккордеон: первый раздел открыт, остальные свёрнуты
+    function acc(title, inner, open) {
+      if (!inner) return '';
+      return '<details' + (open ? ' open' : '') + '><summary>' + title + '</summary>' +
+             '<div class="acc-b">' + inner + '</div></details>';
     }
-    function progBlock(title, body) {
-      return body ? '<div class="block"><h3>' + title + '</h3>' + TA.program(body) + '</div>' : '';
+    function block(title, body, open) {
+      return body ? acc(title, '<p>' + TA.text(body) + '</p>', open) : '';
+    }
+    function progBlock(title, body, open) {
+      return body ? acc(title, TA.program(body), open) : '';
     }
 
     view.innerHTML = gallery +
@@ -121,9 +122,14 @@
             (l.seats ? '<span>👥 Мест: ' + TA.esc(l.seats) + '</span>' : '') +
             '<span>📍 Космодром Байконур</span>' +
           '</div>' +
-          block('Описание', l.description) +
-          progBlock('Программа тура', l.program) +
-          block('Условия бронирования', l.conditions) +
+          '<div class="acc" style="margin-top:22px">' +
+            block('Описание', l.description, true) +
+            progBlock('Программа тура', l.program) +
+            block('Что включено / условия', l.conditions) +
+            ((l.videos && l.videos.length) ? acc('Видео', l.videos.map(function (v) {
+              return '<p><a href="' + TA.esc(v) + '" target="_blank" rel="noopener" style="color:var(--pri);font-weight:600">▶ ' + TA.esc(v) + '</a></p>';
+            }).join('')) : '') +
+          '</div>' +
         '</div>' +
         '<aside><div class="book">' +
           (l.price ? '<div class="from">Стоимость от</div><div class="price">' + TA.money(l.price, l.currency) + '</div>' : '') +
