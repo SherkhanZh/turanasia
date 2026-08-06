@@ -23,6 +23,9 @@ class BaikonurLaunchResource extends JsonResource
             'price' => $this->price,
             'currency' => $this->currency,
             'photos' => $this->photos ?? [],
+            'videos' => $this->videos ?? [],
+            'date_mode' => $this->date_mode,
+            'price_individual' => $this->price_individual,
             'status' => $this->status,
             // На этапе 1 — кнопка-заглушка (онлайн-оплата позже)
             'booking_enabled' => $this->booking_enabled,

@@ -119,25 +119,28 @@
         { l: 'Статус', g: function (r) { return statusBadge(r.status); } }
       ],
       fields: [
-        f('title', 'Название', 'tr-text', { req: 1 }),
+        f('title', 'Название тура', 'tr-text', { req: 1 }),
         f('short_description', 'Краткое описание', 'tr-text'),
         f('description', 'Описание', 'tr-textarea'),
-        f('program', 'Программа', 'tr-textarea'),
-        f('included', 'Включено', 'tr-textarea'),
-        f('extras', 'Доп. услуги', 'tr-textarea'),
-        f('section', 'Раздел', 'select', { options: opt([['kazakhstan','По Казахстану'],['foreign','Зарубежные'],['baikonur','Байконур']]), req: 1 }),
+        f('section', 'Раздел', 'select', { options: opt([['kazakhstan','По Казахстану'],['foreign','Зарубежные']]), req: 1 }),
         f('trip_type', 'Тип (для Казахстана)', 'select', { options: opt([['','—'],['one_day','Однодневный'],['multi_day','Многодневный']]) }),
-        f('price', 'Цена', 'number', { req: 1 }),
+        f('program', 'Программа тура (по дням)', 'tr-textarea'),
+        f('included', 'Что включено', 'tr-textarea'),
+        f('extras', 'Не включено / доп. услуги', 'tr-textarea'),
+        f('price', 'Стоимость', 'number', { req: 1 }),
+        f('price_individual', 'Цена для индивидуальных', 'number'),
         f('currency', 'Валюта', 'text', { def: 'KZT' }),
         f('duration_days', 'Длительность (дней)', 'number', { req: 1, def: 1 }),
-        f('seats', 'Мест', 'number'),
+        f('seats', 'Мест в группе', 'number'),
+        f('date_mode', 'Даты', 'select', { options: opt([['fixed','С фиксированными датами'],['on_request','Без дат — под запрос']]) }),
+        f('dates', 'Даты выездов', 'dates'),
+        f('photos', 'Галерея — фотографии', 'photos'),
+        f('videos', 'Галерея — видео (по ссылке в строке)', 'lines'),
         f('category_id', 'Категория', 'ref', { ref: 'categories' }),
         f('direction_id', 'Направление', 'ref', { ref: 'directions' }),
         f('status', 'Статус', 'select', { options: opt([['published','Опубликован'],['hidden','Скрыт'],['archived','Архив']]) }),
         f('is_featured', 'На главной', 'toggle'),
-        f('booking_enabled', 'Кнопка брони', 'toggle'),
-        f('photos', 'Фотографии', 'photos'),
-        f('dates', 'Даты выездов', 'dates')
+        f('booking_enabled', 'Кнопка брони', 'toggle')
       ]
     },
     baikonur: {
@@ -158,10 +161,13 @@
         f('launch_time', 'Время', 'text'),
         f('seats', 'Мест', 'number'),
         f('price', 'Цена', 'number'),
+        f('price_individual', 'Цена для индивидуальных', 'number'),
         f('currency', 'Валюта', 'text', { def: 'KZT' }),
+        f('date_mode', 'Даты', 'select', { options: opt([['fixed','С фиксированными датами'],['on_request','Без дат — под запрос']]) }),
         f('status', 'Статус', 'select', { options: opt([['published','Опубликован'],['scheduled','Запланирован'],['hidden','Скрыт'],['completed','Завершён']]) }),
         f('booking_enabled', 'Кнопка брони', 'toggle'),
-        f('photos', 'Фотографии', 'photos')
+        f('photos', 'Галерея — фотографии', 'photos'),
+        f('videos', 'Галерея — видео (по ссылке в строке)', 'lines')
       ]
     },
     directions: {
@@ -315,7 +321,7 @@
   }
   function fieldHtml(fl, row) {
     var v = row ? row[fl.key] : (fl.def !== undefined ? fl.def : '');
-    var full = (fl.type === 'tr-textarea' || fl.type === 'photos' || fl.type === 'tr-text' || fl.type === 'dates') ? ' style="grid-column:span 2"' : '';
+    var full = (fl.type === 'tr-textarea' || fl.type === 'photos' || fl.type === 'tr-text' || fl.type === 'dates' || fl.type === 'lines') ? ' style="grid-column:span 2"' : '';
     var inner = '';
     if (fl.type === 'tr-text' || fl.type === 'tr-textarea') {
       inner = LANGS.map(function (l, i) {
@@ -329,6 +335,8 @@
       var multi = fl.type === 'photos';
       var arr = multi ? (Array.isArray(v) ? v : []) : (v ? [v] : []);
       inner = '<div class="up" data-up="' + fl.key + '" data-multi="' + (multi ? 1 : 0) + '"><div class="up-list">' + arr.map(thumbHtml).join('') + '</div><label class="up-btn">+ Загрузить' + (multi ? ' фото' : ' изображение') + '<input type="file" accept="image/*"' + (multi ? ' multiple' : '') + ' hidden></label></div>';
+    } else if (fl.type === 'lines') {
+      inner = '<textarea data-k="' + fl.key + '" data-lines="1" placeholder="https://youtube.com/watch?v=...&#10;https://vimeo.com/...">' + (Array.isArray(v) ? v.join('\n') : '') + '</textarea>';
     } else if (fl.type === 'dates') {
       var rows = Array.isArray(v) ? v : [];
       inner = '<div class="dates" data-datesc>' + rows.map(dateRow).join('') + '<button type="button" class="btn btn-out btn-sm" data-addrow>+ Добавить дату</button></div>';
@@ -354,7 +362,7 @@
       var k = inp.dataset.k;
       if (inp.dataset.l) { data[k] = data[k] || {}; data[k][inp.dataset.l] = inp.value; }
       else if (inp.dataset.toggleField) { data[k] = inp.classList.contains('on'); }
-      else if (inp.dataset.photos != null) { data[k] = inp.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean); }
+      else if (inp.dataset.photos != null || inp.dataset.lines != null) { data[k] = inp.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean); }
       else if (inp.type === 'number') { data[k] = inp.value === '' ? null : parseInt(inp.value, 10); }
       else { data[k] = inp.value === '' ? null : inp.value; }
     });

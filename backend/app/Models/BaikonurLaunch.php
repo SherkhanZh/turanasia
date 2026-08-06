@@ -14,6 +14,7 @@ class BaikonurLaunch extends Model
         'slug', 'title', 'rocket', 'description', 'program', 'conditions',
         'launch_date', 'launch_time', 'seats', 'price', 'currency',
         'photos', 'status', 'booking_enabled', 'sort',
+        'date_mode', 'price_individual', 'videos',
     ];
 
     public array $translatable = ['title', 'rocket', 'description', 'program', 'conditions'];
@@ -23,6 +24,7 @@ class BaikonurLaunch extends Model
         return [
             'launch_date' => 'date',
             'photos' => 'array',
+            'videos' => 'array',
             'booking_enabled' => 'boolean',
         ];
     }

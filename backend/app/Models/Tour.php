@@ -18,6 +18,7 @@ class Tour extends Model
         'included', 'extras', 'direction_id', 'category_id', 'price',
         'currency', 'duration_days', 'seats', 'photos', 'status', 'is_fixed_price',
         'booking_enabled', 'is_featured', 'sort', 'external_source', 'external_id',
+        'date_mode', 'price_individual', 'videos',
     ];
 
     public array $translatable = [
@@ -28,6 +29,7 @@ class Tour extends Model
     {
         return [
             'photos' => 'array',
+            'videos' => 'array',
             'is_fixed_price' => 'boolean',
             'booking_enabled' => 'boolean',
             'is_featured' => 'boolean',

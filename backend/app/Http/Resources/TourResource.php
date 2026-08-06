@@ -25,6 +25,9 @@ class TourResource extends JsonResource
             'duration_days' => $this->duration_days,
             'seats' => $this->seats,
             'photos' => $this->photos ?? [],
+            'videos' => $this->videos ?? [],
+            'date_mode' => $this->date_mode,
+            'price_individual' => $this->price_individual,
             'is_fixed_price' => $this->is_fixed_price,
             'booking_enabled' => $this->booking_enabled,
             'category' => $this->whenLoaded('category', fn () => $this->category ? [
