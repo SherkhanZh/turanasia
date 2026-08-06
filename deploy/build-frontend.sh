@@ -24,7 +24,7 @@ done
 
 # Ассеты и логотип
 cp -R "$ROOT/assets/." "$DIST/assets/"
-cp "$ROOT/logo_gold.png" "$DIST/logo_gold.png"
+cp "$ROOT/Turanasia-logo.png" "$DIST/Turanasia-logo.png"
 
 # Переписать внутренние ссылки на главную
 # (GNU sed — на Ubuntu/сервере; на macOS используйте: sed -i '' ...)
