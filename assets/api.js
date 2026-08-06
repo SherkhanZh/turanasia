@@ -56,9 +56,31 @@ window.TA = (function () {
       : d.getDate() + ' ' + m + ' ' + d.getFullYear();
   }
 
+
+  /** Текст программы из БД → timeline «по дням» (.prog). Если дней не найдено — обычный абзац. */
+  function program(src) {
+    if (!src) return '';
+    var lines = String(src).split(/\r?\n/);
+    // «08.09 День 1. …», «День 2 — …», «Day 3:», «3-күн»
+    var re = /^\s*(?:\d{1,2}[.\-\/]\d{1,2}\.?\s*)?(?:день|day|күн)\s*\d+|^\s*\d+\s*[-–—]?\s*күн/i;
+    var pre = [], days = [], cur = null;
+    lines.forEach(function (ln) {
+      var t = ln.trim();
+      if (re.test(t)) { cur = { title: t, body: [] }; days.push(cur); }
+      else if (!t) { return; }
+      else if (cur) { cur.body.push(t); }
+      else { pre.push(t); }
+    });
+    var html = pre.length ? '<p style="color:#475569;margin-bottom:18px">' + esc(pre.join('\n')).replace(/\n/g, '<br>') + '</p>' : '';
+    if (days.length < 2) return html || '<p style="color:#475569">' + text(src) + '</p>';
+    return html + '<ul class="prog">' + days.map(function (d) {
+      return '<li><b>' + esc(d.title) + '</b><p>' + esc(d.body.join('\n')).replace(/\n/g, '<br>') + '</p></li>';
+    }).join('') + '</ul>';
+  }
+
   function fail(el, msg) {
     if (el) el.innerHTML = '<div class="empty">' + esc(msg || 'Не удалось загрузить данные.') + '</div>';
   }
 
-  return { base: BASE, get: get, list: list, esc: esc, text: text, money: money, date: date, lang: lang, fail: fail };
+  return { base: BASE, get: get, list: list, esc: esc, text: text, program: program, money: money, date: date, lang: lang, fail: fail };
 })();

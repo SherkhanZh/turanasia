@@ -100,6 +100,9 @@
     function block(title, body) {
       return body ? '<div class="block"><h3>' + title + '</h3><p style="color:#475569">' + TA.text(body) + '</p></div>' : '';
     }
+    function progBlock(title, body) {
+      return body ? '<div class="block"><h3>' + title + '</h3>' + TA.program(body) + '</div>' : '';
+    }
 
     view.innerHTML = gallery +
       '<div class="detail" style="margin-top:30px">' +
@@ -112,7 +115,7 @@
             '<span>📍 Космодром Байконур</span>' +
           '</div>' +
           block('Описание', l.description) +
-          block('Программа', l.program) +
+          progBlock('Программа тура', l.program) +
           block('Условия бронирования', l.conditions) +
         '</div>' +
         '<aside><div class="book">' +
