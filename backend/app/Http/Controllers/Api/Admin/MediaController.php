@@ -19,9 +19,11 @@ class MediaController extends Controller
 
         $path = $request->file('file')->store('uploads', 'public');
 
+        // Корневой относительный путь, а не абсолютный URL: не ломается при
+        // смене домена или переходе на HTTPS.
         return response()->json([
             'path' => $path,
-            'url' => asset('storage/'.$path),
+            'url' => '/storage/'.$path,
         ], 201);
     }
 }
