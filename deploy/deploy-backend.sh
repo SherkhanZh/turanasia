@@ -19,11 +19,18 @@ rsync -a --delete \
   --exclude 'storage/' \
   --exclude 'vendor/' \
   --exclude 'public/' \
+  --exclude 'bootstrap/cache/' \
   --exclude 'node_modules/' \
   --exclude '.git/' \
   "$SRC/" "$DST/"
 
-chown -R "$WEBUSER":"$WEBUSER" "$DST/app" "$DST/routes" "$DST/config" "$DST/database" "$DST/bootstrap"
+# Laravel не запустится без этих директорий, а в git они пустые
+mkdir -p "$DST/bootstrap/cache" \
+         "$DST/storage/framework/"{cache/data,sessions,views} \
+         "$DST/storage/logs"
+
+chown -R "$WEBUSER":"$WEBUSER" "$DST/app" "$DST/routes" "$DST/config" "$DST/database" "$DST/bootstrap" "$DST/storage"
+chmod -R 775 "$DST/bootstrap/cache" "$DST/storage"
 
 cd "$DST"
 
