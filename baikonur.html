@@ -130,6 +130,7 @@
 </footer>
 
 <script src="assets/api.js"></script>
+<script src="assets/gallery.js"></script>
 <script src="assets/site.js"></script>
 <script>
 (function () {
@@ -200,7 +201,8 @@
   TA.get('/baikonur/gallery').then(function (r) {
     var rows = TA.list(r);
     if (rows.length) {
-      g.innerHTML = rows.map(function (u) { return '<a href="' + TA.esc(u) + '" target="_blank"><img src="' + TA.esc(u) + '" alt=""></a>'; }).join('');
+      g.innerHTML = rows.map(function (u, i) { return '<a href="' + TA.esc(u) + '" data-i="' + i + '"><img src="' + TA.esc(u) + '" alt=""></a>'; }).join('');
+      TAG.bind(g, rows);
     } else { g.closest('section').style.display = 'none'; }
   }).catch(function () { g.closest('section').style.display = 'none'; });
 })();

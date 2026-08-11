@@ -73,6 +73,7 @@
 </footer>
 
 <script src="assets/api.js"></script>
+<script src="assets/gallery.js"></script>
 <script src="assets/site.js"></script>
 <script>
 (function () {
@@ -94,10 +95,7 @@
     var when = onReq ? TA.t('on_request')
       : (TA.date(l.launch_date) + (l.launch_time ? ', ' + TA.esc(String(l.launch_time).slice(0, 5)) : ''));
 
-    var gallery = '<div class="gallery"><div class="gmain"><img src="' + TA.esc(main) + '" alt="' + TA.esc(l.title) + '"></div>' +
-      photos.slice(1, 5).map(function (u) {
-        return '<div class="gthumb"><img src="' + TA.esc(u) + '" alt=""></div>';
-      }).join('') + '</div>';
+    var gallery = TAG.html(photos.length ? photos : [main], l.title);
 
     // Аккордеон: первый раздел открыт, остальные свёрнуты
     function acc(title, inner, open) {
@@ -146,6 +144,8 @@
       '</div>';
 
     // Отправка заявки в админку
+    TAG.bind(view, photos.length ? photos : [main]);
+
     document.getElementById('bk-send').addEventListener('click', function () {
       var btn = this, msg = document.getElementById('bk-msg');
       var name = document.getElementById('bk-name').value.trim();

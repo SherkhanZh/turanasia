@@ -101,7 +101,8 @@ window.TA = (function () {
       launch_nf: 'Запуск не найден.', launch_err: 'Не удалось загрузить запуск.', launch_nospec: 'Запуск не указан.',
       launches_err: 'Не удалось загрузить список запусков.',
       launches_soon: 'Ближайшие запуски скоро появятся.', launches_empty: 'В этой категории пока нет запусков.',
-      cat_kz: 'Туры по Казахстану', cat_foreign: 'Зарубежные туры'
+      cat_kz: 'Туры по Казахстану', cat_foreign: 'Зарубежные туры',
+      lb_close: 'Закрыть', lb_prev: 'Предыдущее фото', lb_next: 'Следующее фото'
     },
     kz: {
       desc: 'Сипаттама', program: 'Тур бағдарламасы', included: 'Бағаға не кіреді',
@@ -123,7 +124,8 @@ window.TA = (function () {
       launch_nf: 'Ұшыру табылмады.', launch_err: 'Ұшыруды жүктеу мүмкін болмады.', launch_nospec: 'Ұшыру көрсетілмеген.',
       launches_err: 'Ұшырулар тізімін жүктеу мүмкін болмады.',
       launches_soon: 'Жақын ұшырулар жақында пайда болады.', launches_empty: 'Бұл санатта әзірге ұшырулар жоқ.',
-      cat_kz: 'Қазақстан бойынша турлар', cat_foreign: 'Шетелдік турлар'
+      cat_kz: 'Қазақстан бойынша турлар', cat_foreign: 'Шетелдік турлар',
+      lb_close: 'Жабу', lb_prev: 'Алдыңғы сурет', lb_next: 'Келесі сурет'
     },
     en: {
       desc: 'Overview', program: 'Tour programme', included: "What's included",
@@ -145,7 +147,8 @@ window.TA = (function () {
       launch_nf: 'Launch not found.', launch_err: 'Could not load the launch.', launch_nospec: 'No launch specified.',
       launches_err: 'Could not load the launch list.',
       launches_soon: 'Upcoming launches will appear here soon.', launches_empty: 'No launches in this category yet.',
-      cat_kz: 'Kazakhstan tours', cat_foreign: 'International tours'
+      cat_kz: 'Kazakhstan tours', cat_foreign: 'International tours',
+      lb_close: 'Close', lb_prev: 'Previous photo', lb_next: 'Next photo'
     }
   };
 
