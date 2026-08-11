@@ -58,6 +58,8 @@ class BannerController extends Controller
         return $request->validate([
             'title' => ['required', 'array'],
             'title.ru' => ['required', 'string'],
+            'title.kz' => ['nullable', 'string'],
+            'title.en' => ['nullable', 'string'],
             'subtitle' => ['nullable', 'array'],
             'image' => ['required', 'string', 'max:255'],
             'link' => ['nullable', 'string', 'max:255'],

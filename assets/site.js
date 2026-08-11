@@ -116,7 +116,13 @@
 
   document.querySelectorAll('.lang').forEach(function (l) {
     l.querySelectorAll('span').forEach(function (s) {
-      s.addEventListener('click', function () { applyLang(s.getAttribute('data-l') || 'ru'); });
+      s.addEventListener('click', function () {
+        var v = s.getAttribute('data-l') || 'ru';
+        if (v === (localStorage.getItem('ta-lang') || 'ru')) return;
+        applyLang(v);
+        // Контент туров приходит с сервера на выбранном языке — перезапрашиваем страницу
+        if (window.TA && document.querySelector('[data-ta-live]')) location.reload();
+      });
     });
   });
 

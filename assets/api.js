@@ -78,9 +78,90 @@ window.TA = (function () {
     }).join('') + '</ul>';
   }
 
-  function fail(el, msg) {
-    if (el) el.innerHTML = '<div class="empty">' + esc(msg || 'Не удалось загрузить данные.') + '</div>';
+
+  /* ---- Интерфейсные подписи (заголовки разделов, кнопки, подсказки) ---- */
+  var T = {
+    ru: {
+      desc: 'Описание', program: 'Программа тура', included: 'Что включено',
+      included_cond: 'Что включено / условия', extras: 'Стоимость и дополнительно',
+      dates_near: 'Ближайшие даты', video: 'Видео',
+      on_request: 'Даты — под запрос', scheduled: 'По расписанию',
+      price_from: 'Стоимость от', per_person: 'за человека', individual: 'Индивидуально',
+      f_name: 'Имя', f_name_ph: 'Ваше имя', f_phone: 'Телефон', f_people: 'Количество человек',
+      send: 'Оставить заявку', sending: 'Отправляем…', sent: 'Отправлено',
+      whatsapp: 'Написать в WhatsApp',
+      note: 'Онлайн-оплата и бронирование — скоро. Сейчас заявка обрабатывается менеджером.',
+      need_contacts: 'Укажите имя и телефон.',
+      sent_ok: 'Заявка отправлена! Менеджер свяжется с вами.',
+      send_err: 'Не удалось отправить. Позвоните нам или напишите в WhatsApp.',
+      days_short: 'дн.', group_upto: 'Группа до {n} чел.', seats: 'Мест', seats_free: 'Свободно {n} мест',
+      cosmodrome: 'Космодром Байконур', more: 'Подробнее',
+      loading: 'Загрузка…',
+      tour_nf: 'Тур не найден.', tour_err: 'Не удалось загрузить тур.', tour_nospec: 'Тур не указан.',
+      launch_nf: 'Запуск не найден.', launch_err: 'Не удалось загрузить запуск.', launch_nospec: 'Запуск не указан.',
+      launches_err: 'Не удалось загрузить список запусков.',
+      launches_soon: 'Ближайшие запуски скоро появятся.', launches_empty: 'В этой категории пока нет запусков.',
+      cat_kz: 'Туры по Казахстану', cat_foreign: 'Зарубежные туры'
+    },
+    kz: {
+      desc: 'Сипаттама', program: 'Тур бағдарламасы', included: 'Бағаға не кіреді',
+      included_cond: 'Бағаға не кіреді / шарттар', extras: 'Құны және қосымша',
+      dates_near: 'Жақын күндер', video: 'Бейне',
+      on_request: 'Күндері — сұраныс бойынша', scheduled: 'Кесте бойынша',
+      price_from: 'Құны бастап', per_person: 'бір адамға', individual: 'Жеке',
+      f_name: 'Аты-жөні', f_name_ph: 'Сіздің атыңыз', f_phone: 'Телефон', f_people: 'Адам саны',
+      send: 'Өтінім қалдыру', sending: 'Жіберілуде…', sent: 'Жіберілді',
+      whatsapp: 'WhatsApp-қа жазу',
+      note: 'Онлайн төлем және брондау — жақында. Қазір өтінімді менеджер өңдейді.',
+      need_contacts: 'Атыңыз бен телефоныңызды көрсетіңіз.',
+      sent_ok: 'Өтінім жіберілді! Менеджер сізбен байланысады.',
+      send_err: 'Жіберу мүмкін болмады. Бізге қоңырау шалыңыз немесе WhatsApp-қа жазыңыз.',
+      days_short: 'күн', group_upto: '{n} адамға дейінгі топ', seats: 'Орын', seats_free: '{n} орын бос',
+      cosmodrome: 'Байқоңыр ғарыш айлағы', more: 'Толығырақ',
+      loading: 'Жүктелуде…',
+      tour_nf: 'Тур табылмады.', tour_err: 'Турды жүктеу мүмкін болмады.', tour_nospec: 'Тур көрсетілмеген.',
+      launch_nf: 'Ұшыру табылмады.', launch_err: 'Ұшыруды жүктеу мүмкін болмады.', launch_nospec: 'Ұшыру көрсетілмеген.',
+      launches_err: 'Ұшырулар тізімін жүктеу мүмкін болмады.',
+      launches_soon: 'Жақын ұшырулар жақында пайда болады.', launches_empty: 'Бұл санатта әзірге ұшырулар жоқ.',
+      cat_kz: 'Қазақстан бойынша турлар', cat_foreign: 'Шетелдік турлар'
+    },
+    en: {
+      desc: 'Overview', program: 'Tour programme', included: "What's included",
+      included_cond: "What's included / conditions", extras: 'Price & extras',
+      dates_near: 'Upcoming dates', video: 'Video',
+      on_request: 'Dates — on request', scheduled: 'Scheduled departures',
+      price_from: 'Price from', per_person: 'per person', individual: 'Individual',
+      f_name: 'Name', f_name_ph: 'Your name', f_phone: 'Phone', f_people: 'Number of travellers',
+      send: 'Send request', sending: 'Sending…', sent: 'Sent',
+      whatsapp: 'Message us on WhatsApp',
+      note: 'Online payment and booking are coming soon. For now your request is handled by a manager.',
+      need_contacts: 'Please enter your name and phone.',
+      sent_ok: 'Request sent! Our manager will contact you shortly.',
+      send_err: 'Could not send. Please call us or write on WhatsApp.',
+      days_short: 'days', group_upto: 'Group up to {n} people', seats: 'Seats', seats_free: '{n} seats left',
+      cosmodrome: 'Baikonur Cosmodrome', more: 'Details',
+      loading: 'Loading…',
+      tour_nf: 'Tour not found.', tour_err: 'Could not load the tour.', tour_nospec: 'No tour specified.',
+      launch_nf: 'Launch not found.', launch_err: 'Could not load the launch.', launch_nospec: 'No launch specified.',
+      launches_err: 'Could not load the launch list.',
+      launches_soon: 'Upcoming launches will appear here soon.', launches_empty: 'No launches in this category yet.',
+      cat_kz: 'Kazakhstan tours', cat_foreign: 'International tours'
+    }
+  };
+
+  /** Подпись интерфейса на текущем языке. TA.t('group_upto', {n: 12}) */
+  function t(key, vars) {
+    var d = T[lang()] || T.ru;
+    var v = d[key] != null ? d[key] : (T.ru[key] != null ? T.ru[key] : key);
+    if (vars) {
+      Object.keys(vars).forEach(function (k) { v = v.replace('{' + k + '}', vars[k]); });
+    }
+    return v;
   }
 
-  return { base: BASE, get: get, list: list, esc: esc, text: text, program: program, money: money, date: date, lang: lang, fail: fail };
+  function fail(el, msg) {
+    if (el) el.innerHTML = '<div class="empty">' + esc(msg || t('tour_err')) + '</div>';
+  }
+
+  return { base: BASE, get: get, list: list, esc: esc, text: text, program: program, money: money, date: date, lang: lang, t: t, fail: fail };
 })();

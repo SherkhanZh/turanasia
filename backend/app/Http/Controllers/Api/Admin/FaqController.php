@@ -49,8 +49,12 @@ class FaqController extends Controller
             'group' => ['required', 'string', 'max:50'],
             'question' => ['required', 'array'],
             'question.ru' => ['required', 'string'],
+            'question.kz' => ['nullable', 'string'],
+            'question.en' => ['nullable', 'string'],
             'answer' => ['required', 'array'],
             'answer.ru' => ['required', 'string'],
+            'answer.kz' => ['nullable', 'string'],
+            'answer.en' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'sort' => ['nullable', 'integer'],
         ]);

@@ -72,7 +72,7 @@
         <option value="price_desc">Сначала дороже</option>
       </select>
     </div>
-    <div id="launches"><div class="empty">Загрузка…</div></div>
+    <div id="launches" data-ta-live><div class="empty">…</div></div>
     <div class="center" style="margin-top:6px;color:var(--muted);font-size:13px">Онлайн-бронирование и оплата появятся на следующем этапе; сейчас бронь оформляется через менеджера.</div>
   </div>
 </section>
@@ -148,10 +148,10 @@
       var da = a.launch_date || '9999', db = b.launch_date || '9999';
       return sort === 'date_desc' ? (db < da ? -1 : db > da ? 1 : 0) : (da < db ? -1 : da > db ? 1 : 0);
     });
-    if (!rows.length) { box.innerHTML = '<div class="empty">В этой категории пока нет запусков.</div>'; return; }
+    if (!rows.length) { box.innerHTML = '<div class="empty">' + TA.t('launches_empty') + '</div>'; return; }
     box.innerHTML = rows.map(function (l) {
       var img = (l.photos && l.photos[0]) || 'https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=600&q=80';
-      var when = (l.date_mode === 'on_request') ? 'Даты — под запрос'
+      var when = (l.date_mode === 'on_request') ? TA.t('on_request')
         : (TA.date(l.launch_date) + (l.launch_time ? ', ' + TA.esc(String(l.launch_time).slice(0, 5)) : ''));
       var url = 'launch.html?slug=' + encodeURIComponent(l.slug);
       return '<div class="launch">' +
@@ -163,9 +163,9 @@
           (l.description ? '<p>' + TA.esc(String(l.description).slice(0, 190)) + (String(l.description).length > 190 ? '…' : '') + '</p>' : '') +
         '</div>' +
         '<div class="lr">' +
-          (l.seats ? '<div class="seats">Мест: ' + TA.esc(l.seats) + '</div>' : '') +
+          (l.seats ? '<div class="seats">' + TA.t('seats') + ': ' + TA.esc(l.seats) + '</div>' : '') +
           (l.price ? '<div class="price">' + TA.money(l.price, l.currency) + '</div>' : '') +
-          '<a class="btn btn-pri" href="' + url + '" style="margin-top:10px">Подробнее</a>' +
+          '<a class="btn btn-pri" href="' + url + '" style="margin-top:10px">' + TA.t('more') + '</a>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -181,10 +181,10 @@
 
   TA.get('/baikonur/launches').then(function (r) {
     ALL = TA.list(r);
-    if (!ALL.length) { box.innerHTML = '<div class="empty">Ближайшие запуски скоро появятся.</div>'; return; }
+    if (!ALL.length) { box.innerHTML = '<div class="empty">' + TA.t('launches_soon') + '</div>'; return; }
     if (ALL.length > 1) document.getElementById('lfilter').style.display = '';
     render();
-  }).catch(function () { TA.fail(box, 'Не удалось загрузить список запусков.'); });
+  }).catch(function () { TA.fail(box, TA.t('launches_err')); });
 
   var faq = document.getElementById('faq');
   TA.get('/baikonur/faq').then(function (r) {

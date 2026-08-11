@@ -52,6 +52,8 @@ class CategoryController extends Controller
         return $request->validate([
             'name' => ['required', 'array'],
             'name.ru' => ['required', 'string'],
+            'name.kz' => ['nullable', 'string'],
+            'name.en' => ['nullable', 'string'],
             'slug' => ['nullable', 'string', 'max:120'],
             'sort' => ['nullable', 'integer'],
         ]);

@@ -63,6 +63,8 @@ class ReviewController extends Controller
             'type' => ['nullable', 'in:text,photo,video'],
             'text' => ['required', 'array'],
             'text.ru' => ['required', 'string'],
+            'text.kz' => ['nullable', 'string'],
+            'text.en' => ['nullable', 'string'],
             'media' => ['nullable', 'array'],
             'video_url' => ['nullable', 'string', 'max:255'],
             'tour_id' => ['nullable', 'exists:tours,id'],

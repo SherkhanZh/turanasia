@@ -51,6 +51,8 @@ class BaikonurController extends Controller
         return $request->validate([
             'title' => ['required', 'array'],
             'title.ru' => ['required', 'string'],
+            'title.kz' => ['nullable', 'string'],
+            'title.en' => ['nullable', 'string'],
             'rocket' => ['nullable', 'array'],
             'description' => ['nullable', 'array'],
             'program' => ['nullable', 'array'],

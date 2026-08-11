@@ -63,6 +63,8 @@ class DirectionController extends Controller
             'slug' => ['nullable', 'string', 'max:200'],
             'name' => ['required', 'array'],
             'name.ru' => ['required', 'string'],
+            'name.kz' => ['nullable', 'string'],
+            'name.en' => ['nullable', 'string'],
             'description' => ['nullable', 'array'],
             'info' => ['nullable', 'array'],
             'photos' => ['nullable', 'array'],

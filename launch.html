@@ -35,7 +35,7 @@
     <div class="crumbs" style="color:var(--muted);margin-bottom:18px">
       <a href="design3.html">Главная</a> / <a href="baikonur.html">Байконур</a> / <span id="crumb">…</span>
     </div>
-    <div id="view"><div class="spin" style="padding:60px;text-align:center;color:var(--muted)">Загрузка…</div></div>
+    <div id="view" data-ta-live><div class="spin" style="padding:60px;text-align:center;color:var(--muted)">…</div></div>
   </div>
 </section>
 
@@ -79,11 +79,11 @@
   var view = document.getElementById('view');
   var slug = new URLSearchParams(location.search).get('slug');
 
-  if (!slug) { TA.fail(view, 'Запуск не указан.'); return; }
+  if (!slug) { TA.fail(view, TA.t('launch_nospec')); return; }
 
   TA.get('/baikonur/launches/' + encodeURIComponent(slug)).then(function (r) {
     var l = r && r.data ? r.data : r;
-    if (!l || !l.slug) { TA.fail(view, 'Запуск не найден.'); return; }
+    if (!l || !l.slug) { TA.fail(view, TA.t('launch_nf')); return; }
 
     document.title = l.title + ' — Turan Asia';
     document.getElementById('crumb').textContent = l.title;
@@ -91,7 +91,7 @@
     var photos = l.photos || [];
     var main = photos[0] || 'https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1200&q=80';
     var onReq = l.date_mode === 'on_request';
-    var when = onReq ? 'Даты — под запрос'
+    var when = onReq ? TA.t('on_request')
       : (TA.date(l.launch_date) + (l.launch_time ? ', ' + TA.esc(String(l.launch_time).slice(0, 5)) : ''));
 
     var gallery = '<div class="gallery"><div class="gmain"><img src="' + TA.esc(main) + '" alt="' + TA.esc(l.title) + '"></div>' +
@@ -119,29 +119,29 @@
           '<h1 class="dm" style="font-size:36px;font-weight:800;margin:14px 0 4px">' + TA.esc(l.title) + '</h1>' +
           '<div class="meta-row">' +
             (when ? '<span>🚀 ' + when + '</span>' : '') +
-            (l.seats ? '<span>👥 Мест: ' + TA.esc(l.seats) + '</span>' : '') +
-            '<span>📍 Космодром Байконур</span>' +
+            (l.seats ? '<span>👥 ' + TA.t('seats') + ': ' + TA.esc(l.seats) + '</span>' : '') +
+            '<span>📍 ' + TA.t('cosmodrome') + '</span>' +
           '</div>' +
           '<div class="acc" style="margin-top:22px">' +
-            block('Описание', l.description, true) +
-            progBlock('Программа тура', l.program) +
-            block('Что включено / условия', l.conditions) +
-            ((l.videos && l.videos.length) ? acc('Видео', l.videos.map(function (v) {
+            block(TA.t('desc'), l.description, true) +
+            progBlock(TA.t('program'), l.program) +
+            block(TA.t('included_cond'), l.conditions) +
+            ((l.videos && l.videos.length) ? acc(TA.t('video'), l.videos.map(function (v) {
               return '<p><a href="' + TA.esc(v) + '" target="_blank" rel="noopener" style="color:var(--pri);font-weight:600">▶ ' + TA.esc(v) + '</a></p>';
             }).join('')) : '') +
           '</div>' +
         '</div>' +
         '<aside><div class="book">' +
-          (l.price ? '<div class="from">Стоимость от</div><div class="price">' + TA.money(l.price, l.currency) + '</div>' : '') +
-          '<div style="color:var(--muted);font-size:13px;margin-bottom:6px">за человека</div>' +
-          (l.price_individual ? '<div style="color:var(--muted);font-size:13px;margin-bottom:18px">Индивидуально: <b>' + TA.money(l.price_individual, l.currency) + '</b></div>' : '<div style="margin-bottom:12px"></div>') +
-          '<div class="field"><label>Имя</label><input id="bk-name" placeholder="Ваше имя"></div>' +
-          '<div class="field"><label>Телефон</label><input id="bk-phone" placeholder="+7 ___ ___ __ __"></div>' +
-          '<div class="field"><label>Количество человек</label><input id="bk-people" type="number" value="1" min="1"></div>' +
-          '<button class="btn btn-pri btn-block" id="bk-send">Оставить заявку</button>' +
+          (l.price ? '<div class="from">' + TA.t('price_from') + '</div><div class="price">' + TA.money(l.price, l.currency) + '</div>' : '') +
+          '<div style="color:var(--muted);font-size:13px;margin-bottom:6px">' + TA.t('per_person') + '</div>' +
+          (l.price_individual ? '<div style="color:var(--muted);font-size:13px;margin-bottom:18px">' + TA.t('individual') + ': <b>' + TA.money(l.price_individual, l.currency) + '</b></div>' : '<div style="margin-bottom:12px"></div>') +
+          '<div class="field"><label>' + TA.t('f_name') + '</label><input id="bk-name" placeholder="' + TA.t('f_name_ph') + '"></div>' +
+          '<div class="field"><label>' + TA.t('f_phone') + '</label><input id="bk-phone" placeholder="+7 ___ ___ __ __"></div>' +
+          '<div class="field"><label>' + TA.t('f_people') + '</label><input id="bk-people" type="number" value="1" min="1"></div>' +
+          '<button class="btn btn-pri btn-block" id="bk-send">' + TA.t('send') + '</button>' +
           '<div id="bk-msg" style="font-size:13px;text-align:center;margin-top:10px"></div>' +
-          '<a class="wapp" href="https://wa.me/77762730505" target="_blank">Написать в WhatsApp</a>' +
-          '<div class="note">Онлайн-оплата и бронирование — скоро. Сейчас заявка обрабатывается менеджером.</div>' +
+          '<a class="wapp" href="https://wa.me/77762730505" target="_blank">' + TA.t('whatsapp') + '</a>' +
+          '<div class="note">' + TA.t('note') + '</div>' +
         '</div></aside>' +
       '</div>';
 
@@ -150,8 +150,8 @@
       var btn = this, msg = document.getElementById('bk-msg');
       var name = document.getElementById('bk-name').value.trim();
       var phone = document.getElementById('bk-phone').value.trim();
-      if (!name || !phone) { msg.style.color = '#dc2626'; msg.textContent = 'Укажите имя и телефон.'; return; }
-      btn.disabled = true; btn.textContent = 'Отправляем…';
+      if (!name || !phone) { msg.style.color = '#dc2626'; msg.textContent = TA.t('need_contacts'); return; }
+      btn.disabled = true; btn.textContent = TA.t('sending');
       fetch(TA.base + '/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -164,16 +164,16 @@
       }).then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
         .then(function () {
           msg.style.color = '#16a34a';
-          msg.textContent = 'Заявка отправлена! Менеджер свяжется с вами.';
-          btn.textContent = 'Отправлено';
+          msg.textContent = TA.t('sent_ok');
+          btn.textContent = TA.t('sent');
         })
         .catch(function () {
           msg.style.color = '#dc2626';
-          msg.textContent = 'Не удалось отправить. Позвоните нам или напишите в WhatsApp.';
-          btn.disabled = false; btn.textContent = 'Оставить заявку';
+          msg.textContent = TA.t('send_err');
+          btn.disabled = false; btn.textContent = TA.t('send');
         });
     });
-  }).catch(function () { TA.fail(view, 'Не удалось загрузить запуск.'); });
+  }).catch(function () { TA.fail(view, TA.t('launch_err')); });
 })();
 </script>
 </body>

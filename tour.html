@@ -35,7 +35,7 @@
     <div class="crumbs" style="color:var(--muted);margin-bottom:18px">
       <a href="design3.html">Главная</a> / <a href="tours.html" id="crumb-cat">Туры</a> / <span id="crumb">…</span>
     </div>
-    <div id="view"><div class="empty">Загрузка…</div></div>
+    <div id="view" data-ta-live><div class="empty">…</div></div>
   </div>
 </section>
 
@@ -78,17 +78,17 @@
 (function () {
   var view = document.getElementById('view');
   var slug = new URLSearchParams(location.search).get('slug');
-  if (!slug) { TA.fail(view, 'Тур не указан.'); return; }
+  if (!slug) { TA.fail(view, TA.t('tour_nospec')); return; }
 
   TA.get('/tours/' + encodeURIComponent(slug)).then(function (r) {
     var x = r && r.data ? r.data : r;
-    if (!x || !x.slug) { TA.fail(view, 'Тур не найден.'); return; }
+    if (!x || !x.slug) { TA.fail(view, TA.t('tour_nf')); return; }
 
     document.title = x.title + ' — Turan Asia';
     document.getElementById('crumb').textContent = x.title;
     var cat = document.getElementById('crumb-cat');
-    if (x.section === 'foreign') { cat.textContent = 'Зарубежные туры'; cat.href = 'foreign.html'; }
-    else { cat.textContent = 'Туры по Казахстану'; cat.href = 'tours.html'; }
+    if (x.section === 'foreign') { cat.textContent = TA.t('cat_foreign'); cat.href = 'foreign.html'; }
+    else { cat.textContent = TA.t('cat_kz'); cat.href = 'tours.html'; }
 
     var photos = x.photos || [];
     var main = photos[0] || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80';
@@ -103,7 +103,7 @@
     var dates = (x.dates || []).map(function (d) {
       return '<div class="lic"><div class="lg" style="background:#e7eef6">' + TA.esc((d.start_date || '').slice(8, 10) + '.' + (d.start_date || '').slice(5, 7)) + '</div>' +
         '<div><b>' + TA.date(d.start_date) + (d.end_date ? ' – ' + TA.date(d.end_date) : '') + '</b>' +
-        (d.seats ? '<small>Свободно ' + TA.esc(d.seats) + ' мест</small>' : '') + '</div></div>';
+        (d.seats ? '<small>' + TA.t('seats_free', { n: TA.esc(d.seats) }) + '</small>' : '') + '</div></div>';
     }).join('');
 
     view.innerHTML = gallery +
@@ -112,33 +112,33 @@
           (x.category ? '<span class="eyebrow">' + TA.esc(x.category.name || x.category) + '</span>' : '') +
           '<h1 class="dm" style="font-size:36px;font-weight:800;margin:14px 0 4px">' + TA.esc(x.title) + '</h1>' +
           '<div class="meta-row">' +
-            (x.duration_days ? '<span>🕓 ' + x.duration_days + ' дн.</span>' : '') +
-            (x.seats ? '<span>👥 Группа до ' + TA.esc(x.seats) + ' чел.</span>' : '') +
+            (x.duration_days ? '<span>🕓 ' + x.duration_days + ' ' + TA.t('days_short') + '</span>' : '') +
+            (x.seats ? '<span>👥 ' + TA.t('group_upto', { n: TA.esc(x.seats) }) + '</span>' : '') +
             (x.direction ? '<span>📍 ' + TA.esc(x.direction.name || x.direction) + '</span>' : '') +
-            '<span>🗓 ' + (onReq ? 'Даты — под запрос' : 'По расписанию') + '</span>' +
+            '<span>🗓 ' + (onReq ? TA.t('on_request') : TA.t('scheduled')) + '</span>' +
           '</div>' +
           '<div class="acc" style="margin-top:22px">' +
-            (x.description ? acc('Описание', '<p>' + TA.text(x.description) + '</p>', true) : '') +
-            (x.program ? acc('Программа тура', TA.program(x.program), !x.description) : '') +
-            (x.included ? acc('Что включено', '<p>' + TA.text(x.included) + '</p>') : '') +
-            (x.extras ? acc('Стоимость и дополнительно', '<p>' + TA.text(x.extras) + '</p>') : '') +
-            (dates ? acc('Ближайшие даты', '<div class="inc-grid">' + dates + '</div>') : '') +
-            ((x.videos && x.videos.length) ? acc('Видео', x.videos.map(function (v) {
+            (x.description ? acc(TA.t('desc'), '<p>' + TA.text(x.description) + '</p>', true) : '') +
+            (x.program ? acc(TA.t('program'), TA.program(x.program), !x.description) : '') +
+            (x.included ? acc(TA.t('included'), '<p>' + TA.text(x.included) + '</p>') : '') +
+            (x.extras ? acc(TA.t('extras'), '<p>' + TA.text(x.extras) + '</p>') : '') +
+            (dates ? acc(TA.t('dates_near'), '<div class="inc-grid">' + dates + '</div>') : '') +
+            ((x.videos && x.videos.length) ? acc(TA.t('video'), x.videos.map(function (v) {
               return '<p><a href="' + TA.esc(v) + '" target="_blank" rel="noopener" style="color:var(--pri);font-weight:600">▶ ' + TA.esc(v) + '</a></p>';
             }).join('')) : '') +
           '</div>' +
         '</div>' +
         '<aside><div class="book">' +
-          (x.price ? '<div class="from">Стоимость от</div><div class="price">' + TA.money(x.price, x.currency) + '</div>' : '') +
-          '<div style="color:var(--muted);font-size:13px;margin-bottom:6px">за человека</div>' +
-          (x.price_individual ? '<div style="color:var(--muted);font-size:13px;margin-bottom:16px">Индивидуально: <b>' + TA.money(x.price_individual, x.currency) + '</b></div>' : '<div style="margin-bottom:10px"></div>') +
-          '<div class="field"><label>Имя</label><input id="bk-name" placeholder="Ваше имя"></div>' +
-          '<div class="field"><label>Телефон</label><input id="bk-phone" placeholder="+7 ___ ___ __ __"></div>' +
-          '<div class="field"><label>Количество человек</label><input id="bk-people" type="number" value="2" min="1"></div>' +
-          '<button class="btn btn-pri btn-block" id="bk-send">Оставить заявку</button>' +
+          (x.price ? '<div class="from">' + TA.t('price_from') + '</div><div class="price">' + TA.money(x.price, x.currency) + '</div>' : '') +
+          '<div style="color:var(--muted);font-size:13px;margin-bottom:6px">' + TA.t('per_person') + '</div>' +
+          (x.price_individual ? '<div style="color:var(--muted);font-size:13px;margin-bottom:16px">' + TA.t('individual') + ': <b>' + TA.money(x.price_individual, x.currency) + '</b></div>' : '<div style="margin-bottom:10px"></div>') +
+          '<div class="field"><label>' + TA.t('f_name') + '</label><input id="bk-name" placeholder="' + TA.t('f_name_ph') + '"></div>' +
+          '<div class="field"><label>' + TA.t('f_phone') + '</label><input id="bk-phone" placeholder="+7 ___ ___ __ __"></div>' +
+          '<div class="field"><label>' + TA.t('f_people') + '</label><input id="bk-people" type="number" value="2" min="1"></div>' +
+          '<button class="btn btn-pri btn-block" id="bk-send">' + TA.t('send') + '</button>' +
           '<div id="bk-msg" style="font-size:13px;text-align:center;margin-top:10px"></div>' +
-          '<a class="wapp" href="https://wa.me/77762730505" target="_blank">Написать в WhatsApp</a>' +
-          '<div class="note">Онлайн-оплата и бронирование — скоро. Сейчас заявка обрабатывается менеджером.</div>' +
+          '<a class="wapp" href="https://wa.me/77762730505" target="_blank">' + TA.t('whatsapp') + '</a>' +
+          '<div class="note">' + TA.t('note') + '</div>' +
         '</div></aside>' +
       '</div>';
 
@@ -146,18 +146,18 @@
       var btn = this, msg = document.getElementById('bk-msg');
       var name = document.getElementById('bk-name').value.trim();
       var phone = document.getElementById('bk-phone').value.trim();
-      if (!name || !phone) { msg.style.color = '#dc2626'; msg.textContent = 'Укажите имя и телефон.'; return; }
-      btn.disabled = true; btn.textContent = 'Отправляем…';
+      if (!name || !phone) { msg.style.color = '#dc2626'; msg.textContent = TA.t('need_contacts'); return; }
+      btn.disabled = true; btn.textContent = TA.t('sending');
       fetch(TA.base + '/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ name: name, phone: phone, tour_id: x.id, tour_title: x.title,
           people: parseInt(document.getElementById('bk-people').value, 10) || 1 })
       }).then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
-        .then(function () { msg.style.color = '#16a34a'; msg.textContent = 'Заявка отправлена! Менеджер свяжется с вами.'; btn.textContent = 'Отправлено'; })
-        .catch(function () { msg.style.color = '#dc2626'; msg.textContent = 'Не удалось отправить. Позвоните нам или напишите в WhatsApp.'; btn.disabled = false; btn.textContent = 'Оставить заявку'; });
+        .then(function () { msg.style.color = '#16a34a'; msg.textContent = TA.t('sent_ok'); btn.textContent = TA.t('sent'); })
+        .catch(function () { msg.style.color = '#dc2626'; msg.textContent = TA.t('send_err'); btn.disabled = false; btn.textContent = TA.t('send'); });
     });
-  }).catch(function () { TA.fail(view, 'Не удалось загрузить тур.'); });
+  }).catch(function () { TA.fail(view, TA.t('tour_err')); });
 })();
 </script>
 </body>

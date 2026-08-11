@@ -103,6 +103,8 @@ class TourController extends Controller
             'slug' => ['nullable', 'string', 'max:200'],
             'title' => ['required', 'array'],
             'title.ru' => ['required', 'string'],
+            'title.kz' => ['nullable', 'string'],
+            'title.en' => ['nullable', 'string'],
             'short_description' => ['nullable', 'array'],
             'description' => ['nullable', 'array'],
             'program' => ['nullable', 'array'],
