@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Direction;
 use App\Support\AdminSerializer;
+use App\Support\Slug;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class DirectionController extends Controller
 {
@@ -81,7 +81,8 @@ class DirectionController extends Controller
                 unset($data[$field]);
             }
         }
-        $data['slug'] = $data['slug'] ?? Str::slug(($d->getTranslation('name', 'ru') ?: 'dir').'-'.Str::random(4));
+        $d->slug = Slug::resolve($d, $data['slug'] ?? null, $d->getTranslation('name', 'ru') ?: 'dir');
+        unset($data['slug']);
         $d->fill($data);
     }
 }

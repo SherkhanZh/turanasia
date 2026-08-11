@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Support\AdminSerializer;
+use App\Support\Slug;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -20,7 +20,7 @@ class CategoryController extends Controller
         $data = $this->validateData($request);
         $cat = new Category;
         $cat->setTranslations('name', $data['name']);
-        $cat->slug = $data['slug'] ?? Str::slug($data['name']['ru']);
+        $cat->slug = Slug::resolve($cat, $data['slug'] ?? null, $data['name']['ru']);
         $cat->sort = $data['sort'] ?? 0;
         $cat->save();
 
@@ -31,9 +31,7 @@ class CategoryController extends Controller
     {
         $data = $this->validateData($request);
         $category->setTranslations('name', $data['name']);
-        if (! empty($data['slug'])) {
-            $category->slug = $data['slug'];
-        }
+        $category->slug = Slug::resolve($category, $data['slug'] ?? null, $data['name']['ru']);
         $category->sort = $data['sort'] ?? $category->sort;
         $category->save();
 

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use App\Support\AdminSerializer;
+use App\Support\Slug;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class TourController extends Controller
 {
@@ -148,7 +148,8 @@ class TourController extends Controller
             }
         }
 
-        $data['slug'] = $data['slug'] ?? Str::slug(($tour->getTranslation('title', 'ru') ?: 'tour').'-'.Str::random(5));
+        $tour->slug = Slug::resolve($tour, $data['slug'] ?? null, $tour->getTranslation('title', 'ru') ?: 'tour');
+        unset($data['slug']);
 
         $tour->fill($data);
     }

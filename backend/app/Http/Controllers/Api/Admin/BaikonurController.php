@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BaikonurLaunch;
 use App\Support\AdminSerializer;
+use App\Support\Slug;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class BaikonurController extends Controller
 {
@@ -80,7 +80,8 @@ class BaikonurController extends Controller
                 unset($data[$field]);
             }
         }
-        $data['slug'] = $data['slug'] ?? Str::slug(($l->getTranslation('title', 'ru') ?: 'launch').'-'.Str::random(4));
+        $l->slug = Slug::resolve($l, $data['slug'] ?? null, $l->getTranslation('title', 'ru') ?: 'launch');
+        unset($data['slug']);
         $l->fill($data);
 
         return $l;
