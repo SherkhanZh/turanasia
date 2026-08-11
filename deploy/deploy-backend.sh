@@ -40,12 +40,16 @@ if [ -f composer.lock ]; then
   sudo -u "$WEBUSER" composer install --no-dev --optimize-autoloader --no-interaction
 fi
 
+# Сначала сброс — иначе artisan прочитает устаревший закэшированный конфиг
+echo "→ Сброс кэшей"
+sudo -u "$WEBUSER" php artisan optimize:clear
+
 echo "→ Миграции"
 sudo -u "$WEBUSER" php artisan migrate --force
 
-echo "→ Сброс кэшей"
-sudo -u "$WEBUSER" php artisan optimize:clear
-sudo -u "$WEBUSER" php artisan config:cache
+# config:cache намеренно не используем: при неудачном разборе .env он кладёт прод.
+# route:cache безопасен и даёт основной выигрыш.
+echo "→ Кэш маршрутов"
 sudo -u "$WEBUSER" php artisan route:cache
 
 systemctl reload php8.3-fpm 2>/dev/null || true
