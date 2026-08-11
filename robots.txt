@@ -1,0 +1,10 @@
+User-agent: *
+
+# Админ-панель и API из поиска исключены
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /storage/
+
+Allow: /
+
+Sitemap: https://turanasia.kz/sitemap.xml
