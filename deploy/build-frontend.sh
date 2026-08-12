@@ -36,6 +36,18 @@ cp "$ROOT/robots.txt" "$DIST/robots.txt"
 find "$DIST" -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' \) -print0 \
   | xargs -0 sed -i -e 's|href="design3\.html"|href="/"|g' -e 's|design3\.html|/|g'
 
+# Красивые адреса внутренних страниц: tours.html → /tours.
+# Затрагиваем и .js — там собираются ссылки вида 'tour.html?slug=' + slug.
+# admin.html не трогаем: он живёт на поддомене панели и отдаётся как «/».
+CLEAN_PAGES="tours tour foreign baikonur launch individual about reviews contacts hotels cruises"
+SED_ARGS=""
+for p in $CLEAN_PAGES; do
+  SED_ARGS="$SED_ARGS -e s|${p}\.html|/${p}|g"
+done
+# shellcheck disable=SC2086
+find "$DIST" -type f \( -name '*.html' -o -name '*.js' \) -print0 \
+  | xargs -0 sed -i $SED_ARGS
+
 # Подстраховка: в собранном фронте не должно остаться ни design3.html, ни index.html в ссылках
 if grep -rq 'design3\.html' "$DIST" || grep -rq 'href="index\.html"' "$DIST"; then
   echo "✗ В dist остались ссылки на design3.html или index.html:" >&2
