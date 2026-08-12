@@ -388,5 +388,14 @@
     });
   });
 
-  applyLang(currentLang());
+  var startLang = currentLang();
+  applyLang(startLang);
+
+  // Если выбран не русский, сразу отражаем язык в адресе: тогда скопированная
+  // из строки браузера ссылка откроется у получателя на том же языке.
+  if (startLang !== 'ru') {
+    try {
+      if (new URLSearchParams(location.search).get('lang') !== startLang) putLangInUrl(startLang);
+    } catch (e) {}
+  }
 })();
