@@ -114,19 +114,40 @@
     try { localStorage.setItem('ta-lang', lang); } catch (e) {}
   }
 
+  /** Текущий язык: ?lang= в адресе важнее сохранённого выбора. */
+  function currentLang() {
+    if (window.TA && TA.lang) return TA.lang();      // страницы с данными из API
+    var q = null;
+    try { q = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+    if (q && ['ru', 'kz', 'en'].indexOf(q) >= 0) {
+      try { localStorage.setItem('ta-lang', q); } catch (e) {}
+      return q;
+    }
+    try { return localStorage.getItem('ta-lang') || 'ru'; } catch (e) { return 'ru'; }
+  }
+
+  /** Прописывает язык в адрес, чтобы ссылку можно было переслать. */
+  function putLangInUrl(v) {
+    try {
+      var u = new URL(location.href);
+      u.searchParams.set('lang', v);
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    } catch (e) {}
+  }
+
   document.querySelectorAll('.lang').forEach(function (l) {
     l.querySelectorAll('span').forEach(function (s) {
       s.addEventListener('click', function () {
         var v = s.getAttribute('data-l') || 'ru';
-        if (v === (localStorage.getItem('ta-lang') || 'ru')) return;
-        applyLang(v);
+        if (v === currentLang()) return;
+        try { localStorage.setItem('ta-lang', v); } catch (e) {}
+        putLangInUrl(v);
         // Контент туров приходит с сервера на выбранном языке — перезапрашиваем страницу
-        if (window.TA && document.querySelector('[data-ta-live]')) location.reload();
+        if (window.TA && document.querySelector('[data-ta-live]')) { location.reload(); return; }
+        applyLang(v);
       });
     });
   });
 
-  var saved;
-  try { saved = localStorage.getItem('ta-lang'); } catch (e) {}
-  applyLang(saved || 'ru');
+  applyLang(currentLang());
 })();

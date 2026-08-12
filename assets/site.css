@@ -280,9 +280,16 @@ footer{background:var(--pri);color:#cdd9ea;margin-top:20px}
 
 /* ===== responsive ===== */
 @media(max-width:980px){
-  .menu,.lang{display:none}.burger{display:block}
+  .menu{display:none}.burger{display:block}
   header.open .menu{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#004283;padding:6px 0;box-shadow:0 14px 30px rgba(0,0,0,.25);gap:0;border-top:1px solid rgba(255,255,255,.12)}
   header.open .menu a{padding:13px 28px}
+  /* Переключатель языка остаётся в шапке: прятать его в бургер неудобно */
+  .nav{gap:14px;padding:12px 18px}
+  .nav-r{gap:14px}
+  .lang{padding-left:0;border-left:none;gap:2px}
+  .lang span{padding:7px 6px;border-radius:7px}   /* палец попадает уверенно */
+  .lang .on{background:rgba(255,255,255,.14)}
+  .logo-img{height:54px}
   .tgrid{grid-template-columns:1fr 1fr}
   .statband{grid-template-columns:1fr 1fr;gap:28px 12px}
   .why{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}
@@ -296,6 +303,11 @@ footer{background:var(--pri);color:#cdd9ea;margin-top:20px}
   .pagehero h1{font-size:34px}
 }
 @media(max-width:600px){
+  /* «Связаться» дублируется пунктом меню — уступаем место языкам */
+  .nav-r .btn-pri{display:none}
+  .nav{gap:10px;padding:10px 16px}
+  .nav-r{gap:10px}
+  .logo-img{height:46px}
   .tgrid,.rgrid,.ggrid,.inc-grid{grid-template-columns:1fr}
   .bento{grid-template-columns:1fr}.bento .big{grid-column:auto}
   .why,.fg{grid-template-columns:1fr}
@@ -337,3 +349,13 @@ body.dark .rev-card p{color:#c2d0e4}
 body.dark .socials a{color:#bcd6f2}
 body.dark .pager a{color:var(--ink)}
 body.dark .sec-h a{color:#7fb0e6}
+
+/* очень узкие экраны (320–380 px) */
+@media(max-width:380px){
+  .nav{gap:8px;padding:10px 12px}
+  .nav-r{gap:8px}
+  .logo-img{height:40px}
+  .lang{font-size:12px}
+  .lang span{padding:6px 4px}
+  .theme-btn{width:34px;height:34px}
+}

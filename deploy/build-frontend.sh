@@ -27,9 +27,11 @@ cp -R "$ROOT/assets/." "$DIST/assets/"
 cp "$ROOT/Turanasia-logo.png" "$DIST/Turanasia-logo.png"
 cp "$ROOT/robots.txt" "$DIST/robots.txt"
 
-# Переписать внутренние ссылки на главную
+# Переписать внутренние ссылки на главную: design3.html → «/»
+# Файл остаётся index.html (его отдаёт nginx), но в адресной строке его не видно.
 # (GNU sed — на Ubuntu/сервере; на macOS используйте: sed -i '' ...)
-grep -rl 'design3\.html' "$DIST" | xargs -r sed -i 's/design3\.html/index.html/g'
+grep -rl 'design3\.html' "$DIST" | xargs -r sed -i 's|href="design3\.html"|href="/"|g'
+grep -rl 'design3\.html' "$DIST" | xargs -r sed -i 's|design3\.html|/|g'
 
 echo "✓ Прод-фронт собран в: $DIST"
 echo "  Скопируйте его содержимое в public/ Laravel:"

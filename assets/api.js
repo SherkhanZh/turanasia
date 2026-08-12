@@ -7,7 +7,17 @@ window.TA = (function () {
     ? location.origin + '/api/v1'
     : 'http://localhost:8000/api/v1';   // при открытии файла напрямую
 
+  var LANGS = ['ru', 'kz', 'en'];
+
+  /** Язык страницы: ?lang= в адресе имеет приоритет над сохранённым выбором,
+      чтобы ссылку на конкретную языковую версию можно было переслать. */
   function lang() {
+    var q = null;
+    try { q = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+    if (q && LANGS.indexOf(q) >= 0) {
+      try { localStorage.setItem('ta-lang', q); } catch (e) {}
+      return q;
+    }
     try { return localStorage.getItem('ta-lang') || 'ru'; } catch (e) { return 'ru'; }
   }
 
@@ -166,5 +176,5 @@ window.TA = (function () {
     if (el) el.innerHTML = '<div class="empty">' + esc(msg || t('tour_err')) + '</div>';
   }
 
-  return { base: BASE, get: get, list: list, esc: esc, text: text, program: program, money: money, date: date, lang: lang, t: t, fail: fail };
+  return { langs: LANGS, base: BASE, get: get, list: list, esc: esc, text: text, program: program, money: money, date: date, lang: lang, t: t, fail: fail };
 })();
