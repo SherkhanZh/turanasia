@@ -29,9 +29,19 @@ cp "$ROOT/robots.txt" "$DIST/robots.txt"
 
 # Переписать внутренние ссылки на главную: design3.html → «/»
 # Файл остаётся index.html (его отдаёт nginx), но в адресной строке его не видно.
+#
+# Через find, а не grep|xargs: grep без совпадений возвращает код 1, и при
+# set -o pipefail это обрывало сборку до копирования файлов.
 # (GNU sed — на Ubuntu/сервере; на macOS используйте: sed -i '' ...)
-grep -rl 'design3\.html' "$DIST" | xargs -r sed -i 's|href="design3\.html"|href="/"|g'
-grep -rl 'design3\.html' "$DIST" | xargs -r sed -i 's|design3\.html|/|g'
+find "$DIST" -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' \) -print0 \
+  | xargs -0 sed -i -e 's|href="design3\.html"|href="/"|g' -e 's|design3\.html|/|g'
+
+# Подстраховка: в собранном фронте не должно остаться ни design3.html, ни index.html в ссылках
+if grep -rq 'design3\.html' "$DIST" || grep -rq 'href="index\.html"' "$DIST"; then
+  echo "✗ В dist остались ссылки на design3.html или index.html:" >&2
+  grep -rn 'design3\.html\|href="index\.html"' "$DIST" >&2
+  exit 1
+fi
 
 echo "✓ Прод-фронт собран в: $DIST"
 echo "  Скопируйте его содержимое в public/ Laravel:"
