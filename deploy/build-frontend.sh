@@ -43,6 +43,22 @@ if grep -rq 'design3\.html' "$DIST" || grep -rq 'href="index\.html"' "$DIST"; th
   exit 1
 fi
 
+# --- Версия ассетов -------------------------------------------------------
+# nginx отдаёт js/css с Cache-Control: immutable на 30 дней, поэтому браузер
+# не перезапрашивает их даже после выкатки. Дописываем к адресам ?v=<версия>,
+# чтобы каждая сборка получала новый URL и правки доходили до пользователей.
+VER="$(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || date +%s)"
+
+find "$DIST" -type f -name '*.html' -print0 \
+  | xargs -0 sed -i -E "s|(src=\"assets/[a-zA-Z0-9_.-]+\.js)\"|\1?v=$VER\"|g; s|(href=\"assets/[a-zA-Z0-9_.-]+\.css)\"|\1?v=$VER\"|g"
+
+STAMPED="$(grep -ro "?v=$VER" "$DIST" | wc -l)"
+if [ "$STAMPED" -eq 0 ]; then
+  echo "✗ Не удалось проставить версию ассетов" >&2
+  exit 1
+fi
+
+echo "✓ Версия ассетов: $VER (проставлена в $STAMPED ссылках)"
 echo "✓ Прод-фронт собран в: $DIST"
 echo "  Скопируйте его содержимое в public/ Laravel:"
 echo "    sudo cp -R $DIST/. /var/www/turanasia/public/"
