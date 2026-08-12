@@ -163,9 +163,16 @@ footer{background:var(--pri);color:#cdd9ea;margin-top:20px}
 }
 
 @media(max-width:980px){
-  .menu,.lang{display:none}.burger{display:block}
+  .menu{display:none}.burger{display:block}
   header.open .menu{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#004283;padding:6px 0;box-shadow:0 14px 30px rgba(0,0,0,.25);gap:0;border-top:1px solid rgba(255,255,255,.12)}
   header.open .menu a{padding:13px 28px}
+  /* Переключатель языка остаётся в шапке: прятать его в бургер неудобно */
+  .nav{gap:14px;padding:12px 18px}
+  .nav-r{gap:14px}
+  .lang{padding-left:0;border-left:none;gap:2px}
+  .lang span{padding:7px 6px;border-radius:7px}
+  .lang .on{background:rgba(255,255,255,.14)}
+  .logo-img{height:54px}
   .hero-grid{grid-template-columns:1fr;gap:30px}.hero-art .main{height:320px}
   .hero h1{font-size:42px}
   .bento{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}.bento .big{grid-column:span 2;grid-row:auto}.bento a{height:190px}
@@ -173,7 +180,24 @@ footer{background:var(--pri);color:#cdd9ea;margin-top:20px}
   .why{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}
   .searchbar{flex-wrap:wrap}.searchbar .f{flex:1 1 40%;border:none}
 }
-@media(max-width:600px){.tgrid{grid-template-columns:1fr}.bento{grid-template-columns:1fr}.bento .big{grid-column:auto}.why{grid-template-columns:1fr}.fg{grid-template-columns:1fr}.hero h1{font-size:34px}.cta h2{font-size:28px}}
+@media(max-width:600px){
+  .tgrid{grid-template-columns:1fr}.bento{grid-template-columns:1fr}.bento .big{grid-column:auto}
+  .why{grid-template-columns:1fr}.fg{grid-template-columns:1fr}.hero h1{font-size:34px}.cta h2{font-size:28px}
+  /* «Связаться» дублируется пунктом меню — уступаем место языкам */
+  .nav-r .btn-pri{display:none}
+  .nav{gap:10px;padding:10px 16px}
+  .nav-r{gap:10px}
+  .logo-img{height:46px}
+}
+/* очень узкие экраны (320–380 px) */
+@media(max-width:380px){
+  .nav{gap:8px;padding:10px 12px}
+  .nav-r{gap:8px}
+  .logo-img{height:40px}
+  .lang{font-size:12px}
+  .lang span{padding:6px 4px}
+  .theme-btn{width:34px;height:34px}
+}
 
 /* ===== Тёмная тема (синий фон) ===== */
 .theme-btn{width:38px;height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
