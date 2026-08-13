@@ -260,6 +260,30 @@ body.dark .acc summary:hover{color:#a8cbf0}
 .socials a{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--pri)}
 .socials a:hover{background:var(--pri);color:#fff;border-color:var(--pri)}
 
+/* ===== юридические тексты (условия, политика) ===== */
+.legal{max-width:840px;margin:0 auto;font-size:15.5px;line-height:1.75;color:#334155}
+.legal h2{font-size:24px;font-weight:800;color:var(--pri);margin:40px 0 14px;scroll-margin-top:96px}
+.legal h2:first-of-type{margin-top:0}
+.legal h3{font-size:17px;font-weight:700;color:var(--ink);margin:24px 0 8px}
+.legal p{margin-bottom:14px}
+.legal ul{margin:0 0 14px 20px}
+.legal li{margin-bottom:9px}
+.legal a{color:var(--pri);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.legal-toc{background:var(--alt);border:1px solid var(--line);border-radius:var(--r);padding:22px 26px;margin-bottom:40px}
+.legal-toc b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+.legal-toc ol{margin-left:18px}
+.legal-toc li{margin-bottom:6px;font-size:14.5px}
+.legal-toc a{font-weight:500;text-decoration:none;color:var(--ink)}
+.legal-toc a:hover{color:var(--pri);text-decoration:underline}
+.legal-note{background:#fdf5e9;border:1px solid #eddcbe;border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:14px}
+.legal-note p{margin:0;font-size:14.5px}
+.legal-upd{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+body.dark .legal{color:#c2d0e4}
+body.dark .legal h3{color:var(--ink)}
+body.dark .legal-toc{background:#0b2746}
+body.dark .legal-toc a{color:var(--ink)}
+body.dark .legal-note{background:#2a2214;border-color:#4a3c22}
+
 /* ===== coming soon ===== */
 .soon{text-align:center;max-width:640px;margin:0 auto;padding:80px 20px}
 .soon .big{width:88px;height:88px;border-radius:24px;background:#e7eef6;color:var(--pri);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
