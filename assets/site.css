@@ -260,6 +260,26 @@ body.dark .acc summary:hover{color:#a8cbf0}
 .socials a{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--pri)}
 .socials a:hover{background:var(--pri);color:#fff;border-color:var(--pri)}
 
+/* ===== список документов + согласие в форме ===== */
+.doclist{display:flex;flex-direction:column;gap:12px}
+.doc{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-sm);padding:16px 18px;transition:.2s}
+.doc:hover{border-color:var(--pri);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.doc-ic{width:38px;height:38px;border-radius:10px;background:#e7eef6;color:var(--pri);flex:none;
+  display:flex;align-items:center;justify-content:center}
+.doc-ic svg{width:19px;height:19px}
+.doc b{display:block;font-size:15px;font-weight:700;color:var(--ink)}
+.doc small{display:block;color:var(--muted);font-size:13px;margin-top:2px;line-height:1.45}
+
+.agree{display:flex;gap:10px;align-items:flex-start;margin:4px 0 16px;font-size:13.5px;
+  color:var(--muted);line-height:1.5;cursor:pointer}
+.agree input{width:18px;height:18px;margin-top:1px;flex:none;accent-color:var(--pri);cursor:pointer}
+.agree a{color:var(--pri);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled:hover{background:var(--pri)}
+body.dark .doc{background:#0c2b49}
+body.dark .doc b{color:var(--ink)}
+
 /* ===== юридические тексты (условия, политика) ===== */
 .legal{max-width:840px;margin:0 auto;font-size:15.5px;line-height:1.75;color:#334155}
 .legal h2{font-size:24px;font-weight:800;color:var(--pri);margin:40px 0 14px;scroll-margin-top:96px}

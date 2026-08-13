@@ -31,6 +31,7 @@
       <li><a href="tours.html" data-i18n="nav.tours">Туры по Казахстану</a></li>
       <li><a href="foreign.html" data-i18n="nav.foreign">Зарубежные туры</a></li>
       <li><a href="baikonur.html" data-i18n="nav.baikonur">Байконур</a></li>
+      <li><a href="individual.html" data-i18n="nav.individual">Индивидуальные туры</a></li>
       <li><a href="about.html" data-i18n="nav.about">О компании</a></li>
       <li><a href="contacts.html" data-i18n="nav.contacts">Контакты</a></li>
     </ul>
@@ -44,9 +45,9 @@
 
 <section class="pagehero" style="--ph:url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1920&q=80')">
   <div class="wrap">
-    <div class="crumbs"><a href="design3.html">Главная</a> / <span>Индивидуальные путешествия</span></div>
-    <h1 class="dm">Индивидуальные путешествия</h1>
-    <p>Авторские маршруты под вас — даты, темп, интересы и бюджет. Полное сопровождение от идеи до возвращения.</p>
+    <div class="crumbs"><a href="design3.html">Главная</a> / <span>Индивидуальные туры</span></div>
+    <h1 class="dm">Индивидуальные туры</h1>
+    <p>Оставьте заявку — организуем индивидуальный тур под ваши даты, маршрут, состав группы и бюджет.</p>
   </div>
 </section>
 
@@ -78,19 +79,60 @@
   </div>
 </section>
 
-<section class="sec" style="padding-top:0">
+<section class="sec" style="padding-top:0" id="request">
   <div class="wrap">
-    <div class="form-card" style="max-width:720px;margin:0 auto">
-      <h3 style="font-size:22px;font-weight:700;margin-bottom:6px">Запрос на консультацию</h3>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Опишите идею — мы предложим маршрут и смету.</p>
-      <div class="inc-grid">
-        <div class="field"><label>Имя</label><input placeholder="Ваше имя"></div>
-        <div class="field"><label>Телефон</label><input placeholder="+7 ___ ___ __ __"></div>
-        <div class="field"><label>Направление мечты</label><input placeholder="Куда хотите поехать?"></div>
-        <div class="field"><label>Примерные даты</label><input placeholder="Месяц / период"></div>
+    <div class="contact-grid">
+
+      <div>
+        <span class="eyebrow">Перед отправкой</span>
+        <h2 class="dm" style="font-size:28px;font-weight:800;margin:14px 0 12px">Документы и условия</h2>
+        <p style="color:var(--muted);font-size:15px;margin-bottom:22px">Ознакомьтесь с условиями оказания услуг и обработки персональных данных — отметку о согласии нужно поставить в форме.</p>
+
+        <div class="doclist">
+          <a class="doc" href="terms.html">
+            <span class="doc-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            </span>
+            <span><b>Условия оказания услуг</b><small>Порядок бронирования, оплаты и передачи документов</small></span>
+          </a>
+          <a class="doc" href="terms.html#privacy">
+            <span class="doc-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </span>
+            <span><b>Политика конфиденциальности</b><small>Какие данные мы собираем и как их используем</small></span>
+          </a>
+          <a class="doc" href="terms.html#refund">
+            <span class="doc-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+            </span>
+            <span><b>Возврат денежных средств</b><small>Сроки и порядок возврата</small></span>
+          </a>
+          <a class="doc" href="terms.html#payment">
+            <span class="doc-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </span>
+            <span><b>Оплата банковской картой</b><small>Как проходит платёж и что такое 3-D Secure</small></span>
+          </a>
+        </div>
       </div>
-      <div class="field"><label>О пожеланиях</label><textarea placeholder="Сколько человек, интересы, бюджет, особые пожелания"></textarea></div>
-      <button class="btn btn-pri btn-block">Отправить запрос</button>
+
+      <div class="form-card">
+        <h3 style="font-size:22px;font-weight:700;margin-bottom:6px">Заявка на индивидуальный тур</h3>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Опишите идею — менеджер свяжется с вами и предложит маршрут и смету.</p>
+
+        <div class="field"><label>Имя</label><input id="ind-name" placeholder="Ваше имя"></div>
+        <div class="field"><label>Телефон</label><input id="ind-phone" placeholder="+7 ___ ___ __ __"></div>
+        <div class="field"><label>Пожелания</label><textarea id="ind-msg-text" placeholder="Направление, примерные даты, число человек, бюджет и особые пожелания"></textarea></div>
+
+        <label class="agree">
+          <input type="checkbox" id="ind-agree">
+          <span>Я согласен с <a href="terms.html">условиями оказания услуг</a> и <a href="terms.html#privacy">политикой конфиденциальности</a>.</span>
+        </label>
+
+        <button class="btn btn-pri btn-block" id="ind-send" disabled>Отправить заявку</button>
+        <div id="ind-msg" style="font-size:13px;text-align:center;margin-top:10px"></div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -107,6 +149,7 @@
         <li><a href="tours.html" data-i18n="nav.tours">Туры по Казахстану</a></li>
         <li><a href="foreign.html" data-i18n="nav.foreign">Зарубежные туры</a></li>
         <li><a href="baikonur.html" data-i18n="nav.baikonur">Байконур</a></li>
+        <li><a href="individual.html" data-i18n="nav.individual">Индивидуальные туры</a></li>
         <li><a href="about.html" data-i18n="nav.about">О компании</a></li>
         <li><a href="contacts.html" data-i18n="nav.contacts">Контакты</a></li>
       </ul></div>
@@ -128,6 +171,56 @@
   </div>
 </footer>
 
+<script src="assets/api.js"></script>
 <script src="assets/site.js"></script>
+<script>
+(function () {
+  var agree = document.getElementById('ind-agree');
+  var btn = document.getElementById('ind-send');
+  var msg = document.getElementById('ind-msg');
+  if (!agree || !btn) return;
+
+  // Кнопка активна только после согласия с условиями
+  agree.addEventListener('change', function () { btn.disabled = !agree.checked; });
+
+  btn.addEventListener('click', function () {
+    var name = document.getElementById('ind-name').value.trim();
+    var phone = document.getElementById('ind-phone').value.trim();
+    var text = document.getElementById('ind-msg-text').value.trim();
+
+    if (!name || !phone) {
+      msg.style.color = '#dc2626';
+      msg.textContent = 'Укажите имя и телефон.';
+      return;
+    }
+
+    btn.disabled = true;
+    var label = btn.textContent;
+    btn.textContent = 'Отправляем…';
+
+    fetch(TA.base + '/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        message: text,
+        tour_title: 'Индивидуальный тур'
+      })
+    }).then(function (r) {
+      return r.json().then(function (d) { if (!r.ok) throw d; return d; });
+    }).then(function () {
+      msg.style.color = '#16a34a';
+      msg.textContent = 'Заявка отправлена! Менеджер свяжется с вами.';
+      btn.textContent = 'Отправлено';
+    }).catch(function () {
+      msg.style.color = '#dc2626';
+      msg.textContent = 'Не удалось отправить. Позвоните нам или напишите в WhatsApp.';
+      btn.disabled = false;
+      btn.textContent = label;
+    });
+  });
+})();
+</script>
 </body>
 </html>

@@ -52,7 +52,7 @@
      Новые строки добавляйте во все три языка. */
   var I18N = {
     ru: {
-      'nav.home':'Главная','nav.tours':'Туры по Казахстану','nav.foreign':'Зарубежные туры','nav.baikonur':'Байконур','nav.about':'О компании','nav.contacts':'Контакты','nav.cta':'Связаться',
+      'nav.home':'Главная','nav.tours':'Туры по Казахстану','nav.foreign':'Зарубежные туры','nav.baikonur':'Байконур','nav.individual':'Индивидуальные туры','nav.about':'О компании','nav.contacts':'Контакты','nav.cta':'Связаться',
       'hero.pill':'✦ Год основания 1994','hero.title':'Открываем <em>мир</em> вместе с вами','hero.lead':'От уникальных путешествий по Казахстану до туров под ключ в самые удивительные уголки мира.','hero.btn1':'Смотреть туры','hero.btn2':'Связаться с нами',
       'dest.title':'Куда отправимся','dest.sub':'Выберите формат путешествия','dest.kz_sub':'Многодневные и однодневные','dest.baik_sub':'Запуски ракет','dest.for_sub':'Групповые поездки','dest.ind_sub':'Авторские маршруты',
       'common.soon':'Скоро','common.from':'от','common.more':'Подробнее',
@@ -144,7 +144,7 @@
       'foot.about':'С 1994 года — туроператор по Казахстану и миру.','foot.tours':'Туры','foot.company':'Компания','foot.contacts':'Контакты','foot.menu':'Меню','foot.social':'Мы в соцсетях','foot.kz':'По Казахстану','foot.foreign':'Зарубежные','foot.individual':'Индивидуальные','foot.reviews':'Отзывы','foot.hotels':'Отели','foot.cruises':'Круизы','foot.dests':'Направления','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, ул. Желтоксан, 111а','foot.rights':'© 2026 Turan Asia. Все права защищены.','foot.privacy':'Политика конфиденциальности','foot.terms':'Условия'
     },
     kz: {
-      'nav.home':'Басты бет','nav.tours':'Қазақстан бойынша турлар','nav.foreign':'Шетелдік турлар','nav.baikonur':'Байқоңыр','nav.about':'Компания туралы','nav.contacts':'Байланыс','nav.cta':'Байланысу',
+      'nav.home':'Басты бет','nav.tours':'Қазақстан бойынша турлар','nav.foreign':'Шетелдік турлар','nav.baikonur':'Байқоңыр','nav.individual':'Жеке турлар','nav.about':'Компания туралы','nav.contacts':'Байланыс','nav.cta':'Байланысу',
       'hero.pill':'✦ 1994 жылдан бері қызмет көрсетеміз','hero.title':'<em>Әлемді</em> бізбен бірге таныңыз','hero.lead':'Қазақстан бойынша бірегей саяхаттардан бастап, әлемнің ең ғажайып бағыттарына дейінгі толық ұйымдастырылған турларды ұсынамыз.','hero.btn1':'Турларды қарау','hero.btn2':'Бізбен байланысу',
       'dest.title':'Қайда барамыз','dest.sub':'Саяхат форматын таңдаңыз','dest.kz_sub':'Көп күндік және бір күндік','dest.baik_sub':'Зымыран ұшырылымдары','dest.for_sub':'Топтық сапарлар','dest.ind_sub':'Авторлық бағыттар',
       'common.soon':'Жақында','common.from':'бастап','common.more':'Толығырақ',
@@ -236,7 +236,7 @@
       'foot.about':'1994 жылдан бері — Қазақстан және әлем бойынша туроператор.','foot.tours':'Турлар','foot.company':'Компания','foot.contacts':'Байланыс','foot.menu':'Мәзір','foot.social':'Әлеуметтік желілерде','foot.kz':'Қазақстан бойынша','foot.foreign':'Шетелдік','foot.individual':'Жеке','foot.reviews':'Пікірлер','foot.hotels':'Қонақүйлер','foot.cruises':'Круиздер','foot.dests':'Бағыттар','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, Желтоқсан к-сі, 111а','foot.rights':'© 2026 Turan Asia. Барлық құқықтар қорғалған.','foot.privacy':'Құпиялылық саясаты','foot.terms':'Шарттар'
     },
     en: {
-      'nav.home':'Home','nav.tours':'Kazakhstan Tours','nav.foreign':'International Tours','nav.baikonur':'Baikonur','nav.about':'About Us','nav.contacts':'Contacts','nav.cta':'Contact',
+      'nav.home':'Home','nav.tours':'Kazakhstan Tours','nav.foreign':'International Tours','nav.baikonur':'Baikonur','nav.individual':'Tailor-made Tours','nav.about':'About Us','nav.contacts':'Contacts','nav.cta':'Contact',
       'hero.pill':'✦ Established in 1994','hero.title':'Discover the <em>world</em> with us','hero.lead':'From unique journeys across Kazakhstan to tailor-made tours in the most amazing destinations around the world.','hero.btn1':'Browse tours','hero.btn2':'Get in touch',
       'dest.title':'Where to go','dest.sub':'Choose your type of trip','dest.kz_sub':'Multi-day and day trips','dest.baik_sub':'Rocket launches','dest.for_sub':'Group departures','dest.ind_sub':'Tailor-made routes',
       'common.soon':'Coming soon','common.from':'from','common.more':'Details',
