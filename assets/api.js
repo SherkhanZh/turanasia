@@ -120,6 +120,7 @@ window.TA = (function () {
       gal_cta_h: "Понравилось?",
       gal_cta_p: "Оставьте заявку — подберём маршрут под ваши даты и бюджет.",
       gal_cta_btn: "Оставить заявку",
+      gal_album: "Смотреть весь альбом",
       lb_close: 'Закрыть', lb_prev: 'Предыдущее фото', lb_next: 'Следующее фото'
     },
     kz: {
@@ -151,6 +152,7 @@ window.TA = (function () {
       gal_cta_h: "Ұнады ма?",
       gal_cta_p: "Өтінім қалдырыңыз — күндеріңіз бен бюджетіңізге сай бағыт таңдаймыз.",
       gal_cta_btn: "Өтінім қалдыру",
+      gal_album: "Бүкіл альбомды қарау",
       lb_close: 'Жабу', lb_prev: 'Алдыңғы сурет', lb_next: 'Келесі сурет'
     },
     en: {
@@ -182,6 +184,7 @@ window.TA = (function () {
       gal_cta_h: "Like what you see?",
       gal_cta_p: "Send a request — we'll build an itinerary for your dates and budget.",
       gal_cta_btn: "Send a request",
+      gal_album: "View the whole album",
       lb_close: 'Close', lb_prev: 'Previous photo', lb_next: 'Next photo'
     }
   };

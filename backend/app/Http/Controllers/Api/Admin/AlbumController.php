@@ -28,7 +28,12 @@ class AlbumController extends Controller
     public function show(Album $album)
     {
         $row = AdminSerializer::make($album);
-        $row['items'] = AdminSerializer::collection($album->items);
+        $row['items'] = collect($album->items)->map(function ($i) {
+            $data = AdminSerializer::make($i);
+            $data['public_url'] = url('/media').'?code='.$i->code;   // ссылка на один снимок
+
+            return $data;
+        })->all();
         $row['public_url'] = url('/album').'?slug='.$album->slug;
 
         return response()->json($row);
@@ -104,7 +109,10 @@ class AlbumController extends Controller
             $album->save();
         }
 
-        return response()->json(AdminSerializer::make($item), 201);
+        $data = AdminSerializer::make($item);
+        $data['public_url'] = url('/media').'?code='.$item->code;
+
+        return response()->json($data, 201);
     }
 
     public function updateItem(Request $request, Album $album, AlbumItem $item)

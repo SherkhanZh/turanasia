@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
     // Галерея: список видимых альбомов и альбом по адресу
     Route::get('albums', [AlbumController::class, 'index']);
     Route::get('albums/{slug}', [AlbumController::class, 'show']);
+    Route::get('media/{code}', [AlbumController::class, 'item']);
 
     // Приём заявки с сайта (антиспам: не более 8 заявок в минуту с IP)
     Route::post('leads', [LeadController::class, 'store'])->middleware('throttle:8,1');

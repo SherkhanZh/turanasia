@@ -98,7 +98,11 @@ tr:hover td{background:#fafbfc}
 .b-gray{background:#eef0f3;color:var(--muted)}.b-red{background:var(--red-s);color:var(--red)}
 .acts{display:flex;gap:6px}
 /* галерея: плитки материалов альбома */
-.al-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.al-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.al-card{display:flex;flex-direction:column;gap:7px}
+.al-cap{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;outline:none}
+.al-cap:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-soft)}
+.al-link{width:100%;justify-content:center}
 .al-item{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
 .al-item img{width:100%;height:100%;object-fit:cover;display:block}
 .al-item .al-vid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--pri);background:var(--pri-soft)}

@@ -3,19 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Альбом — Turan Asia</title>
-<!-- ta:meta -->   <!-- Мета-теги подставляет Laravel: см. PageMetaController -->
-<meta name="description" content="Фото и видео из тура.">
-<link rel="canonical" href="https://turanasia.kz/album">
-<meta property="og:type" content="website">
+<title>Материал — Turan Asia</title>
+<!-- ta:meta -->   <!-- Мета-теги подставляет Laravel по коду материала: см. PageMetaController -->
+<meta name="description" content="Фото и видео из туров Turan Asia.">
+<link rel="canonical" href="https://turanasia.kz/media">
+<meta property="og:type" content="article">
 <meta property="og:site_name" content="Turan Asia">
 <meta property="og:locale" content="ru_RU">
-<meta property="og:title" content="Альбом — Turan Asia">
-<meta property="og:description" content="Фото и видео из тура.">
-<meta property="og:url" content="https://turanasia.kz/album">
+<meta property="og:title" content="Материал — Turan Asia">
+<meta property="og:description" content="Фото и видео из туров Turan Asia.">
+<meta property="og:url" content="https://turanasia.kz/media">
 <meta property="og:image" content="https://turanasia.kz/og-cover.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <!-- /ta:meta -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,7 +44,6 @@
 </header>
 <section class="sec" style="padding-top:40px">
   <div class="wrap">
-    <div class="crumbs" style="color:var(--muted);opacity:1"><a href="gallery.html">Галерея</a> / <span id="crumb">…</span></div>
     <div id="view" data-ta-live><div class="empty">…</div></div>
   </div>
 </section>
@@ -57,29 +54,39 @@
 <script>
 (function () {
   var view = document.getElementById('view');
-  var slug = new URLSearchParams(location.search).get('slug');
-  if (!slug) { TA.fail(view, TA.t('gal_nf')); return; }
+  var code = new URLSearchParams(location.search).get('code');
+  if (!code) { TA.fail(view, TA.t('gal_nf')); return; }
 
-  TA.get('/albums/' + encodeURIComponent(slug)).then(function (a) {
-    if (!a || !a.slug) { TA.fail(view, TA.t('gal_nf')); return; }
+  TA.get('/media/' + encodeURIComponent(code)).then(function (m) {
+    if (!m || !m.code) { TA.fail(view, TA.t('gal_nf')); return; }
 
-    document.title = a.title + ' — Turan Asia';
-    document.getElementById('crumb').textContent = a.title;
+    var cap = m.caption || '';
+    if (cap) document.title = cap + ' — Turan Asia';
 
-    var mediaList = TAG.fromItems(a.items);   // items несут подписи, photos/videos — нет
+    var stage;
+    if (m.type === 'image') {
+      stage = '<div class="media-one"><img src="' + TA.esc(m.url) + '" alt="' + TA.esc(cap) + '"></div>';
+    } else {
+      var v = TAG.video(m.url);
+      stage = v.kind === 'embed'
+        ? '<div class="media-one video"><iframe src="' + TA.esc(v.embed.replace("autoplay=1", "autoplay=0")) + '" allow="fullscreen; picture-in-picture" allowfullscreen frameborder="0"></iframe></div>'
+        : (v.kind === 'file'
+            ? '<div class="media-one"><video src="' + TA.esc(m.url) + '" controls playsinline></video></div>'
+            : '<p><a href="' + TA.esc(m.url) + '" target="_blank" rel="noopener">' + TA.esc(m.url) + '</a></p>');
+    }
 
     view.innerHTML =
-      '<h1 class="dm" style="font-size:34px;font-weight:800;margin:6px 0 10px">' + TA.esc(a.title) + '</h1>' +
-      (a.description ? '<p style="color:var(--muted);max-width:720px;margin-bottom:26px">' + TA.text(a.description) + '</p>' : '<div style="height:18px"></div>') +
-      (mediaList.length ? TAG.html(mediaList, a.title) : '<div class="empty">' + TA.t('gal_empty') + '</div>') +
-      (a.tour ? '<p style="margin-top:26px"><a class="btn btn-pri" href="tour.html?slug=' + encodeURIComponent(a.tour.slug) + '">' + TA.t('gal_tour') + '</a></p>' : '') +
+      (m.album ? '<div class="crumbs" style="color:var(--muted);opacity:1"><a href="album.html?slug=' +
+        encodeURIComponent(m.album.slug) + '">' + TA.esc(m.album.title) + '</a></div>' : '') +
+      (cap ? '<h1 class="dm" style="font-size:28px;font-weight:800;margin:6px 0 18px">' + TA.esc(cap) + '</h1>' : '<div style="height:10px"></div>') +
+      stage +
+      (m.album ? '<p style="margin-top:24px"><a class="btn btn-out" href="album.html?slug=' +
+        encodeURIComponent(m.album.slug) + '">' + TA.t('gal_album') + '</a></p>' : '') +
       '<div class="cta" style="margin-top:40px"><div class="cta-in">' +
         '<h2 class="dm">' + TA.t('gal_cta_h') + '</h2>' +
         '<p>' + TA.t('gal_cta_p') + '</p>' +
         '<a class="btn" href="contacts.html">' + TA.t('gal_cta_btn') + '</a>' +
       '</div></div>';
-
-    TAG.bind(view, mediaList);
   }).catch(function () { TA.fail(view, TA.t('gal_nf')); });
 })();
 </script>

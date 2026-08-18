@@ -68,6 +68,23 @@ window.TAG = (function () {
     return out;
   }
 
+  /**
+   * Материалы альбома, как их отдаёт API: {type, url, thumb, caption, code}.
+   * Видео разбираем, чтобы получить проигрыватель, подпись сохраняем.
+   */
+  function fromItems(items) {
+    return (items || []).map(function (i) {
+      if (i.type === 'video') {
+        var v = video(i.url);
+        v.caption = i.caption || '';
+        v.code = i.code;
+        if (i.thumb) v.thumb = i.thumb;
+        return v;
+      }
+      return { type: 'image', url: i.url, thumb: i.thumb || null, caption: i.caption || '', code: i.code };
+    });
+  }
+
   /** Строки в списке считаем фотографиями. */
   function normalize(items) {
     return (items || []).map(function (it) {
@@ -82,7 +99,7 @@ window.TAG = (function () {
   /** Картинка для плитки: у видео без превью — тёмная заливка вместо фото. */
   function tile(item) {
     if (item.type === 'image') {
-      return '<img src="' + TA.esc(item.url) + '" alt="">';
+      return '<img src="' + TA.esc(item.thumb || item.url) + '" alt="' + TA.esc(item.caption || '') + '">';
     }
     return item.thumb
       ? '<img src="' + TA.esc(item.thumb) + '" alt="">' + PLAY
@@ -171,6 +188,10 @@ window.TAG = (function () {
         TA.esc(it.url) + '</a></p>';
     }
 
+    if (it.caption) {
+      stage.insertAdjacentHTML('beforeend', '<p class="lbx-cap">' + TA.esc(it.caption) + '</p>');
+    }
+
     counter.textContent = (idx + 1) + ' / ' + list.length;
     var many = list.length > 1;
     box.querySelector('.lbx-prev').style.display = many ? '' : 'none';
@@ -222,5 +243,5 @@ window.TAG = (function () {
     });
   }
 
-  return { html: html, bind: bind, open: open, media: media, video: video };
+  return { html: html, bind: bind, open: open, media: media, video: video, fromItems: fromItems };
 })();

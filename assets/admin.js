@@ -403,6 +403,19 @@
 
       el('al-img').addEventListener('change', function () { uploadItems(this.files, 'image'); });
       el('al-vid').addEventListener('change', function () { uploadItems(this.files, 'video'); });
+      // Подпись сохраняется, когда поле теряет фокус — отдельная кнопка не нужна
+      el('view').querySelectorAll('[data-cap]').forEach(function (inp) {
+        var was = inp.value;
+        inp.addEventListener('blur', function () {
+          if (inp.value === was) return;
+          was = inp.value;
+          api('/admin/albums/' + openAlbum + '/items/' + inp.dataset.cap, {
+            method: 'PUT', body: { caption: { ru: inp.value } }
+          }).then(function () { toast('Описание сохранено'); })
+            .catch(function () { toast('Не удалось сохранить описание', true); });
+        });
+      });
+
       el('al-link').addEventListener('click', function () {
         var url = prompt('Ссылка на видео (YouTube, Vimeo, Rutube):');
         if (url) addItem({ type: 'video', url: url.trim() });
@@ -412,10 +425,16 @@
 
   function itemCard(i) {
     var pic = i.type === 'image' ? (i.thumb || i.url) : (i.thumb || '');
-    return '<div class="al-item" data-item="' + i.id + '">' +
-      (pic ? '<img src="' + esc(pic) + '">' : '<span class="al-vid">▶</span>') +
-      (i.type === 'video' ? '<span class="al-tag">видео</span>' : '') +
-      '<i class="al-x" data-delitem="' + i.id + '">×</i></div>';
+    var cap = (i.caption && typeof i.caption === 'object') ? (i.caption.ru || '') : (i.caption || '');
+    return '<div class="al-card" data-item="' + i.id + '">' +
+      '<div class="al-item">' +
+        (pic ? '<img src="' + esc(pic) + '">' : '<span class="al-vid">▶</span>') +
+        (i.type === 'video' ? '<span class="al-tag">видео</span>' : '') +
+        '<i class="al-x" data-delitem="' + i.id + '">×</i>' +
+      '</div>' +
+      '<input class="al-cap" data-cap="' + i.id + '" value="' + esc(cap) + '" placeholder="Описание">' +
+      '<button type="button" class="btn btn-out btn-sm al-link" data-copy="' + esc(i.public_url || '') + '">Скопировать ссылку</button>' +
+      '</div>';
   }
 
   /** Последовательная загрузка: параллельная на слабом канале обрывается. */

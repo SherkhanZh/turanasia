@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\AlbumItem;
 use App\Models\BaikonurLaunch;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -63,6 +64,32 @@ class PageMetaController extends Controller
             'url' => url('/album').'?slug='.$album->slug.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
             'noindex' => $album->isUnlisted(),
+        ]);
+    }
+
+    /**
+     * Отдельный снимок или ролик. В превью мессенджера должна попасть именно
+     * эта картинка с её подписью, а не обложка альбома.
+     */
+    public function media(Request $request)
+    {
+        $lang = $this->lang($request);
+        $item = AlbumItem::with('album')->where('code', $request->query('code'))->first();
+
+        if (! $item) {
+            return $this->render('media.html', null);
+        }
+
+        $caption = $item->getTranslation('caption', $lang, true);
+        $albumTitle = $item->album ? $item->album->getTranslation('title', $lang, true) : 'Turan Asia';
+
+        return $this->render('media.html', [
+            'title' => $caption ?: $albumTitle,
+            'description' => $caption ?: $albumTitle,
+            'image' => $item->type === 'image' ? $item->url : ($item->thumb ?: optional($item->album)->cover),
+            'url' => url('/media').'?code='.$item->code.($lang === 'ru' ? '' : '&lang='.$lang),
+            'lang' => $lang,
+            'noindex' => ! $item->album || $item->album->isUnlisted(),
         ]);
     }
 

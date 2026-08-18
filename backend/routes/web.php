@@ -21,3 +21,4 @@ Route::get('/robots.txt', [SitemapController::class, 'robots']);
 Route::get('/tour', [PageMetaController::class, 'tour']);
 Route::get('/launch', [PageMetaController::class, 'launch']);
 Route::get('/album', [PageMetaController::class, 'album']);
+Route::get('/media', [PageMetaController::class, 'media']);

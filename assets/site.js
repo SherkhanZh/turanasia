@@ -150,6 +150,7 @@
       'gal_cta_p':"Оставьте заявку — подберём маршрут под ваши даты и бюджет.",
       'gal_cta_btn':"Оставить заявку",
       'nav.gallery':"Галерея",
+      'gal_album':"Смотреть весь альбом",
       'foot.about':'С 1994 года — туроператор по Казахстану и миру.','foot.tours':'Туры','foot.company':'Компания','foot.contacts':'Контакты','foot.menu':'Меню','foot.social':'Мы в соцсетях','foot.kz':'По Казахстану','foot.foreign':'Зарубежные','foot.individual':'Индивидуальные','foot.reviews':'Отзывы','foot.hotels':'Отели','foot.cruises':'Круизы','foot.dests':'Направления','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, ул. Желтоксан, 111а','foot.rights':'© 2026 Turan Asia. Все права защищены.','foot.privacy':'Политика конфиденциальности','foot.terms':'Оферта'
     },
     kz: {
@@ -251,6 +252,7 @@
       'gal_cta_p':"Өтінім қалдырыңыз — күндеріңіз бен бюджетіңізге сай бағыт таңдаймыз.",
       'gal_cta_btn':"Өтінім қалдыру",
       'nav.gallery':"Галерея",
+      'gal_album':"Бүкіл альбомды қарау",
       'foot.about':'1994 жылдан бері — Қазақстан және әлем бойынша туроператор.','foot.tours':'Турлар','foot.company':'Компания','foot.contacts':'Байланыс','foot.menu':'Мәзір','foot.social':'Әлеуметтік желілерде','foot.kz':'Қазақстан бойынша','foot.foreign':'Шетелдік','foot.individual':'Жеке','foot.reviews':'Пікірлер','foot.hotels':'Қонақүйлер','foot.cruises':'Круиздер','foot.dests':'Бағыттар','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, Желтоқсан к-сі, 111а','foot.rights':'© 2026 Turan Asia. Барлық құқықтар қорғалған.','foot.privacy':'Құпиялылық саясаты','foot.terms':'Оферта'
     },
     en: {
@@ -352,6 +354,7 @@
       'gal_cta_p':"Send a request — we'll build an itinerary for your dates and budget.",
       'gal_cta_btn':"Send a request",
       'nav.gallery':"Gallery",
+      'gal_album':"View the whole album",
       'foot.about':'Since 1994 — Kazakhstan & Worldwide Tour Operator.','foot.tours':'Tours','foot.company':'Company','foot.contacts':'Contacts','foot.menu':'Menu','foot.social':'Follow us','foot.kz':'In Kazakhstan','foot.foreign':'International','foot.individual':'Tailor-made','foot.reviews':'Reviews','foot.hotels':'Hotels','foot.cruises':'Cruises','foot.dests':'Destinations','foot.hours':'09:00 – 19:00','foot.addr':'Almaty, 111a Zheltoksan St.','foot.rights':'© 2026 Turan Asia. All rights reserved.','foot.privacy':'Privacy Policy','foot.terms':'Offer'
     }
   };
