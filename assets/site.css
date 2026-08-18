@@ -315,6 +315,21 @@ body.dark .doc b{color:var(--ink)}
 .legal-toc a:hover{color:var(--pri);text-decoration:underline}
 .legal-note{background:#fdf5e9;border:1px solid #eddcbe;border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:14px}
 .legal-note p{margin:0;font-size:14.5px}
+/* вступление к оферте */
+.legal-lead{background:var(--alt);border-left:4px solid var(--pri);border-radius:10px;padding:20px 24px;margin-bottom:36px}
+.legal-lead p:last-child{margin-bottom:0}
+/* реквизиты — плотным списком */
+.req-line{margin-bottom:7px}
+/* строки бланка заявки */
+.form-line{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;
+  color:var(--muted);word-break:break-word;margin-bottom:10px}
+.table-wrap{overflow-x:auto;margin:14px 0 22px}
+.form-table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+.form-table th,.form-table td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+.form-table th{background:var(--alt);font-weight:600;color:var(--ink);white-space:nowrap}
+.form-table td{height:34px}
+body.dark .legal-lead{background:#0b2746}
+body.dark .form-table th{background:#11375c}
 .legal-upd{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
 body.dark .legal{color:#c2d0e4}
 body.dark .legal h3{color:var(--ink)}
