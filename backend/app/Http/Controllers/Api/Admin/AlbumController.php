@@ -7,6 +7,7 @@ use App\Models\Album;
 use App\Models\AlbumItem;
 use App\Support\AdminSerializer;
 use App\Support\MediaStore;
+use App\Support\SiteUrl;
 use App\Support\Slug;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class AlbumController extends Controller
         return response()->json(collect($albums)->map(function ($a) {
             $row = AdminSerializer::make($a);
             $row['items_count'] = $a->items_count;
-            $row['public_url'] = url('/album').'?slug='.$a->slug;
+            $row['public_url'] = SiteUrl::to('/album').'?slug='.$a->slug;
 
             return $row;
         })->all());
@@ -30,11 +31,11 @@ class AlbumController extends Controller
         $row = AdminSerializer::make($album);
         $row['items'] = collect($album->items)->map(function ($i) {
             $data = AdminSerializer::make($i);
-            $data['public_url'] = url('/media').'?code='.$i->code;   // ссылка на один снимок
+            $data['public_url'] = SiteUrl::to('/media').'?code='.$i->code;   // ссылка на один снимок
 
             return $data;
         })->all();
-        $row['public_url'] = url('/album').'?slug='.$album->slug;
+        $row['public_url'] = SiteUrl::to('/album').'?slug='.$album->slug;
 
         return response()->json($row);
     }
@@ -110,7 +111,7 @@ class AlbumController extends Controller
         }
 
         $data = AdminSerializer::make($item);
-        $data['public_url'] = url('/media').'?code='.$item->code;
+        $data['public_url'] = SiteUrl::to('/media').'?code='.$item->code;
 
         return response()->json($data, 201);
     }

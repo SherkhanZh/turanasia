@@ -6,6 +6,7 @@ use App\Models\Album;
 use App\Models\AlbumItem;
 use App\Models\BaikonurLaunch;
 use App\Models\Tour;
+use App\Support\SiteUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -37,7 +38,7 @@ class PageMetaController extends Controller
             'description' => $tour->getTranslation('short_description', $lang, true)
                 ?: $tour->getTranslation('description', $lang, true),
             'image' => $tour->photos[0] ?? null,
-            'url' => url('/tour').'?slug='.$tour->slug.($lang === 'ru' ? '' : '&lang='.$lang),
+            'url' => SiteUrl::to('/tour').'?slug='.$tour->slug.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
         ]);
     }
@@ -61,7 +62,7 @@ class PageMetaController extends Controller
             'title' => $album->getTranslation('title', $lang, true),
             'description' => $album->getTranslation('description', $lang, true),
             'image' => $cover,
-            'url' => url('/album').'?slug='.$album->slug.($lang === 'ru' ? '' : '&lang='.$lang),
+            'url' => SiteUrl::to('/album').'?slug='.$album->slug.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
             'noindex' => $album->isUnlisted(),
         ]);
@@ -87,7 +88,7 @@ class PageMetaController extends Controller
             'title' => $caption ?: $albumTitle,
             'description' => $caption ?: $albumTitle,
             'image' => $item->type === 'image' ? $item->url : ($item->thumb ?: optional($item->album)->cover),
-            'url' => url('/media').'?code='.$item->code.($lang === 'ru' ? '' : '&lang='.$lang),
+            'url' => SiteUrl::to('/media').'?code='.$item->code.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
             'noindex' => ! $item->album || $item->album->isUnlisted(),
         ]);
@@ -106,7 +107,7 @@ class PageMetaController extends Controller
             'title' => $l->getTranslation('title', $lang, true),
             'description' => $l->getTranslation('description', $lang, true),
             'image' => $l->photos[0] ?? null,
-            'url' => url('/launch').'?slug='.$l->slug.($lang === 'ru' ? '' : '&lang='.$lang),
+            'url' => SiteUrl::to('/launch').'?slug='.$l->slug.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
         ]);
     }
@@ -195,13 +196,6 @@ class PageMetaController extends Controller
      */
     private function absolute(?string $path): string
     {
-        if (! $path) {
-            return url('/og-cover.jpg');
-        }
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
-        }
-
-        return url('/'.ltrim($path, '/'));
+        return SiteUrl::absolute($path);
     }
 }
