@@ -111,7 +111,9 @@
     var when = onReq ? TA.t('on_request')
       : (TA.date(l.launch_date) + (l.launch_time ? ', ' + TA.esc(String(l.launch_time).slice(0, 5)) : ''));
 
-    var gallery = TAG.html(photos.length ? photos : [main], l.title);
+    // Фото и видео идут одной галереей — видео открывается прямо в просмотрщике
+    var mediaList = TAG.media(photos.length ? photos : [main], l.videos);
+    var gallery = TAG.html(mediaList, l.title);
 
     // Аккордеон: первый раздел открыт, остальные свёрнуты
     function acc(title, inner, open) {
@@ -140,9 +142,6 @@
             block(TA.t('desc'), l.description, true) +
             progBlock(TA.t('program'), l.program) +
             block(TA.t('included_cond'), l.conditions) +
-            ((l.videos && l.videos.length) ? acc(TA.t('video'), l.videos.map(function (v) {
-              return '<p><a href="' + TA.esc(v) + '" target="_blank" rel="noopener" style="color:var(--pri);font-weight:600">▶ ' + TA.esc(v) + '</a></p>';
-            }).join('')) : '') +
           '</div>' +
         '</div>' +
         '<aside><div class="book">' +
@@ -160,7 +159,7 @@
       '</div>';
 
     // Отправка заявки в админку
-    TAG.bind(view, photos.length ? photos : [main]);
+    TAG.bind(view, mediaList);
 
     document.getElementById('bk-send').addEventListener('click', function () {
       var btn = this, msg = document.getElementById('bk-msg');
