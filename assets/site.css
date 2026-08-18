@@ -278,6 +278,22 @@ body.dark .acc summary:hover{color:#a8cbf0}
 .socials a{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--pri)}
 .socials a:hover{background:var(--pri);color:#fff;border-color:var(--pri)}
 
+/* ===== галерея: список альбомов ===== */
+.albums{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.album{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);transition:.25s}
+.album:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.album .ph{display:block;height:210px;flex:none;overflow:hidden}
+.album .ph img{transition:transform .5s ease}
+.album:hover .ph img{transform:scale(1.05)}
+.album .b{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.album .b b{font-size:17px;font-weight:700}
+.album .b small{display:block;color:var(--muted);font-size:13.5px;margin-top:5px}
+.album .cnt{margin-top:auto;padding-top:14px;color:var(--pri);font-size:13px;font-weight:600}
+body.dark .album{background:#0c2b49}
+@media(max-width:980px){.albums{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.albums{grid-template-columns:1fr}}
+
 /* ===== список документов + согласие в форме ===== */
 .doclist{display:flex;flex-direction:column;gap:12px}
 .doc{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);

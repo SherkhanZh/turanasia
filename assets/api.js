@@ -112,6 +112,14 @@ window.TA = (function () {
       launches_err: 'Не удалось загрузить список запусков.',
       launches_soon: 'Ближайшие запуски скоро появятся.', launches_empty: 'В этой категории пока нет запусков.',
       cat_kz: 'Туры по Казахстану', cat_foreign: 'Зарубежные туры',
+      gal_empty: "В альбоме пока нет материалов.",
+      gal_count: "{n} материалов",
+      gal_err: "Не удалось загрузить галерею.",
+      gal_nf: "Альбом не найден.",
+      gal_tour: "Посмотреть тур",
+      gal_cta_h: "Понравилось?",
+      gal_cta_p: "Оставьте заявку — подберём маршрут под ваши даты и бюджет.",
+      gal_cta_btn: "Оставить заявку",
       lb_close: 'Закрыть', lb_prev: 'Предыдущее фото', lb_next: 'Следующее фото'
     },
     kz: {
@@ -135,6 +143,14 @@ window.TA = (function () {
       launches_err: 'Ұшырулар тізімін жүктеу мүмкін болмады.',
       launches_soon: 'Жақын ұшырулар жақында пайда болады.', launches_empty: 'Бұл санатта әзірге ұшырулар жоқ.',
       cat_kz: 'Қазақстан бойынша турлар', cat_foreign: 'Шетелдік турлар',
+      gal_empty: "Альбомда әзірге материал жоқ.",
+      gal_count: "{n} материал",
+      gal_err: "Галереяны жүктеу мүмкін болмады.",
+      gal_nf: "Альбом табылмады.",
+      gal_tour: "Турды қарау",
+      gal_cta_h: "Ұнады ма?",
+      gal_cta_p: "Өтінім қалдырыңыз — күндеріңіз бен бюджетіңізге сай бағыт таңдаймыз.",
+      gal_cta_btn: "Өтінім қалдыру",
       lb_close: 'Жабу', lb_prev: 'Алдыңғы сурет', lb_next: 'Келесі сурет'
     },
     en: {
@@ -158,6 +174,14 @@ window.TA = (function () {
       launches_err: 'Could not load the launch list.',
       launches_soon: 'Upcoming launches will appear here soon.', launches_empty: 'No launches in this category yet.',
       cat_kz: 'Kazakhstan tours', cat_foreign: 'International tours',
+      gal_empty: "This album is empty for now.",
+      gal_count: "{n} items",
+      gal_err: "Could not load the gallery.",
+      gal_nf: "Album not found.",
+      gal_tour: "View the tour",
+      gal_cta_h: "Like what you see?",
+      gal_cta_p: "Send a request — we'll build an itinerary for your dates and budget.",
+      gal_cta_btn: "Send a request",
       lb_close: 'Close', lb_prev: 'Previous photo', lb_next: 'Next photo'
     }
   };

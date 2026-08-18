@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use App\Models\BaikonurLaunch;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -37,6 +38,31 @@ class PageMetaController extends Controller
             'image' => $tour->photos[0] ?? null,
             'url' => url('/tour').'?slug='.$tour->slug.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
+        ]);
+    }
+
+    /**
+     * Страница альбома. Скрытые альбомы дополнительно закрываются от индексации:
+     * ссылка предназначена конкретному клиенту, в поиске ей делать нечего.
+     */
+    public function album(Request $request)
+    {
+        $lang = $this->lang($request);
+        $album = Album::with('items')->where('slug', $request->query('slug'))->first();
+
+        if (! $album) {
+            return $this->render('album.html', null);
+        }
+
+        $cover = $album->cover ?: optional($album->items->firstWhere('type', 'image'))->url;
+
+        return $this->render('album.html', [
+            'title' => $album->getTranslation('title', $lang, true),
+            'description' => $album->getTranslation('description', $lang, true),
+            'image' => $cover,
+            'url' => url('/album').'?slug='.$album->slug.($lang === 'ru' ? '' : '&lang='.$lang),
+            'lang' => $lang,
+            'noindex' => $album->isUnlisted(),
         ]);
     }
 
@@ -117,7 +143,11 @@ class PageMetaController extends Controller
         $image = $this->absolute($m['image']);
         $locale = ['ru' => 'ru_RU', 'kz' => 'kk_KZ', 'en' => 'en_US'][$m['lang']];
 
-        $tags = [
+        $tags = [];
+        if (! empty($m['noindex'])) {
+            $tags[] = '<meta name="robots" content="noindex, nofollow">';
+        }
+        $tags = array_merge($tags, [
             '<meta name="description" content="'.e($desc).'">',
             '<link rel="canonical" href="'.e($m['url']).'">',
             '<meta property="og:type" content="article">',
@@ -128,7 +158,7 @@ class PageMetaController extends Controller
             '<meta property="og:url" content="'.e($m['url']).'">',
             '<meta property="og:image" content="'.e($image).'">',
             '<meta name="twitter:card" content="summary_large_image">',
-        ];
+        ]);
 
         return implode("\n", $tags);
     }

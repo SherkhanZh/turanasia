@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Отзывы — Turan Asia</title>
-<meta name="description" content="Что говорят путешественники о турах Turan Asia.">
-<link rel="canonical" href="https://turanasia.kz/reviews">
+<title>Галерея — Turan Asia</title>
+<meta name="description" content="Фото и видео из наших туров по Казахстану и миру.">
+<link rel="canonical" href="https://turanasia.kz/gallery">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Turan Asia">
 <meta property="og:locale" content="ru_RU">
-<meta property="og:title" content="Отзывы — Turan Asia">
-<meta property="og:description" content="Что говорят путешественники о турах Turan Asia.">
-<meta property="og:url" content="https://turanasia.kz/reviews">
+<meta property="og:title" content="Галерея — Turan Asia">
+<meta property="og:description" content="Фото и видео из наших туров по Казахстану и миру.">
+<meta property="og:url" content="https://turanasia.kz/gallery">
 <meta property="og:image" content="https://turanasia.kz/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -42,37 +42,40 @@
     </div>
   </nav>
 </header>
-
-<section class="pagehero" style="--ph:url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80')">
+<section class="pagehero" style="--ph:url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80')">
   <div class="wrap">
-    <div class="crumbs"><a href="design3.html">Главная</a> / <span>Отзывы</span></div>
-    <h1 class="dm">Отзывы наших гостей</h1>
-    <p>Текстовые, фото- и видеоотзывы путешественников Turan Asia.</p>
+    <div class="crumbs"><a href="design3.html">Главная</a> / <span>Галерея</span></div>
+    <h1 class="dm">Галерея</h1>
+    <p>Фотографии и видео из наших поездок — как всё выглядит на самом деле.</p>
   </div>
 </section>
 
 <section class="sec">
   <div class="wrap">
-    <div class="rev-tabs" data-seg data-target="#revs">
-      <button class="on" data-val="all">Все</button>
-      <button data-val="text">Текстовые</button>
-      <button data-val="photo">Фото</button>
-      <button data-val="video">Видео</button>
-    </div>
-
-    <div class="rgrid" id="revs">
-      <div class="rev-card" data-type="text"><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=45"></div><div><b>Мария</b><small>США</small></div></div><div class="stars">★★★★★</div><p>«Поездка в Алматы и на Кольсайские озёра была потрясающей! Великолепная природа и отличная организация.»</p></div></div>
-      <div class="rev-card" data-type="photo"><div class="ph"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"></div><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=32"></div><div><b>Айгерим</b><small>Казахстан</small></div></div><div class="stars">★★★★★</div><p>«Чарын — это космос! Делюсь фото, эмоций море.»</p></div></div>
-      <div class="rev-card" data-type="video"><div class="ph"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"><div class="play"><span>▶</span></div></div><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=12"></div><div><b>Дэвид</b><small>Великобритания</small></div></div><div class="stars">★★★★★</div><p>«Видео с экспедиции в Мангистау — это надо видеть!»</p></div></div>
-      <div class="rev-card" data-type="text"><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=5"></div><div><b>Эмма Л.</b><small>Австралия</small></div></div><div class="stars">★★★★★</div><p>«Казахстан превзошёл все ожидания. Люди невероятно гостеприимны.»</p></div></div>
-      <div class="rev-card" data-type="photo"><div class="ph"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=700&q=80"></div><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=20"></div><div><b>Нурлан</b><small>Казахстан</small></div></div><div class="stars">★★★★★</div><p>«Астана с гидом открылась с новой стороны. Прикладываю кадры.»</p></div></div>
-      <div class="rev-card" data-type="text"><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=8"></div><div><b>Sarah</b><small>Канада</small></div></div><div class="stars">★★★★★</div><p>«Аутентичный опыт и идеальная организация. Очень рекомендую!»</p></div></div>
-    </div>
-
-    <div class="center" style="margin-top:38px"><a class="btn btn-pri" href="contacts.html">Оставить отзыв</a></div>
+    <div class="albums" id="albums" data-ta-live><div class="empty">…</div></div>
   </div>
 </section>
 
+<script src="assets/api.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var box = document.getElementById('albums');
+  TA.get('/albums').then(function (r) {
+    var rows = TA.list(r);
+    if (!rows.length) { box.innerHTML = '<div class="empty">' + TA.t('gal_empty') + '</div>'; return; }
+    box.innerHTML = rows.map(function (a) {
+      var url = 'album.html?slug=' + encodeURIComponent(a.slug);
+      var cover = a.cover || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80';
+      return '<a class="album" href="' + url + '">' +
+        '<span class="ph"><img src="' + TA.esc(cover) + '" alt="' + TA.esc(a.title) + '"></span>' +
+        '<span class="b"><b>' + TA.esc(a.title) + '</b>' +
+        (a.description ? '<small>' + TA.esc(a.description) + '</small>' : '') +
+        '<span class="cnt">' + TA.t('gal_count', { n: a.items_count }) + '</span></span></a>';
+    }).join('');
+  }).catch(function () { TA.fail(box, TA.t('gal_err')); });
+})();
+</script>
 <footer>
   <div class="wrap">
     <div class="fg">

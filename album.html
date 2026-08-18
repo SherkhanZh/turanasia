@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Отзывы — Turan Asia</title>
-<meta name="description" content="Что говорят путешественники о турах Turan Asia.">
-<link rel="canonical" href="https://turanasia.kz/reviews">
+<title>Альбом — Turan Asia</title>
+<!-- ta:meta -->   <!-- Мета-теги подставляет Laravel: см. PageMetaController -->
+<meta name="description" content="Фото и видео из тура.">
+<link rel="canonical" href="https://turanasia.kz/album">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Turan Asia">
 <meta property="og:locale" content="ru_RU">
-<meta property="og:title" content="Отзывы — Turan Asia">
-<meta property="og:description" content="Что говорят путешественники о турах Turan Asia.">
-<meta property="og:url" content="https://turanasia.kz/reviews">
+<meta property="og:title" content="Альбом — Turan Asia">
+<meta property="og:description" content="Фото и видео из тура.">
+<meta property="og:url" content="https://turanasia.kz/album">
 <meta property="og:image" content="https://turanasia.kz/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<!-- /ta:meta -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
@@ -42,37 +44,45 @@
     </div>
   </nav>
 </header>
-
-<section class="pagehero" style="--ph:url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80')">
+<section class="sec" style="padding-top:40px">
   <div class="wrap">
-    <div class="crumbs"><a href="design3.html">Главная</a> / <span>Отзывы</span></div>
-    <h1 class="dm">Отзывы наших гостей</h1>
-    <p>Текстовые, фото- и видеоотзывы путешественников Turan Asia.</p>
+    <div class="crumbs" style="color:var(--muted);opacity:1"><a href="gallery.html">Галерея</a> / <span id="crumb">…</span></div>
+    <div id="view" data-ta-live><div class="empty">…</div></div>
   </div>
 </section>
 
-<section class="sec">
-  <div class="wrap">
-    <div class="rev-tabs" data-seg data-target="#revs">
-      <button class="on" data-val="all">Все</button>
-      <button data-val="text">Текстовые</button>
-      <button data-val="photo">Фото</button>
-      <button data-val="video">Видео</button>
-    </div>
+<script src="assets/api.js"></script>
+<script src="assets/gallery.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var view = document.getElementById('view');
+  var slug = new URLSearchParams(location.search).get('slug');
+  if (!slug) { TA.fail(view, TA.t('gal_nf')); return; }
 
-    <div class="rgrid" id="revs">
-      <div class="rev-card" data-type="text"><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=45"></div><div><b>Мария</b><small>США</small></div></div><div class="stars">★★★★★</div><p>«Поездка в Алматы и на Кольсайские озёра была потрясающей! Великолепная природа и отличная организация.»</p></div></div>
-      <div class="rev-card" data-type="photo"><div class="ph"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"></div><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=32"></div><div><b>Айгерим</b><small>Казахстан</small></div></div><div class="stars">★★★★★</div><p>«Чарын — это космос! Делюсь фото, эмоций море.»</p></div></div>
-      <div class="rev-card" data-type="video"><div class="ph"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"><div class="play"><span>▶</span></div></div><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=12"></div><div><b>Дэвид</b><small>Великобритания</small></div></div><div class="stars">★★★★★</div><p>«Видео с экспедиции в Мангистау — это надо видеть!»</p></div></div>
-      <div class="rev-card" data-type="text"><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=5"></div><div><b>Эмма Л.</b><small>Австралия</small></div></div><div class="stars">★★★★★</div><p>«Казахстан превзошёл все ожидания. Люди невероятно гостеприимны.»</p></div></div>
-      <div class="rev-card" data-type="photo"><div class="ph"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=700&q=80"></div><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=20"></div><div><b>Нурлан</b><small>Казахстан</small></div></div><div class="stars">★★★★★</div><p>«Астана с гидом открылась с новой стороны. Прикладываю кадры.»</p></div></div>
-      <div class="rev-card" data-type="text"><div class="rc-b"><div class="top"><div class="av"><img src="https://i.pravatar.cc/96?img=8"></div><div><b>Sarah</b><small>Канада</small></div></div><div class="stars">★★★★★</div><p>«Аутентичный опыт и идеальная организация. Очень рекомендую!»</p></div></div>
-    </div>
+  TA.get('/albums/' + encodeURIComponent(slug)).then(function (a) {
+    if (!a || !a.slug) { TA.fail(view, TA.t('gal_nf')); return; }
 
-    <div class="center" style="margin-top:38px"><a class="btn btn-pri" href="contacts.html">Оставить отзыв</a></div>
-  </div>
-</section>
+    document.title = a.title + ' — Turan Asia';
+    document.getElementById('crumb').textContent = a.title;
 
+    var mediaList = TAG.media(a.photos, a.videos);
+
+    view.innerHTML =
+      '<h1 class="dm" style="font-size:34px;font-weight:800;margin:6px 0 10px">' + TA.esc(a.title) + '</h1>' +
+      (a.description ? '<p style="color:var(--muted);max-width:720px;margin-bottom:26px">' + TA.text(a.description) + '</p>' : '<div style="height:18px"></div>') +
+      (mediaList.length ? TAG.html(mediaList, a.title) : '<div class="empty">' + TA.t('gal_empty') + '</div>') +
+      (a.tour ? '<p style="margin-top:26px"><a class="btn btn-pri" href="tour.html?slug=' + encodeURIComponent(a.tour.slug) + '">' + TA.t('gal_tour') + '</a></p>' : '') +
+      '<div class="cta" style="margin-top:40px"><div class="cta-in">' +
+        '<h2 class="dm">' + TA.t('gal_cta_h') + '</h2>' +
+        '<p>' + TA.t('gal_cta_p') + '</p>' +
+        '<a class="btn" href="contacts.html">' + TA.t('gal_cta_btn') + '</a>' +
+      '</div></div>';
+
+    TAG.bind(view, mediaList);
+  }).catch(function () { TA.fail(view, TA.t('gal_nf')); });
+})();
+</script>
 <footer>
   <div class="wrap">
     <div class="fg">

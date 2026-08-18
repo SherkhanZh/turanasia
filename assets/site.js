@@ -141,6 +141,15 @@
       'p.cont.f_msg_ph':"Чем можем помочь?",
       'p.cont.send':"Отправить заявку",
       'p.cont.privacy':"Нажимая «Отправить», вы соглашаетесь с политикой конфиденциальности.",
+      'gal_empty':"В альбоме пока нет материалов.",
+      'gal_count':"{n} материалов",
+      'gal_err':"Не удалось загрузить галерею.",
+      'gal_nf':"Альбом не найден.",
+      'gal_tour':"Посмотреть тур",
+      'gal_cta_h':"Понравилось?",
+      'gal_cta_p':"Оставьте заявку — подберём маршрут под ваши даты и бюджет.",
+      'gal_cta_btn':"Оставить заявку",
+      'nav.gallery':"Галерея",
       'foot.about':'С 1994 года — туроператор по Казахстану и миру.','foot.tours':'Туры','foot.company':'Компания','foot.contacts':'Контакты','foot.menu':'Меню','foot.social':'Мы в соцсетях','foot.kz':'По Казахстану','foot.foreign':'Зарубежные','foot.individual':'Индивидуальные','foot.reviews':'Отзывы','foot.hotels':'Отели','foot.cruises':'Круизы','foot.dests':'Направления','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, ул. Желтоксан, 111а','foot.rights':'© 2026 Turan Asia. Все права защищены.','foot.privacy':'Политика конфиденциальности','foot.terms':'Оферта'
     },
     kz: {
@@ -233,6 +242,15 @@
       'p.cont.f_msg_ph':"Немен көмектесе аламыз?",
       'p.cont.send':"Өтінім жіберу",
       'p.cont.privacy':"«Жіберу» түймесін басу арқылы сіз құпиялылық саясатымен келісесіз.",
+      'gal_empty':"Альбомда әзірге материал жоқ.",
+      'gal_count':"{n} материал",
+      'gal_err':"Галереяны жүктеу мүмкін болмады.",
+      'gal_nf':"Альбом табылмады.",
+      'gal_tour':"Турды қарау",
+      'gal_cta_h':"Ұнады ма?",
+      'gal_cta_p':"Өтінім қалдырыңыз — күндеріңіз бен бюджетіңізге сай бағыт таңдаймыз.",
+      'gal_cta_btn':"Өтінім қалдыру",
+      'nav.gallery':"Галерея",
       'foot.about':'1994 жылдан бері — Қазақстан және әлем бойынша туроператор.','foot.tours':'Турлар','foot.company':'Компания','foot.contacts':'Байланыс','foot.menu':'Мәзір','foot.social':'Әлеуметтік желілерде','foot.kz':'Қазақстан бойынша','foot.foreign':'Шетелдік','foot.individual':'Жеке','foot.reviews':'Пікірлер','foot.hotels':'Қонақүйлер','foot.cruises':'Круиздер','foot.dests':'Бағыттар','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, Желтоқсан к-сі, 111а','foot.rights':'© 2026 Turan Asia. Барлық құқықтар қорғалған.','foot.privacy':'Құпиялылық саясаты','foot.terms':'Оферта'
     },
     en: {
@@ -325,6 +343,15 @@
       'p.cont.f_msg_ph':"How can we help?",
       'p.cont.send':"Send request",
       'p.cont.privacy':"By clicking Send you agree to our privacy policy.",
+      'gal_empty':"This album is empty for now.",
+      'gal_count':"{n} items",
+      'gal_err':"Could not load the gallery.",
+      'gal_nf':"Album not found.",
+      'gal_tour':"View the tour",
+      'gal_cta_h':"Like what you see?",
+      'gal_cta_p':"Send a request — we'll build an itinerary for your dates and budget.",
+      'gal_cta_btn':"Send a request",
+      'nav.gallery':"Gallery",
       'foot.about':'Since 1994 — Kazakhstan & Worldwide Tour Operator.','foot.tours':'Tours','foot.company':'Company','foot.contacts':'Contacts','foot.menu':'Menu','foot.social':'Follow us','foot.kz':'In Kazakhstan','foot.foreign':'International','foot.individual':'Tailor-made','foot.reviews':'Reviews','foot.hotels':'Hotels','foot.cruises':'Cruises','foot.dests':'Destinations','foot.hours':'09:00 – 19:00','foot.addr':'Almaty, 111a Zheltoksan St.','foot.rights':'© 2026 Turan Asia. All rights reserved.','foot.privacy':'Privacy Policy','foot.terms':'Offer'
     }
   };

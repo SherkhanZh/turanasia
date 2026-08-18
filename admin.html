@@ -97,6 +97,27 @@ tr:hover td{background:#fafbfc}
 .b-blue{background:var(--blue-s);color:var(--blue)}.b-teal{background:var(--teal-s);color:var(--teal)}
 .b-gray{background:#eef0f3;color:var(--muted)}.b-red{background:var(--red-s);color:var(--red)}
 .acts{display:flex;gap:6px}
+/* галерея: плитки материалов альбома */
+.al-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.al-item{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
+.al-item img{width:100%;height:100%;object-fit:cover;display:block}
+.al-item .al-vid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--pri);background:var(--pri-soft)}
+.al-item .al-tag{position:absolute;left:8px;bottom:8px;background:rgba(0,32,70,.75);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+.al-item .al-x{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-style:normal;font-size:16px;cursor:pointer;opacity:0;transition:.15s}
+.al-item:hover .al-x{opacity:1}
+.al-item .al-x:hover{background:var(--red)}
+/* окно выбора фото из медиатеки */
+.pick-bd{position:fixed;inset:0;z-index:200;background:rgba(15,23,34,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.pick{background:#fff;border-radius:14px;width:min(900px,100%);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.pick-h{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.pick-x{cursor:pointer;font-size:22px;color:var(--muted);line-height:1}
+.pick-x:hover{color:var(--ink)}
+.pick-b{padding:18px 20px;overflow:auto;flex:1}
+.pick-f{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-top:1px solid var(--line)}
+.pick-i{cursor:pointer;transition:.15s}
+.pick-i.on{outline:3px solid var(--pri);outline-offset:-3px}
+.pick-i.on::after{content:"✓";position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
 .iact{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;font-size:14px}
 .iact:hover{color:var(--pri);border-color:var(--pri)}
 .iact.del:hover{color:var(--red);border-color:var(--red)}
@@ -129,6 +150,7 @@ tr:hover td{background:#fafbfc}
 .up-th img{width:100%;height:100%;object-fit:cover;display:block}
 .up-th .up-x{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;line-height:1}
 .up-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--pri);font-weight:600;font-size:13px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px}
+.up-btn + .up-btn{margin-left:8px}
 .up-btn:hover{border-color:var(--pri)}
 /* dates repeater */
 .dates .drow{display:grid;grid-template-columns:1fr 1fr 92px 110px 34px;gap:8px;align-items:center;margin-bottom:8px}
@@ -177,6 +199,7 @@ tr:hover td{background:#fafbfc}
       <div class="lbl">Контент</div>
       <a data-p="tours">Туры <span class="cnt" id="c-tours"></span></a>
       <a data-p="baikonur">Байконур</a>
+      <a data-p="albums">Галерея</a>
       <a data-p="directions">Направления</a>
       <a data-p="reviews">Отзывы</a>
       <a data-p="banners">Баннеры</a>

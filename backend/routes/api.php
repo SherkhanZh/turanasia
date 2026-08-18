@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AlbumController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BaikonurController;
 use App\Http\Controllers\Api\ContentController;
@@ -35,6 +36,10 @@ Route::prefix('v1')->group(function () {
     Route::get('baikonur/faq', [BaikonurController::class, 'faq']);
     Route::get('baikonur/gallery', [BaikonurController::class, 'gallery']);
 
+    // Галерея: список видимых альбомов и альбом по адресу
+    Route::get('albums', [AlbumController::class, 'index']);
+    Route::get('albums/{slug}', [AlbumController::class, 'show']);
+
     // Приём заявки с сайта (антиспам: не более 8 заявок в минуту с IP)
     Route::post('leads', [LeadController::class, 'store'])->middleware('throttle:8,1');
 
@@ -54,8 +59,20 @@ Route::prefix('v1/admin')
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('stats', [Admin\StatsController::class, 'index']);
 
-        // Загрузка изображений
+        // Загрузка файлов
         Route::post('media', [Admin\MediaController::class, 'store']);
+        Route::post('media/video', [Admin\MediaController::class, 'video']);
+        Route::get('media/library', [Admin\MediaController::class, 'library']);
+
+        // Галерея: альбомы и их содержимое
+        Route::get('albums', [Admin\AlbumController::class, 'index']);
+        Route::post('albums', [Admin\AlbumController::class, 'store']);
+        Route::get('albums/{album}', [Admin\AlbumController::class, 'show']);
+        Route::put('albums/{album}', [Admin\AlbumController::class, 'update']);
+        Route::delete('albums/{album}', [Admin\AlbumController::class, 'destroy']);
+        Route::post('albums/{album}/items', [Admin\AlbumController::class, 'addItem']);
+        Route::put('albums/{album}/items/{item}', [Admin\AlbumController::class, 'updateItem']);
+        Route::delete('albums/{album}/items/{item}', [Admin\AlbumController::class, 'deleteItem']);
 
         // Туры
         Route::get('tours', [Admin\TourController::class, 'index']);

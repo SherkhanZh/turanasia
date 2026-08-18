@@ -93,7 +93,14 @@
       Promise.all([
         api('/admin/categories').catch(function(){return [];}),
         api('/admin/directions').catch(function(){return [];})
-      ]).then(function (r) { CACHE.categories = normalize(r[0]); CACHE.directions = flattenDir(normalize(r[1])); go('dash'); });
+      ]).then(function (r) {
+        CACHE.categories = normalize(r[0]);
+        CACHE.directions = flattenDir(normalize(r[1]));
+        api('/admin/tours?per_page=200').then(function (tr) {
+          CACHE.tours = normalize(tr).map(function (x) { return { id: x.id, label: t(x.title) }; });
+        }).catch(function () { CACHE.tours = []; });
+        go('dash');
+      });
     }).catch(function () { logout(); });
   }
   function flattenDir(tree, out, depth) {
@@ -226,6 +233,27 @@
         f('sort', 'Порядок', 'number')
       ]
     },
+    albums: {
+      title: 'Галерея', endpoint: '/admin/albums',
+      cols: [
+        { l: 'Альбом', g: function (r) { return cellPhoto(r.cover, t(r.title), t(r.description)); } },
+        { l: 'Доступ', g: function (r) { return r.visibility === 'public'
+            ? '<span class="badge b-green">На сайте</span>'
+            : '<span class="badge b-amber">По ссылке</span>'; } },
+        { l: 'Материалов', g: function (r) { return '<span class="muted">' + (r.items_count || 0) + '</span>'; } },
+        { l: '', g: function (r) { return '<button class="btn btn-out btn-sm" data-albumopen="' + r.id + '">Содержимое</button>'
+            + ' <button class="btn btn-out btn-sm" data-copy="' + esc(r.public_url) + '">Ссылка</button>'; } }
+      ],
+      fields: [
+        f('title', 'Название альбома', 'tr-text', { req: 1 }),
+        f('description', 'Описание', 'tr-textarea'),
+        f('visibility', 'Доступ', 'select', { req: 1, options: opt([
+            ['unlisted', 'Только по ссылке — для отправки клиенту'],
+            ['public', 'Показывать в галерее на сайте']]) }),
+        f('tour_id', 'Связать с туром (необязательно)', 'ref', { ref: 'tours' }),
+        f('sort', 'Порядок', 'number')
+      ]
+    },
     faqs: {
       title: 'FAQ', endpoint: '/admin/faqs',
       cols: [
@@ -256,7 +284,7 @@
   function toggleCell(res, id, on, action) { return '<span class="sw ' + (on ? 'on' : '') + '" data-toggle="' + res + '" data-id="' + id + '" data-action="' + (action||'') + '"></span>'; }
 
   /* ---------- ROUTER ---------- */
-  var TITLES = { dash: 'Дашборд', tours: 'Туры', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
+  var TITLES = { dash: 'Дашборд', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
   function go(p) {
     document.querySelectorAll('#nav a').forEach(function (a) { a.classList.toggle('active', a.dataset.p === p); });
     el('ptitle').textContent = TITLES[p] || '';
@@ -284,6 +312,151 @@
     }).catch(showErr);
   }
   function leadStatusBadge(s) { var m = { new: ['b-blue', 'Новая'], in_progress: ['b-amber', 'В работе'], processed: ['b-teal', 'Обработана'], done: ['b-green', 'Завершена'] }; var x = m[s] || ['b-gray', s]; return '<span class="badge ' + x[0] + '">' + x[1] + '</span>'; }
+
+
+
+  /* ---------- ВЫБОР ФОТО ИЗ МЕДИАТЕКИ ---------- */
+  /* Один и тот же снимок часто нужен в нескольких турах — берём уже загруженный,
+     вместо того чтобы отправлять файл на сервер повторно. */
+  function openPicker(container) {
+    var multi = container.dataset.multi === '1';
+    var box = document.createElement('div');
+    box.className = 'pick-bd';
+    box.innerHTML = '<div class="pick"><div class="pick-h"><b>Выбор из галереи</b><span class="pick-x">×</span></div>' +
+      '<div class="pick-b"><div class="spin">Загрузка…</div></div>' +
+      '<div class="pick-f"><span class="muted" id="pick-n">Ничего не выбрано</span>' +
+      '<button type="button" class="btn btn-pri btn-sm" id="pick-ok">Добавить</button></div></div>';
+    document.body.appendChild(box);
+
+    var chosen = [];
+    function close() { box.remove(); }
+    box.querySelector('.pick-x').addEventListener('click', close);
+    box.addEventListener('click', function (e) { if (e.target === box) close(); });
+
+    api('/admin/media/library').then(function (r) {
+      var rows = normalize(r);
+      var body = box.querySelector('.pick-b');
+      if (!rows.length) {
+        body.innerHTML = '<div class="empty">В галерее пока нет загруженных фото.<br>Добавьте их в разделе «Галерея».</div>';
+        return;
+      }
+      body.innerHTML = '<div class="al-grid">' + rows.map(function (i) {
+        return '<div class="al-item pick-i" data-url="' + esc(i.url) + '"><img src="' + esc(i.thumb || i.url) + '"></div>';
+      }).join('') + '</div>';
+
+      body.querySelectorAll('.pick-i').forEach(function (n) {
+        n.addEventListener('click', function () {
+          var url = n.dataset.url;
+          var at = chosen.indexOf(url);
+          if (at >= 0) { chosen.splice(at, 1); n.classList.remove('on'); }
+          else {
+            if (!multi) { chosen = []; body.querySelectorAll('.pick-i').forEach(function (x) { x.classList.remove('on'); }); }
+            chosen.push(url); n.classList.add('on');
+          }
+          box.querySelector('#pick-n').textContent = chosen.length ? 'Выбрано: ' + chosen.length : 'Ничего не выбрано';
+        });
+      });
+    }).catch(function () { box.querySelector('.pick-b').innerHTML = '<div class="empty">Не удалось загрузить галерею</div>'; });
+
+    box.querySelector('#pick-ok').addEventListener('click', function () {
+      var list = container.querySelector('.up-list');
+      if (!multi) list.innerHTML = '';
+      chosen.forEach(function (u) { list.insertAdjacentHTML('beforeend', thumbHtml(u)); });
+      close();
+    });
+  }
+
+  /* ---------- СОДЕРЖИМОЕ АЛЬБОМА ---------- */
+  var openAlbum = null;   // id альбома, открытого на просмотр
+
+  function viewAlbum(id) {
+    openAlbum = id;
+    el('ptitle').textContent = 'Альбом';
+    document.querySelectorAll('#nav a').forEach(function (a) { a.classList.toggle('active', a.dataset.p === 'albums'); });
+    el('view').innerHTML = '<div class="spin">Загрузка…</div>';
+
+    api('/admin/albums/' + id).then(function (a) {
+      var isPublic = a.visibility === 'public';
+      var items = (a.items || []).map(itemCard).join('');
+
+      el('view').innerHTML =
+        '<div class="phead"><div class="t"><h2>' + esc(t(a.title)) + '</h2>' +
+          '<p>' + (isPublic ? 'Показывается в галерее на сайте' : 'Открывается только по прямой ссылке') + '</p></div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+            '<button class="btn btn-out" data-back="albums">← К альбомам</button>' +
+            '<button class="btn btn-pri" data-copy="' + esc(a.public_url) + '">Скопировать ссылку</button>' +
+          '</div></div>' +
+
+        '<div class="card" style="padding:18px 20px;margin-bottom:18px">' +
+          '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">' +
+            '<label class="btn btn-pri">+ Загрузить фото<input type="file" accept="image/*" multiple hidden id="al-img"></label>' +
+            '<label class="btn btn-out">+ Загрузить видео<input type="file" accept="video/*" hidden id="al-vid"></label>' +
+            '<button class="btn btn-out" id="al-link">+ Видео по ссылке</button>' +
+            '<span class="muted" style="font-size:12.5px">Фото — до 20 МБ, уменьшим автоматически. Видеофайл — до 50 МБ; длинные ролики лучше заливать на YouTube и добавлять ссылкой.</span>' +
+          '</div>' +
+          '<div id="al-progress" class="muted" style="margin-top:10px;font-size:13px"></div>' +
+        '</div>' +
+
+        '<div class="card" style="padding:18px 20px"><div class="al-grid" id="al-grid">' +
+          (items || '<div class="empty">В альбоме пока пусто</div>') +
+        '</div></div>';
+
+      el('al-img').addEventListener('change', function () { uploadItems(this.files, 'image'); });
+      el('al-vid').addEventListener('change', function () { uploadItems(this.files, 'video'); });
+      el('al-link').addEventListener('click', function () {
+        var url = prompt('Ссылка на видео (YouTube, Vimeo, Rutube):');
+        if (url) addItem({ type: 'video', url: url.trim() });
+      });
+    }).catch(showErr);
+  }
+
+  function itemCard(i) {
+    var pic = i.type === 'image' ? (i.thumb || i.url) : (i.thumb || '');
+    return '<div class="al-item" data-item="' + i.id + '">' +
+      (pic ? '<img src="' + esc(pic) + '">' : '<span class="al-vid">▶</span>') +
+      (i.type === 'video' ? '<span class="al-tag">видео</span>' : '') +
+      '<i class="al-x" data-delitem="' + i.id + '">×</i></div>';
+  }
+
+  /** Последовательная загрузка: параллельная на слабом канале обрывается. */
+  function uploadItems(files, type) {
+    var list = [].slice.call(files);
+    if (!list.length) return;
+    var done = 0;
+    var pr = el('al-progress');
+
+    function next() {
+      if (!list.length) { pr.textContent = 'Загружено: ' + done; viewAlbum(openAlbum); return; }
+      var file = list.shift();
+      pr.textContent = 'Загружаем ' + file.name + '… (' + (done + 1) + ' из ' + (done + 1 + list.length) + ')';
+      var fd = new FormData();
+      fd.append('type', type);
+      fd.append('file', file);
+      fetch(API + '/admin/albums/' + openAlbum + '/items', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + TOKEN, 'Accept': 'application/json' },
+        body: fd
+      }).then(function (r) { return r.json().then(function (d) { if (!r.ok) throw d; return d; }); })
+        .then(function () { done++; next(); })
+        .catch(function (e) { toast(firstError(e) || 'Не удалось загрузить ' + file.name, true); next(); });
+    }
+    next();
+  }
+
+  function addItem(body) {
+    api('/admin/albums/' + openAlbum + '/items', { method: 'POST', body: body })
+      .then(function () { toast('Добавлено'); viewAlbum(openAlbum); })
+      .catch(function (e) { toast(firstError(e) || 'Ошибка', true); });
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('Ссылка скопирована'); })
+        .catch(function () { prompt('Скопируйте ссылку:', text); });
+    } else {
+      prompt('Скопируйте ссылку:', text);
+    }
+  }
 
   /* ---------- GENERIC LIST ---------- */
   function viewList(p) {
@@ -334,7 +507,9 @@
     } else if (fl.type === 'photos' || fl.type === 'image') {
       var multi = fl.type === 'photos';
       var arr = multi ? (Array.isArray(v) ? v : []) : (v ? [v] : []);
-      inner = '<div class="up" data-up="' + fl.key + '" data-multi="' + (multi ? 1 : 0) + '"><div class="up-list">' + arr.map(thumbHtml).join('') + '</div><label class="up-btn">+ Загрузить' + (multi ? ' фото' : ' изображение') + '<input type="file" accept="image/*"' + (multi ? ' multiple' : '') + ' hidden></label></div>';
+      inner = '<div class="up" data-up="' + fl.key + '" data-multi="' + (multi ? 1 : 0) + '"><div class="up-list">' + arr.map(thumbHtml).join('') + '</div>' +
+        '<label class="up-btn">+ Загрузить' + (multi ? ' фото' : ' изображение') + '<input type="file" accept="image/*"' + (multi ? ' multiple' : '') + ' hidden></label>' +
+        '<button type="button" class="up-btn" data-pick="' + fl.key + '">Выбрать из галереи</button></div>';
     } else if (fl.type === 'lines') {
       inner = '<textarea data-k="' + fl.key + '" data-lines="1" placeholder="https://youtube.com/watch?v=...&#10;https://vimeo.com/...">' + (Array.isArray(v) ? v.join('\n') : '') + '</textarea>';
     } else if (fl.type === 'dates') {
@@ -524,6 +699,16 @@
     var ux = e.target.closest('.up-x'); if (ux) { ux.closest('.up-th').remove(); return; }
     var ar = e.target.closest('[data-addrow]'); if (ar) { ar.insertAdjacentHTML('beforebegin', dateRow({})); return; }
     var dr = e.target.closest('[data-delrow]'); if (dr) { dr.closest('.drow').remove(); return; }
+    var cp = e.target.closest('[data-copy]'); if (cp) { copyText(cp.dataset.copy); return; }
+    var pk = e.target.closest('[data-pick]'); if (pk) { openPicker(pk.closest('.up')); return; }
+    var ao = e.target.closest('[data-albumopen]'); if (ao) { viewAlbum(ao.dataset.albumopen); return; }
+    var di = e.target.closest('[data-delitem]');
+    if (di) {
+      if (!confirm('Удалить материал?')) return;
+      api('/admin/albums/' + openAlbum + '/items/' + di.dataset.delitem, { method: 'DELETE' })
+        .then(function () { di.closest('.al-item').remove(); }).catch(function () { toast('Ошибка', true); });
+      return;
+    }
     var tg = e.target.closest('[data-p],[data-new],[data-edit],[data-del],[data-back],[data-go],[data-seo],[data-toggle],[data-toggle-field]');
     if (!tg) return;
     if (tg.dataset.toggleField != null) { tg.classList.toggle('on'); tg.nextElementSibling && (tg.nextElementSibling.textContent = tg.classList.contains('on') ? 'Включено' : 'Выключено'); return; }
