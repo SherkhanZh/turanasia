@@ -273,12 +273,16 @@ body.dark .acc summary:hover{color:#a8cbf0}
 .media{border-radius:var(--r);overflow:hidden;height:420px;box-shadow:var(--shadow)}
 /* широкий вариант: фиксированная высота делала снимок почти квадратным */
 .media.wide{height:auto;aspect-ratio:16/9}
-/* Секция со снимком шире остальных: контейнер до ширины шапки (1400),
-   и сам снимок занимает заметно больше места, чем текстовая колонка. */
+/* Секция со снимком: контейнер до ширины шапки, но сам снимок не шире
+   половины страницы — иначе перевешивает текст. */
 .wrap.wide{max-width:1400px}
-.split.media-lg{grid-template-columns:1fr 1.6fr}
-@media(max-width:1240px){.wrap.wide{max-width:1200px}.split.media-lg{grid-template-columns:1fr 1.35fr}}
-@media(max-width:980px){.split.media-lg{grid-template-columns:1fr}}
+.split.media-lg{grid-template-columns:1fr auto}
+.split.media-lg .media.wide{width:min(50vw,760px)}
+@media(max-width:1240px){.wrap.wide{max-width:1200px}}
+@media(max-width:980px){
+  .split.media-lg{grid-template-columns:1fr}
+  .split.media-lg .media.wide{width:auto}
+}
 .lead-p{font-size:17px;color:#475569;margin-bottom:14px}
 .lics{display:flex;flex-direction:column;gap:14px}
 .lic{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
