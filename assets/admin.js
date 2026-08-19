@@ -301,7 +301,7 @@
   function toggleCell(res, id, on, action) { return '<span class="sw ' + (on ? 'on' : '') + '" data-toggle="' + res + '" data-id="' + id + '" data-action="' + (action||'') + '"></span>'; }
 
   /* ---------- ROUTER ---------- */
-  var TITLES = { dash: 'Дашборд', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur_groups: 'Категории Байконура', baikonur_hero: 'Шапка Байконура', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
+  var TITLES = { dash: 'Дашборд', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur_groups: 'Категории Байконура', baikonur_hero: 'Фото Байконура', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
   function go(p) {
     document.querySelectorAll('#nav a').forEach(function (a) { a.classList.toggle('active', a.dataset.p === p); });
     el('ptitle').textContent = TITLES[p] || '';
@@ -340,10 +340,10 @@
       var photos = Array.isArray(map.baikonur_hero) ? map.baikonur_hero : [];
 
       el('view').innerHTML =
-        '<div class="phead"><div class="t"><h2>Шапка страницы Байконура</h2>' +
-        '<p>Снимки сменяются автоматически. Если фото одно — карусель не запускается.</p></div></div>' +
+        '<div class="phead"><div class="t"><h2>Фото на странице Байконура</h2>' +
+        '<p>Снимок справа от блока «Космос на расстоянии вытянутой руки». Если фото несколько — они сменяются автоматически.</p></div></div>' +
         '<form class="form" id="heroForm">' +
-        fieldHtml(f('baikonur_hero', 'Фотографии шапки', 'photos'), { baikonur_hero: photos }) +
+        fieldHtml(f('baikonur_hero', 'Фотографии', 'photos'), { baikonur_hero: photos }) +
         '<div class="form-foot"><button type="submit" class="btn btn-pri">Сохранить</button></div></form>';
 
       $('#heroForm').addEventListener('submit', function (e) {

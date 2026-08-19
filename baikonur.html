@@ -43,8 +43,7 @@
   </nav>
 </header>
 
-<section class="pagehero" id="bhero" style="--ph:url('https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1920&q=80')">
-  <div class="hero-slides" id="bslides" hidden></div>
+<section class="pagehero" style="--ph:url('https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1920&q=80')">
   <div class="wrap">
     <div class="crumbs"><a href="design3.html" data-i18n="nav.home">Главная</a> / <span data-i18n="nav.baikonur">Байконур</span></div>
     <h1 class="dm" data-i18n="p.baik.h1">Туры на космодром Байконур</h1>
@@ -65,7 +64,7 @@
         <li data-i18n="p.baik.li4">Наблюдение за запуском с разрешённой точки</li>
       </ul>
     </div>
-    <div class="media"><img src="https://images.unsplash.com/photo-1457364887197-9150188c107b?auto=format&fit=crop&w=900&q=80"></div>
+    <div class="media" id="bhero"><img src="https://images.unsplash.com/photo-1457364887197-9150188c107b?auto=format&fit=crop&w=900&q=80" alt=""></div>
   </div>
 </section>
 
@@ -212,25 +211,43 @@
     });
   }).catch(function () {});
 
-  // Карусель в шапке: снимки задаются в админке
+  // Снимки рядом с текстом: задаются в админке, сменяются автоматически
   TA.get('/baikonur/hero').then(function (r) {
     var pics = TA.list(r).filter(Boolean);
-    if (pics.length < 1) return;
-    var hero = document.getElementById('bhero');
-    var slides = document.getElementById('bslides');
-    slides.innerHTML = pics.map(function (u, i) {
+    if (!pics.length) return;
+
+    var box = document.getElementById('bhero');
+    box.classList.add('media-slides');
+    box.innerHTML = pics.map(function (u, i) {
       return '<span class="hs' + (i ? '' : ' on') + '" style="background-image:url(\'' + TA.esc(u) + '\')"></span>';
-    }).join('');
-    slides.hidden = false;
-    hero.classList.add('has-slides');    // прячем фон-заглушку из CSS
+    }).join('') + (pics.length > 1
+      ? '<span class="hdots">' + pics.map(function (u, i) {
+          return '<i' + (i ? '' : ' class="on"') + ' data-s="' + i + '"></i>';
+        }).join('') + '</span>'
+      : '');
+
     if (pics.length < 2) return;
 
-    var i = 0, nodes = slides.querySelectorAll('.hs');
-    setInterval(function () {
-      nodes[i].classList.remove('on');
-      i = (i + 1) % nodes.length;
-      nodes[i].classList.add('on');
-    }, 5000);
+    var cur = 0;
+    var nodes = box.querySelectorAll('.hs');
+    var dots = box.querySelectorAll('.hdots i');
+    var timer;
+
+    function go(n) {
+      nodes[cur].classList.remove('on'); dots[cur].classList.remove('on');
+      cur = (n + nodes.length) % nodes.length;
+      nodes[cur].classList.add('on'); dots[cur].classList.add('on');
+    }
+    function play() { timer = setInterval(function () { go(cur + 1); }, 5000); }
+
+    box.querySelector('.hdots').addEventListener('click', function (e) {
+      var d = e.target.closest('i');
+      if (!d) return;
+      clearInterval(timer);            // ручное переключение отменяет автопрокрутку
+      go(parseInt(d.dataset.s, 10));
+      play();
+    });
+    play();
   }).catch(function () {});
 
   TA.get('/baikonur/launches').then(function (r) {
