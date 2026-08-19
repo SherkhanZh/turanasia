@@ -337,13 +337,13 @@
   function viewBaikonurHero() {
     api('/admin/settings').then(function (r) {
       var map = {}; normalize(r).forEach(function (x) { map[x.key] = x.value; });
-      var photos = Array.isArray(map.baikonur_hero) ? map.baikonur_hero : [];
+      var hero = Array.isArray(map.baikonur_hero) ? map.baikonur_hero : [];
 
       el('view').innerHTML =
         '<div class="phead"><div class="t"><h2>Фото на странице Байконура</h2>' +
         '<p>Снимок справа от блока «Космос на расстоянии вытянутой руки». Если фото несколько — они сменяются автоматически.</p></div></div>' +
         '<form class="form" id="heroForm">' +
-        fieldHtml(f('baikonur_hero', 'Фотографии', 'photos'), { baikonur_hero: photos }) +
+        fieldHtml(f('baikonur_hero', 'Фотографии', 'photos'), { baikonur_hero: hero }) +
         '<div class="form-foot"><button type="submit" class="btn btn-pri">Сохранить</button></div></form>';
 
       $('#heroForm').addEventListener('submit', function (e) {

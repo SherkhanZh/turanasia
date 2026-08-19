@@ -211,16 +211,14 @@
     });
   }).catch(function () {});
 
-  // Снимки рядом с текстом: задаются в админке, сменяются автоматически
-  TA.get('/baikonur/hero').then(function (r) {
-    var pics = TA.list(r).filter(Boolean);
-    if (!pics.length) return;
+  /* Карусель для блока: плавная смена кадров, точки для ручного переключения.
+     Миниатюр нет — они здесь только отвлекали бы от самого снимка. */
+  function slideshow(box, pics, withDots) {
+    if (!box || !pics.length) return;
 
-    var box = document.getElementById('bhero');
-    box.classList.add('media-slides');
     box.innerHTML = pics.map(function (u, i) {
       return '<span class="hs' + (i ? '' : ' on') + '" style="background-image:url(\'' + TA.esc(u) + '\')"></span>';
-    }).join('') + (pics.length > 1
+    }).join('') + ((withDots && pics.length > 1)
       ? '<span class="hdots">' + pics.map(function (u, i) {
           return '<i' + (i ? '' : ' class="on"') + ' data-s="' + i + '"></i>';
         }).join('') + '</span>'
@@ -228,26 +226,39 @@
 
     if (pics.length < 2) return;
 
-    var cur = 0;
+    var cur = 0, timer;
     var nodes = box.querySelectorAll('.hs');
     var dots = box.querySelectorAll('.hdots i');
-    var timer;
 
     function go(n) {
-      nodes[cur].classList.remove('on'); dots[cur].classList.remove('on');
+      nodes[cur].classList.remove('on');
+      if (dots.length) dots[cur].classList.remove('on');
       cur = (n + nodes.length) % nodes.length;
-      nodes[cur].classList.add('on'); dots[cur].classList.add('on');
+      nodes[cur].classList.add('on');
+      if (dots.length) dots[cur].classList.add('on');
     }
     function play() { timer = setInterval(function () { go(cur + 1); }, 5000); }
 
-    box.querySelector('.hdots').addEventListener('click', function (e) {
-      var d = e.target.closest('i');
-      if (!d) return;
-      clearInterval(timer);            // ручное переключение отменяет автопрокрутку
-      go(parseInt(d.dataset.s, 10));
-      play();
-    });
+    var dotBox = box.querySelector('.hdots');
+    if (dotBox) {
+      dotBox.addEventListener('click', function (e) {
+        var d = e.target.closest('i');
+        if (!d) return;
+        clearInterval(timer);          // ручное переключение отменяет автопрокрутку
+        go(parseInt(d.dataset.s, 10));
+        play();
+      });
+    }
     play();
+  }
+
+  // Снимки блока «Космос на расстоянии вытянутой руки» задаются в админке
+  TA.get('/baikonur/photos').then(function (r) {
+    var pics = TA.list(r).filter(Boolean);
+    if (!pics.length) return;
+    var box = document.getElementById('bhero');
+    box.classList.add('media-slides');
+    slideshow(box, pics, true);
   }).catch(function () {});
 
   TA.get('/baikonur/launches').then(function (r) {

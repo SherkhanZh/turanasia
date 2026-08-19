@@ -36,7 +36,7 @@ Route::prefix('v1')->group(function () {
     Route::get('baikonur/groups', [BaikonurController::class, 'groups']);
     Route::get('baikonur/faq', [BaikonurController::class, 'faq']);
     Route::get('baikonur/gallery', [BaikonurController::class, 'gallery']);
-    Route::get('baikonur/hero', [BaikonurController::class, 'hero']);
+    Route::get('baikonur/photos', [BaikonurController::class, 'photos']);
 
     // Галерея: список видимых альбомов и альбом по адресу
     Route::get('albums', [AlbumController::class, 'index']);

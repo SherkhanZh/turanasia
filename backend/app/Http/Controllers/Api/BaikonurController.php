@@ -60,10 +60,11 @@ class BaikonurController extends Controller
     }
 
     /**
-     * Снимки для карусели в шапке страницы.
+     * Снимки для блока «Космос на расстоянии вытянутой руки».
+     * В верхнем баннере карусель не нужна — там одна картинка из вёрстки.
      */
-    public function hero()
+    public function photos()
     {
-        return response()->json(['data' => Setting::get('baikonur_hero', [])]);
+        return response()->json(['data' => Setting::get('baikonur_hero', []) ?: []]);
     }
 }
