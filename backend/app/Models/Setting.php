@@ -29,7 +29,14 @@ class Setting extends Model
         Cache::forget('settings.all');
     }
 
-    public static function all($columns = ['*'])
+    /**
+     * Все настройки картой «ключ → значение».
+     *
+     * Раньше метод назывался all() и перекрывал одноимённый метод Eloquent:
+     * вызов Setting::all()->get() падал с фатальной ошибкой, потому что у
+     * коллекции get() требует аргумент. Отдельное имя убирает эту ловушку.
+     */
+    public static function map()
     {
         return Cache::rememberForever('settings.all', function () {
             return static::query()->get()->mapWithKeys(fn ($s) => [$s->key => $s->value]);

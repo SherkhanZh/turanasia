@@ -11,9 +11,9 @@ class SettingController extends Controller
     public function index()
     {
         return response()->json(
-            Setting::all()->get()->map(fn ($s) => [
+            Setting::query()->orderBy('group')->orderBy('key')->get()->map(fn ($s) => [
                 'key' => $s->key, 'value' => $s->value, 'group' => $s->group,
-            ])
+            ])->values()
         );
     }
 
