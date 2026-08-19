@@ -43,7 +43,9 @@
   </nav>
 </header>
 
-<section class="pagehero" style="--ph:url('assets/baikonur-hero.jpg')">
+<!-- Путь от корня обязателен: значение --ph подставляется в правило из
+     assets/site.css, и относительный путь браузер считает от файла стилей -->
+<section class="pagehero" style="--ph:url('/assets/baikonur-hero.jpg')">
   <div class="wrap">
     <div class="crumbs"><a href="design3.html" data-i18n="nav.home">Главная</a> / <span data-i18n="nav.baikonur">Байконур</span></div>
     <h1 class="dm" data-i18n="p.baik.h1">Туры на космодром Байконур</h1>
