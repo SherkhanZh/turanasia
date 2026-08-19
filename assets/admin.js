@@ -652,9 +652,9 @@
       var map = s.map || {};
       function fld(k, lab, val) { return '<div class="fld"><label>' + lab + '</label><input data-s="' + k + '" value="' + esc(val == null ? '' : val) + '"></div>'; }
       el('view').innerHTML =
-        '<div class="phead"><div class="t"><h2>Контактные данные</h2><p>Телефоны, адрес, соцсети, карта</p></div></div>' +
+        '<div class="phead"><div class="t"><h2>Контактные данные</h2><p>Значения подставляются в подвал сайта и на страницу контактов</p></div></div>' +
         '<form class="form" id="setForm"><div class="sechead">Контакты</div><div class="grid2">' +
-        fld('phone', 'Телефон', s.phone) + fld('email', 'E-mail', s.email) + fld('address', 'Адрес', s.address) + fld('work_hours', 'Часы работы', s.work_hours) +
+        fld('phone', 'Телефон', s.phone) + fld('phone2', 'Телефон 2', s.phone2) + fld('email', 'E-mail', s.email) + fld('address', 'Адрес', s.address) + fld('work_hours', 'Часы работы', s.work_hours) +
         '</div><div class="sechead" style="margin-top:14px">Соцсети</div><div class="grid2">' +
         fld('instagram', 'Instagram', s.instagram) + fld('telegram', 'Telegram', s.telegram) + fld('whatsapp', 'WhatsApp', s.whatsapp) +
         '</div><div class="sechead" style="margin-top:14px">Карта</div><div class="grid2">' +
@@ -662,7 +662,7 @@
         '</div><div class="form-foot"><button type="submit" class="btn btn-pri">Сохранить</button></div></form>';
       $('#setForm').addEventListener('submit', function (e) {
         e.preventDefault();
-        var groups = { phone: 'contacts', email: 'contacts', address: 'contacts', work_hours: 'contacts', instagram: 'socials', telegram: 'socials', whatsapp: 'socials' };
+        var groups = { phone: 'contacts', phone2: 'contacts', email: 'contacts', address: 'contacts', work_hours: 'contacts', instagram: 'socials', telegram: 'socials', whatsapp: 'socials' };
         var settings = []; var lat = null, lng = null;
         $('#setForm').querySelectorAll('[data-s]').forEach(function (i) {
           var k = i.dataset.s;

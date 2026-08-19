@@ -47,6 +47,44 @@
     });
   }
 
+  /* ===== Контакты из админки =====
+     В разметке лежат настоящие значения, поэтому страница верна и без скрипта
+     (важно для поисковиков). Здесь мы лишь подменяем их, если контакты
+     изменили в панели. Значения из настроек применяются ПОСЛЕ перевода:
+     иначе словарь затирал бы адрес и часы работы. */
+  var CONTACTS = null;
+
+  function applyContacts() {
+    if (!CONTACTS) return;
+    document.querySelectorAll('[data-c]').forEach(function (n) {
+      var v = CONTACTS[n.getAttribute('data-c')];
+      if (v == null || v === '') return;
+      v = String(v);
+      n.textContent = v;
+      var href = n.getAttribute('href') || '';
+      if (href.indexOf('tel:') === 0) n.href = 'tel:' + v.replace(/[^\d+]/g, '');
+      else if (href.indexOf('mailto:') === 0) n.href = 'mailto:' + v;
+    });
+  }
+
+  function loadContacts() {
+    if (!document.querySelector('[data-c]')) return;
+    if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
+
+    try { CONTACTS = JSON.parse(sessionStorage.getItem('ta-contacts') || 'null'); } catch (e) {}
+    if (CONTACTS) { applyContacts(); return; }   // ответ уже брали на прошлой странице
+
+    fetch(location.origin + '/api/v1/contacts', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d) return;
+        CONTACTS = d;
+        try { sessionStorage.setItem('ta-contacts', JSON.stringify(d)); } catch (e) {}
+        applyContacts();
+      })
+      .catch(function () {});   // нет связи — остаются значения из разметки
+  }
+
   /* ===== Мультиязычность (RU / KZ / EN) =====
      Разметка: data-i18n="ключ" (текст) или data-i18n-html="ключ" (с разметкой).
      Новые строки добавляйте во все три языка. */
@@ -507,6 +545,8 @@
       });
     });
     try { localStorage.setItem('ta-lang', lang); } catch (e) {}
+
+    applyContacts();   // значения из панели важнее словаря
   }
 
   /** Текущий язык: ?lang= в адресе важнее сохранённого выбора. */
@@ -546,6 +586,7 @@
 
   var startLang = currentLang();
   applyLang(startLang);
+  loadContacts();
 
   // Если выбран не русский, сразу отражаем язык в адресе: тогда скопированная
   // из строки браузера ссылка откроется у получателя на том же языке.
