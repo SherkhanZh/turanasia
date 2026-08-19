@@ -99,6 +99,9 @@
         api('/admin/tours?per_page=200').then(function (tr) {
           CACHE.tours = normalize(tr).map(function (x) { return { id: x.id, label: t(x.title) }; });
         }).catch(function () { CACHE.tours = []; });
+        api('/admin/baikonur/groups').then(function (gr) {
+          CACHE.baikonur_groups = normalize(gr).map(function (x) { return { id: x.id, label: t(x.title) }; });
+        }).catch(function () { CACHE.baikonur_groups = []; });
         go('dash');
       });
     }).catch(function () { logout(); });
@@ -160,6 +163,7 @@
       ],
       fields: [
         f('title', 'Название миссии', 'tr-text', { req: 1 }),
+        f('group_id', 'Категория тура', 'ref', { ref: 'baikonur_groups' }),
         f('rocket', 'Ракета-носитель', 'tr-text'),
         f('description', 'Описание', 'tr-textarea'),
         f('program', 'Программа', 'tr-textarea'),
@@ -233,6 +237,19 @@
         f('sort', 'Порядок', 'number')
       ]
     },
+    baikonur_groups: {
+      title: 'Категории Байконура', endpoint: '/admin/baikonur/groups',
+      cols: [
+        { l: 'Категория', g: function (r) { return '<b>' + esc(t(r.title)) + '</b>'; } },
+        { l: 'Туров', g: function (r) { return '<span class="muted">' + (r.launches_count || 0) + '</span>'; } },
+        { l: 'Активна', g: function (r) { return badgeBool(r.is_active); } }
+      ],
+      fields: [
+        f('title', 'Название категории', 'tr-text', { req: 1 }),
+        f('is_active', 'Показывать на сайте', 'toggle', { def: true }),
+        f('sort', 'Порядок', 'number')
+      ]
+    },
     albums: {
       title: 'Галерея', endpoint: '/admin/albums',
       cols: [
@@ -284,13 +301,13 @@
   function toggleCell(res, id, on, action) { return '<span class="sw ' + (on ? 'on' : '') + '" data-toggle="' + res + '" data-id="' + id + '" data-action="' + (action||'') + '"></span>'; }
 
   /* ---------- ROUTER ---------- */
-  var TITLES = { dash: 'Дашборд', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
+  var TITLES = { dash: 'Дашборд', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur_groups: 'Категории Байконура', baikonur_hero: 'Шапка Байконура', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
   function go(p) {
     document.querySelectorAll('#nav a').forEach(function (a) { a.classList.toggle('active', a.dataset.p === p); });
     el('ptitle').textContent = TITLES[p] || '';
     el('side').classList.remove('open'); el('scrim').classList.remove('on');
     var v = el('view'); v.innerHTML = '<div class="spin">Загрузка…</div>';
-    ({ dash: viewDash, leads: viewLeads, contacts: viewContacts, seo: viewSeo, staff: viewStaff, audit: viewAudit }[p] || function () { viewList(p); })(p);
+    ({ dash: viewDash, leads: viewLeads, contacts: viewContacts, seo: viewSeo, staff: viewStaff, audit: viewAudit, baikonur_hero: viewBaikonurHero }[p] || function () { viewList(p); })(p);
   }
 
   /* ---------- DASHBOARD ---------- */
@@ -314,6 +331,30 @@
   function leadStatusBadge(s) { var m = { new: ['b-blue', 'Новая'], in_progress: ['b-amber', 'В работе'], processed: ['b-teal', 'Обработана'], done: ['b-green', 'Завершена'] }; var x = m[s] || ['b-gray', s]; return '<span class="badge ' + x[0] + '">' + x[1] + '</span>'; }
 
 
+
+
+  /* ---------- ШАПКА СТРАНИЦЫ БАЙКОНУРА ---------- */
+  function viewBaikonurHero() {
+    api('/admin/settings').then(function (r) {
+      var map = {}; normalize(r).forEach(function (x) { map[x.key] = x.value; });
+      var photos = Array.isArray(map.baikonur_hero) ? map.baikonur_hero : [];
+
+      el('view').innerHTML =
+        '<div class="phead"><div class="t"><h2>Шапка страницы Байконура</h2>' +
+        '<p>Снимки сменяются автоматически. Если фото одно — карусель не запускается.</p></div></div>' +
+        '<form class="form" id="heroForm">' +
+        fieldHtml(f('baikonur_hero', 'Фотографии шапки', 'photos'), { baikonur_hero: photos }) +
+        '<div class="form-foot"><button type="submit" class="btn btn-pri">Сохранить</button></div></form>';
+
+      $('#heroForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var urls = [].map.call($('#heroForm').querySelectorAll('.up-th'), function (th) { return th.dataset.url; });
+        api('/admin/settings', { method: 'PUT', body: { settings: [
+          { key: 'baikonur_hero', value: urls, group: 'baikonur' }
+        ] } }).then(function () { toast('Сохранено'); }).catch(function (e) { toast(firstError(e) || 'Ошибка', true); });
+      });
+    }).catch(showErr);
+  }
 
   /* ---------- ВЫБОР ФОТО ИЗ МЕДИАТЕКИ ---------- */
   /* Один и тот же снимок часто нужен в нескольких турах — берём уже загруженный,

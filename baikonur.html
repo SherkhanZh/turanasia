@@ -43,7 +43,8 @@
   </nav>
 </header>
 
-<section class="pagehero" style="--ph:url('https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1920&q=80')">
+<section class="pagehero" id="bhero" style="--ph:url('https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1920&q=80')">
+  <div class="hero-slides" id="bslides" hidden></div>
   <div class="wrap">
     <div class="crumbs"><a href="design3.html" data-i18n="nav.home">Главная</a> / <span data-i18n="nav.baikonur">Байконур</span></div>
     <h1 class="dm" data-i18n="p.baik.h1">Туры на космодром Байконур</h1>
@@ -85,6 +86,7 @@
         <option value="price_desc" data-i18n="p.baik.sort4">Сначала дороже</option>
       </select>
     </div>
+    <div class="gseg" id="lgroups" hidden></div>
     <div id="launches" data-ta-live><div class="empty">…</div></div>
     <div class="center" style="margin-top:6px;color:var(--muted);font-size:13px" data-i18n="p.baik.booknote">Онлайн-бронирование и оплата появятся на следующем этапе; сейчас бронь оформляется через менеджера.</div>
   </div>
@@ -99,13 +101,6 @@
       <details><summary data-i18n="p.baik.q3">Гарантируется ли, что запуск состоится в дату?</summary><p data-i18n="p.baik.a3">Даты запусков могут сдвигаться по техническим и погодным причинам. Мы заранее предупреждаем и помогаем скорректировать поездку.</p></details>
       <details><summary data-i18n="p.baik.q4">Подходит ли тур детям?</summary><p data-i18n="p.baik.a4">Да, но есть ограничения по возрасту на отдельных объектах. Уточняйте у менеджера при бронировании.</p></details>
     </div>
-  </div>
-</section>
-
-<section class="sec" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-h"><div><h2 class="dm" data-i18n="p.baik.gallery">Галерея</h2></div></div>
-    <div class="ggrid" id="gallery"></div>
   </div>
 </section>
 
@@ -151,11 +146,13 @@
 (function () {
   var box = document.getElementById('launches');
 
-  var ALL = [], mode = 'all';
+  var ALL = [], mode = 'all', group = 'all';
 
   function render() {
     var rows = ALL.filter(function (l) {
-      return mode === 'all' || (l.date_mode || 'fixed') === mode;
+      var byDate = mode === 'all' || (l.date_mode || 'fixed') === mode;
+      var byGroup = group === 'all' || String(l.group_id) === String(group);
+      return byDate && byGroup;
     });
     var sort = document.getElementById('lsort').value;
     rows.sort(function (a, b) {
@@ -195,6 +192,47 @@
   });
   document.getElementById('lsort').addEventListener('change', render);
 
+  // Категории туров: кнопки под сортировкой, «Все туры» выбраны изначально
+  var gbox = document.getElementById('lgroups');
+  TA.get('/baikonur/groups').then(function (r) {
+    var groups = TA.list(r);
+    if (!groups.length) return;          // одна категория или ни одной — кнопки не нужны
+    gbox.innerHTML = '<button class="on" data-g="all">' + TA.t('gr_all') + '</button>' +
+      groups.map(function (g) {
+        return '<button data-g="' + g.id + '">' + TA.esc(g.title) + '</button>';
+      }).join('');
+    gbox.hidden = false;
+    gbox.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      gbox.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      group = b.dataset.g;
+      render();
+    });
+  }).catch(function () {});
+
+  // Карусель в шапке: снимки задаются в админке
+  TA.get('/baikonur/hero').then(function (r) {
+    var pics = TA.list(r).filter(Boolean);
+    if (pics.length < 1) return;
+    var hero = document.getElementById('bhero');
+    var slides = document.getElementById('bslides');
+    slides.innerHTML = pics.map(function (u, i) {
+      return '<span class="hs' + (i ? '' : ' on') + '" style="background-image:url(\'' + TA.esc(u) + '\')"></span>';
+    }).join('');
+    slides.hidden = false;
+    hero.classList.add('has-slides');    // прячем фон-заглушку из CSS
+    if (pics.length < 2) return;
+
+    var i = 0, nodes = slides.querySelectorAll('.hs');
+    setInterval(function () {
+      nodes[i].classList.remove('on');
+      i = (i + 1) % nodes.length;
+      nodes[i].classList.add('on');
+    }, 5000);
+  }).catch(function () {});
+
   TA.get('/baikonur/launches').then(function (r) {
     ALL = TA.list(r);
     if (!ALL.length) { box.innerHTML = '<div class="empty">' + TA.t('launches_soon') + '</div>'; return; }
@@ -212,14 +250,6 @@
     }
   }).catch(function () {});
 
-  var g = document.getElementById('gallery');
-  TA.get('/baikonur/gallery').then(function (r) {
-    var rows = TA.list(r);
-    if (rows.length) {
-      g.innerHTML = rows.map(function (u, i) { return '<a href="' + TA.esc(u) + '" data-i="' + i + '"><img src="' + TA.esc(u) + '" alt=""></a>'; }).join('');
-      TAG.bind(g, rows);
-    } else { g.closest('section').style.display = 'none'; }
-  }).catch(function () { g.closest('section').style.display = 'none'; });
 })();
 </script>
 </body>

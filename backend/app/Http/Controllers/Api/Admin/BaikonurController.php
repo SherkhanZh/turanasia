@@ -53,6 +53,7 @@ class BaikonurController extends Controller
             'title.ru' => ['required', 'string'],
             'title.kz' => ['nullable', 'string'],
             'title.en' => ['nullable', 'string'],
+            'group_id' => ['nullable', 'exists:baikonur_groups,id'],
             'rocket' => ['nullable', 'array'],
             'description' => ['nullable', 'array'],
             'program' => ['nullable', 'array'],

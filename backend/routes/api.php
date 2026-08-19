@@ -33,8 +33,10 @@ Route::prefix('v1')->group(function () {
     // Байконур (данные вводятся вручную в админке)
     Route::get('baikonur/launches', [BaikonurController::class, 'launches']);
     Route::get('baikonur/launches/{slug}', [BaikonurController::class, 'show']);
+    Route::get('baikonur/groups', [BaikonurController::class, 'groups']);
     Route::get('baikonur/faq', [BaikonurController::class, 'faq']);
     Route::get('baikonur/gallery', [BaikonurController::class, 'gallery']);
+    Route::get('baikonur/hero', [BaikonurController::class, 'hero']);
 
     // Галерея: список видимых альбомов и альбом по адресу
     Route::get('albums', [AlbumController::class, 'index']);
@@ -116,6 +118,13 @@ Route::prefix('v1/admin')
         Route::delete('banners/{banner}', [Admin\BannerController::class, 'destroy']);
 
         // Байконур
+        // Категории туров Байконура (объявлены до baikonur/{launch}, иначе
+        // маршрут запуска перехватит слово groups как слаг)
+        Route::get('baikonur/groups', [Admin\BaikonurGroupController::class, 'index']);
+        Route::post('baikonur/groups', [Admin\BaikonurGroupController::class, 'store']);
+        Route::put('baikonur/groups/{group}', [Admin\BaikonurGroupController::class, 'update']);
+        Route::delete('baikonur/groups/{group}', [Admin\BaikonurGroupController::class, 'destroy']);
+
         Route::get('baikonur', [Admin\BaikonurController::class, 'index']);
         Route::post('baikonur', [Admin\BaikonurController::class, 'store']);
         Route::get('baikonur/{launch}', [Admin\BaikonurController::class, 'show']);

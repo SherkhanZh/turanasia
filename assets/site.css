@@ -64,6 +64,24 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .pagehero p{opacity:.92;margin-top:10px;max-width:600px;font-size:17px}
 .crumbs{display:flex;gap:8px;align-items:center;font-size:13px;opacity:.85;margin-bottom:16px}
 .crumbs a:hover{text-decoration:underline}
+/* карусель в шапке: снимки сменяются плавным проявлением, без миниатюр */
+.hero-slides{position:absolute;inset:0;z-index:0}
+.hero-slides .hs{position:absolute;inset:0;background-size:cover;background-position:center;
+  opacity:0;transition:opacity 1.1s ease}
+.hero-slides .hs.on{opacity:1}
+/* когда есть свои снимки, картинка-заглушка из --ph не нужна, оставляем затемнение */
+/* слои шапки: снимки (0) → затемнение (1) → текст (.wrap, 2) */
+.pagehero.has-slides::before{background:linear-gradient(120deg,rgba(0,40,80,.84),rgba(0,40,80,.5));z-index:1}
+
+/* кнопки категорий туров */
+.gseg{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px}
+.gseg[hidden]{display:none}
+.gseg button{border:1px solid var(--line);background:#fff;border-radius:50px;padding:9px 18px;
+  font:inherit;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;transition:.18s}
+.gseg button:hover{border-color:var(--pri);color:var(--pri)}
+.gseg button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+body.dark .gseg button{background:#0c2b49;color:#c2d0e4}
+body.dark .gseg button.on{background:var(--pri);color:#fff}
 
 /* ===== search card / filters ===== */
 .searchbar{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);display:flex;padding:10px}

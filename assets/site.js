@@ -192,6 +192,7 @@
       'p.ind.agree1':"условиями публичной оферты",
       'p.ind.agree_and':"и",
       'p.ind.agree2':"политикой конфиденциальности",
+      'gr_all':"Все туры",
       'foot.about':'С 1994 года — туроператор по Казахстану и миру.','foot.tours':'Туры','foot.company':'Компания','foot.contacts':'Контакты','foot.menu':'Меню','foot.social':'Мы в соцсетях','foot.kz':'По Казахстану','foot.foreign':'Зарубежные','foot.individual':'Индивидуальные','foot.reviews':'Отзывы','foot.hotels':'Отели','foot.cruises':'Круизы','foot.dests':'Направления','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, ул. Желтоксан, 111а','foot.rights':'© 2026 Turan Asia. Все права защищены.','foot.privacy':'Политика конфиденциальности','foot.terms':'Оферта'
     },
     kz: {
@@ -335,6 +336,7 @@
       'p.ind.agree1':"жария оферта шарттарымен",
       'p.ind.agree_and':"және",
       'p.ind.agree2':"құпиялылық саясатымен",
+      'gr_all':"Барлық турлар",
       'foot.about':'1994 жылдан бері — Қазақстан және әлем бойынша туроператор.','foot.tours':'Турлар','foot.company':'Компания','foot.contacts':'Байланыс','foot.menu':'Мәзір','foot.social':'Әлеуметтік желілерде','foot.kz':'Қазақстан бойынша','foot.foreign':'Шетелдік','foot.individual':'Жеке','foot.reviews':'Пікірлер','foot.hotels':'Қонақүйлер','foot.cruises':'Круиздер','foot.dests':'Бағыттар','foot.hours':'09:00 – 19:00','foot.addr':'Алматы, Желтоқсан к-сі, 111а','foot.rights':'© 2026 Turan Asia. Барлық құқықтар қорғалған.','foot.privacy':'Құпиялылық саясаты','foot.terms':'Оферта'
     },
     en: {
@@ -478,6 +480,7 @@
       'p.ind.agree1':"terms of the public offer",
       'p.ind.agree_and':"and the",
       'p.ind.agree2':"privacy policy",
+      'gr_all':"All tours",
       'foot.about':'Since 1994 — Kazakhstan & Worldwide Tour Operator.','foot.tours':'Tours','foot.company':'Company','foot.contacts':'Contacts','foot.menu':'Menu','foot.social':'Follow us','foot.kz':'In Kazakhstan','foot.foreign':'International','foot.individual':'Tailor-made','foot.reviews':'Reviews','foot.hotels':'Hotels','foot.cruises':'Cruises','foot.dests':'Destinations','foot.hours':'09:00 – 19:00','foot.addr':'Almaty, 111a Zheltoksan St.','foot.rights':'© 2026 Turan Asia. All rights reserved.','foot.privacy':'Privacy Policy','foot.terms':'Offer'
     }
   };

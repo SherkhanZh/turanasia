@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaikonurLaunchResource;
+use App\Models\BaikonurGroup;
 use App\Models\BaikonurLaunch;
 use App\Models\Faq;
 use App\Models\Setting;
@@ -25,6 +26,24 @@ class BaikonurController extends Controller
         return new BaikonurLaunchResource($launch);
     }
 
+    /**
+     * Категории туров — кнопки-фильтры на странице.
+     * Пустые категории не отдаём: кнопка, которая ничего не показывает, только мешает.
+     */
+    public function groups()
+    {
+        $groups = BaikonurGroup::active()->withCount(['launches' => fn ($q) => $q->published()])->get();
+
+        return response()->json([
+            'data' => $groups->filter(fn ($g) => $g->launches_count > 0)->map(fn ($g) => [
+                'id' => $g->id,
+                'slug' => $g->slug,
+                'title' => $g->title,
+                'count' => $g->launches_count,
+            ])->values(),
+        ]);
+    }
+
     public function faq()
     {
         return response()->json(
@@ -38,5 +57,13 @@ class BaikonurController extends Controller
     public function gallery()
     {
         return response()->json(Setting::get('baikonur_gallery', []));
+    }
+
+    /**
+     * Снимки для карусели в шапке страницы.
+     */
+    public function hero()
+    {
+        return response()->json(['data' => Setting::get('baikonur_hero', [])]);
     }
 }

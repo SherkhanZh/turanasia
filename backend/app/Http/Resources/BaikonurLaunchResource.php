@@ -12,6 +12,7 @@ class BaikonurLaunchResource extends JsonResource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
+            'group_id' => $this->group_id,
             'title' => $this->title,
             'rocket' => $this->rocket,
             'description' => $this->description,
