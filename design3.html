@@ -103,6 +103,10 @@ header{position:sticky;top:0;z-index:50;background:#004283;border-bottom:1px sol
 .searchbar .f{flex:1;padding:12px 18px;border-right:1px solid var(--line)}
 .searchbar .f label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
 .searchbar .f .v{margin-top:4px;color:#334155;font-size:15px}
+.searchbar .f select,.searchbar .f input{margin-top:2px;width:100%;border:none;background:none;
+  font:inherit;font-size:15px;color:#334155;outline:none;padding:2px 0;cursor:pointer}
+.searchbar .f select:focus,.searchbar .f input:focus{color:var(--pri)}
+.searchbar .f input[type=date]{cursor:text}
 .searchbar .go{align-self:center;margin:0 6px 0 12px}
 
 /* bento destinations */
@@ -232,6 +236,8 @@ body.dark .wc{background:#0b2746}
 body.dark .wc .chip{background:#11375c;color:#cfe0f5}
 body.dark .eyebrow{background:rgba(90,160,225,.18);color:#bcd6f2}
 body.dark .searchbar .f .v{color:#c2d0e4}
+body.dark .searchbar .f select,body.dark .searchbar .f input{color:#c2d0e4}
+body.dark .searchbar .f select option{background:#0c2b49;color:#c2d0e4}
 body.dark .hero h1 em{color:var(--accent)}
 body.dark .sec-h a{color:#7fb0e6}
 </style>
@@ -331,13 +337,17 @@ body.dark .sec-h a{color:#7fb0e6}
 <section class="sec" style="padding-top:0">
   <div class="wrap">
     <div class="sec-h"><div><h2 class="dm" data-i18n="find.title">Найти свой тур</h2><p data-i18n="find.sub">Подберите тур по направлению, длительности, цене и датам</p></div></div>
-    <div class="searchbar" style="margin-top:0">
-      <div class="f"><label data-i18n="find.dest">Направление</label><div class="v" data-i18n="find.any_dest">Любое направление</div></div>
-      <div class="f"><label data-i18n="find.dur">Длительность</label><div class="v" data-i18n="find.any_f">Любая</div></div>
-      <div class="f"><label data-i18n="find.price">Цена</label><div class="v" data-i18n="find.any_f">Любая</div></div>
-      <div class="f"><label data-i18n="find.dates">Даты</label><div class="v" data-i18n="find.any_p">Любые</div></div>
-      <button class="btn btn-pri go"><span data-i18n="find.btn">Найти туры</span> <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
-    </div>
+    <form class="searchbar" style="margin-top:0" id="findbar">
+      <div class="f"><label data-i18n="find.dest">Направление</label>
+        <select id="f-dest"><option value="" data-i18n="find.any_dest">Любое направление</option></select></div>
+      <div class="f"><label data-i18n="find.dur">Длительность</label>
+        <select id="f-dur"><option value="" data-i18n="find.any_f">Любая</option></select></div>
+      <div class="f"><label data-i18n="find.price">Цена</label>
+        <select id="f-price"><option value="" data-i18n="find.any_f">Любая</option></select></div>
+      <div class="f"><label data-i18n="find.dates">Даты</label>
+        <input type="date" id="f-date"></div>
+      <button type="submit" class="btn btn-pri go"><span data-i18n="find.btn">Найти туры</span> <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+    </form>
   </div>
 </section>
 

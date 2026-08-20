@@ -21,7 +21,8 @@ class DirectionController extends Controller
             ->countries()
             ->when($request->filled('scope'), fn ($q) => $q->where('scope', $request->scope))
             ->withCount('tours')
-            ->with('children')
+            // Два уровня вглубь: страна → регионы → города.
+            ->with('children.children')
             ->orderBy('sort')
             ->get();
 

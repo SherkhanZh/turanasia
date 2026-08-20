@@ -102,8 +102,9 @@ class Tour extends Model
             $query->where('date_mode', $f['date_mode']);
         }
 
+        // Выбрана страна — подходят и туры по её регионам и городам.
         if (! empty($f['direction_id'])) {
-            $query->where('direction_id', $f['direction_id']);
+            $query->whereIn('direction_id', Direction::withDescendants((int) $f['direction_id']));
         }
 
         if (! empty($f['country'])) {

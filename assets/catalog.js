@@ -9,19 +9,22 @@ window.TACatalog = (function () {
           sortNew: 'Сначала популярные', priceAsc: 'Сначала дешевле', priceDesc: 'Сначала дороже',
           durAsc: 'Сначала короткие', durDesc: 'Сначала длинные', find: 'Найти',
           days: 'дн.', from: 'от', more: 'Подробнее', empty: 'По вашему запросу туров не найдено.',
-          onReq: 'Даты — под запрос', err: 'Не удалось загрузить туры.' },
+          onReq: 'Даты — под запрос', err: 'Не удалось загрузить туры.',
+          filtered: 'Показаны туры по вашему запросу с главной страницы.', reset: 'Показать все' },
     kz: { any: 'Кез келген', all: 'Барлығы', oneDay: 'Бір күндік', multiDay: 'Көп күндік',
           withDates: 'Күндері бар', onRequest: 'Сұраныс бойынша', search: 'Тур атауы бойынша іздеу',
           sortNew: 'Алдымен танымал', priceAsc: 'Алдымен арзаны', priceDesc: 'Алдымен қымбаты',
           durAsc: 'Алдымен қысқасы', durDesc: 'Алдымен ұзағы', find: 'Табу',
           days: 'күн', from: 'бастап', more: 'Толығырақ', empty: 'Сұрауыңыз бойынша тур табылмады.',
-          onReq: 'Күндері — сұраныс бойынша', err: 'Турларды жүктеу мүмкін болмады.' },
+          onReq: 'Күндері — сұраныс бойынша', err: 'Турларды жүктеу мүмкін болмады.',
+          filtered: 'Басты беттегі сұрауыңыз бойынша турлар көрсетілген.', reset: 'Барлығын көрсету' },
     en: { any: 'Any', all: 'All', oneDay: 'Day trips', multiDay: 'Multi-day',
           withDates: 'With dates', onRequest: 'On request', search: 'Search tours by name',
           sortNew: 'Most popular', priceAsc: 'Price: low to high', priceDesc: 'Price: high to low',
           durAsc: 'Shortest first', durDesc: 'Longest first', find: 'Search',
           days: 'days', from: 'from', more: 'Details', empty: 'No tours match your search.',
-          onReq: 'Dates on request', err: 'Could not load tours.' }
+          onReq: 'Dates on request', err: 'Could not load tours.',
+          filtered: 'Showing tours matching your search from the home page.', reset: 'Show all' }
   };
 
   function init(opts) {
@@ -107,12 +110,23 @@ window.TACatalog = (function () {
         '</div><a class="btn btn-pri" href="' + url + '">' + t.more + '</a></div></div></article>';
     }
 
+    /* По чему ищем. Клиент вводит «Алматы» или «Экспедиции» — название тура
+       такого слова может не содержать, поэтому добавляем направление и
+       категорию, иначе поиск выглядит сломанным. */
+    function haystack(x) {
+      if (x._hs) return x._hs;
+      function nm(v) { return !v ? '' : (typeof v === 'object' ? (v[TA.lang()] || v.ru || '') : v); }
+      x._hs = [x.title, x.short_description, nm(x.direction), nm(x.category)]
+        .filter(Boolean).join(' ').toLowerCase();
+      return x._hs;
+    }
+
     function render() {
       var rows = ALL.filter(function (x) {
         if (state.cat !== 'all' && String(x.category_id) !== String(state.cat)) return false;
         if (state.trip && x.trip_type !== state.trip) return false;
         if (state.dates && (x.date_mode || 'fixed') !== state.dates) return false;
-        if (state.q && String(x.title + ' ' + (x.short_description || '')).toLowerCase().indexOf(state.q.toLowerCase()) < 0) return false;
+        if (state.q && haystack(x).indexOf(state.q.toLowerCase()) < 0) return false;
         return true;
       });
       var s = state.sort;
@@ -139,8 +153,30 @@ window.TACatalog = (function () {
     var qi = document.getElementById('c-q'), tm;
     qi.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(function () { state.q = qi.value.trim(); render(); }, 250); });
 
+    /* Условия, пришедшие ссылкой из блока «Найти свой тур» на главной,
+       отдаём серверу — так фильтр работает и когда туров больше страницы. */
+    var passed = '';
+    try {
+      var qs = new URLSearchParams(location.search);
+      ['direction_id', 'duration_min', 'duration_max', 'price_min', 'price_max', 'date_from'].forEach(function (k) {
+        var v = qs.get(k);
+        if (v) passed += '&' + k + '=' + encodeURIComponent(v);
+      });
+      var q0 = qs.get('q');
+      if (q0) { state.q = q0; qi.value = q0; }
+    } catch (e) {}
+
+    if (passed) {
+      // Иначе непонятно, почему в каталоге вдруг три тура вместо двадцати.
+      var note = document.createElement('div');
+      note.className = 'fnote';
+      note.innerHTML = '<span>' + TA.esc(t.filtered) + '</span>' +
+        '<a href="?lang=' + TA.esc(TA.lang()) + '">' + TA.esc(t.reset) + '</a>';
+      grid.parentNode.insertBefore(note, grid);
+    }
+
     grid.innerHTML = '<div class="empty">…</div>';
-    TA.get('/tours?section=' + opts.section + '&per_page=60')
+    TA.get('/tours?section=' + opts.section + '&per_page=200' + passed)
       .then(function (r) { ALL = TA.list(r); render(); })
       .catch(function () { TA.fail(grid, t.err); });
   }

@@ -88,6 +88,14 @@ body.dark .gseg button.on{background:var(--pri);color:#fff}
 body.dark .exc{background:#0c2b49}
 @media(max-width:560px){.exc{grid-template-columns:1fr}.exc-ph{height:140px}}
 
+/* Условия, пришедшие из поиска на главной */
+.fnote{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px;
+  padding:11px 16px;border-radius:12px;background:var(--alt);border:1px solid var(--line);
+  font-size:14px;color:var(--muted)}
+.fnote a{color:var(--pri);font-weight:600}
+.fnote a:hover{text-decoration:underline}
+body.dark .fnote{background:#0c2b49}
+
 /* Рассказ о выбранной категории — над списком туров */
 .catnote{display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:center;
   background:var(--alt);border:1px solid var(--line);border-radius:18px;
