@@ -41,6 +41,17 @@ class TourResource extends JsonResource
                 'name' => $this->direction->name,
                 'scope' => $this->direction->scope,
             ] : null),
+            'excursions' => $this->whenLoaded('excursions', fn () => $this->excursions->map(fn ($e) => [
+                'id' => $e->id,
+                'slug' => $e->slug,
+                'title' => $e->title,
+                'short_description' => $e->short_description,
+                'description' => $e->description,
+                'program' => $e->program,
+                'included' => $e->included,
+                'duration_hours' => $e->duration_hours,
+                'photos' => $e->photos ?? [],
+            ])),
             'dates' => $this->whenLoaded('dates', fn () => $this->dates->map(fn ($d) => [
                 'start_date' => $d->start_date?->toDateString(),
                 'end_date' => $d->end_date?->toDateString(),

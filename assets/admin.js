@@ -94,7 +94,11 @@
         api('/admin/categories').catch(function(){return [];}),
         api('/admin/directions').catch(function(){return [];})
       ]).then(function (r) {
-        CACHE.categories = normalize(r[0]);
+        // В подписи держим раздел: одноимённые категории могут быть
+        // и в турах по Казахстану, и в зарубежных.
+        CACHE.categories = normalize(r[0]).map(function (x) {
+          return { id: x.id, label: sectionLabel(x.section) + ' · ' + t(x.name) };
+        });
         CACHE.directions = flattenDir(normalize(r[1]));
         api('/admin/tours?per_page=200').then(function (tr) {
           CACHE.tours = normalize(tr).map(function (x) { return { id: x.id, label: t(x.title) }; });
@@ -102,6 +106,9 @@
         api('/admin/baikonur/groups').then(function (gr) {
           CACHE.baikonur_groups = normalize(gr).map(function (x) { return { id: x.id, label: t(x.title) }; });
         }).catch(function () { CACHE.baikonur_groups = []; });
+        api('/admin/excursions').then(function (ex) {
+          CACHE.excursions = normalize(ex).map(function (x) { return { id: x.id, label: t(x.title) }; });
+        }).catch(function () { CACHE.excursions = []; });
         go('dash');
       });
     }).catch(function () { logout(); });
@@ -118,6 +125,11 @@
   /* ---------- RESOURCES CONFIG ---------- */
   var LANGS = [['ru', 'Русский'], ['kz', 'Қазақша'], ['en', 'English']];
   function opt(arr) { return arr.map(function (o) { return { v: o[0], l: o[1] }; }); }
+
+  // Объявлять строго до RES: список разделов читается сразу при разборе
+  // конфигурации, а var поднимается без значения — иначе админка падает
+  // на opt(undefined) ещё до отрисовки формы входа.
+  var SECTIONS = [['kazakhstan', 'Туры по Казахстану'], ['foreign', 'Зарубежные туры'], ['hotels', 'Отели'], ['cruises', 'Круизы']];
 
   var RES = {
     tours: {
@@ -146,6 +158,7 @@
         f('dates', 'Даты выездов', 'dates'),
         f('photos', 'Галерея — фотографии', 'photos'),
         f('videos', 'Галерея — видео (по ссылке в строке)', 'lines'),
+        f('excursion_ids', 'Экскурсии в программе', 'multiref', { ref: 'excursions', hint: 'Отметьте экскурсии из справочника. Одна экскурсия может входить в несколько туров.' }),
         f('category_id', 'Категория', 'ref', { ref: 'categories' }),
         f('direction_id', 'Направление', 'ref', { ref: 'directions' }),
         f('status', 'Статус', 'select', { options: opt([['published','Опубликован'],['hidden','Скрыт'],['archived','Архив']]) }),
@@ -237,6 +250,49 @@
         f('sort', 'Порядок', 'number')
       ]
     },
+    categories: {
+      title: 'Категории туров', endpoint: '/admin/categories',
+      cols: [
+        { l: 'Категория', g: function (r) { return cellPhoto(r.image, t(r.name), t(r.description)); } },
+        { l: 'Раздел', g: function (r) { return '<span class="badge b-gray">' + sectionLabel(r.section) + '</span>'; } },
+        { l: 'Туров', g: function (r) { return '<span class="muted">' + (r.tours_count || 0) + '</span>'; } },
+        { l: 'На сайте', g: function (r) { return badgeBool(r.is_active); } }
+      ],
+      fields: [
+        f('section', 'Раздел сайта', 'select', { options: opt(SECTIONS), req: 1 }),
+        f('name', 'Название категории', 'tr-text', { req: 1 }),
+        f('description', 'Описание', 'tr-textarea', { hint: 'Показывается над списком туров, когда выбрана эта категория.' }),
+        f('image', 'Изображение категории', 'image'),
+        f('is_active', 'Показывать на сайте', 'toggle', { def: true }),
+        f('sort', 'Порядок', 'number')
+      ]
+    },
+    excursions: {
+      title: 'Экскурсии', endpoint: '/admin/excursions',
+      cols: [
+        { l: 'Экскурсия', g: function (r) { return cellPhoto(firstPhoto(r), t(r.title), t(r.short_description)); } },
+        { l: 'Длительность', g: function (r) { return '<span class="muted">' + (r.duration_hours ? r.duration_hours + ' ч' : '—') + '</span>'; } },
+        { l: 'Цена', g: function (r) { return r.price ? '<span class="price">' + fmt(r.price) + ' ' + (r.currency||'₸') + '</span>' : '—'; } },
+        { l: 'В турах', g: function (r) { return '<span class="muted">' + (r.tours_count || 0) + '</span>'; } },
+        { l: 'Активна', g: function (r) { return badgeBool(r.is_active); } }
+      ],
+      fields: [
+        f('title', 'Название экскурсии', 'tr-text', { req: 1 }),
+        f('short_description', 'Краткое описание', 'tr-text'),
+        f('description', 'Описание', 'tr-textarea'),
+        f('program', 'Программа', 'tr-textarea'),
+        f('included', 'Что включено', 'tr-textarea'),
+        f('extras', 'Не включено / доп. услуги', 'tr-textarea'),
+        f('direction_id', 'Направление', 'ref', { ref: 'directions' }),
+        f('duration_hours', 'Длительность (часов)', 'number'),
+        f('price', 'Стоимость', 'number', { hint: 'Справочно. В цену тура экскурсия уже включена.' }),
+        f('currency', 'Валюта', 'text', { def: 'KZT' }),
+        f('photos', 'Галерея — фотографии', 'photos'),
+        f('videos', 'Галерея — видео (по ссылке в строке)', 'lines'),
+        f('is_active', 'Активна', 'toggle', { def: true }),
+        f('sort', 'Порядок', 'number')
+      ]
+    },
     baikonur_groups: {
       title: 'Категории Байконура', endpoint: '/admin/baikonur/groups',
       cols: [
@@ -291,7 +347,7 @@
   function f(key, label, type, extra) { var o = { key: key, label: label, type: type }; if (extra) for (var k in extra) o[k] = extra[k]; return o; }
   function fmt(n) { return (n == null ? '' : String(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
   function firstPhoto(r) { return (Array.isArray(r.photos) && r.photos[0]) || ''; }
-  function sectionLabel(s) { return { kazakhstan: 'По Казахстану', foreign: 'Зарубежный', baikonur: 'Байконур' }[s] || ''; }
+  function sectionLabel(s) { return { kazakhstan: 'По Казахстану', foreign: 'Зарубежный', baikonur: 'Байконур', hotels: 'Отели', cruises: 'Круизы' }[s] || ''; }
   function statusBadge(s) { var m = { published: ['b-green', 'Опубликован'], hidden: ['b-gray', 'Скрыт'], archived: ['b-amber', 'Архив'], scheduled: ['b-blue', 'Запланирован'], completed: ['b-teal', 'Завершён'] }; var x = m[s] || ['b-gray', s]; return '<span class="badge ' + x[0] + '">' + x[1] + '</span>'; }
   function badgeBool(b) { return b ? '<span class="badge b-green">Да</span>' : '<span class="badge b-gray">Нет</span>'; }
   function cellPhoto(img, title, sub) {
@@ -301,13 +357,13 @@
   function toggleCell(res, id, on, action) { return '<span class="sw ' + (on ? 'on' : '') + '" data-toggle="' + res + '" data-id="' + id + '" data-action="' + (action||'') + '"></span>'; }
 
   /* ---------- ROUTER ---------- */
-  var TITLES = { dash: 'Дашборд', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur_groups: 'Категории Байконура', baikonur_hero: 'Фото Байконура', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
+  var TITLES = { dash: 'Дашборд', home: 'Главная страница', categories: 'Категории туров', excursions: 'Экскурсии', tours: 'Туры', albums: 'Галерея', album: 'Альбом', baikonur_groups: 'Категории Байконура', baikonur_hero: 'Фото Байконура', baikonur: 'Байконур', directions: 'Направления', reviews: 'Отзывы', banners: 'Баннеры', faqs: 'FAQ', leads: 'Заявки', contacts: 'Контакты', seo: 'SEO', staff: 'Сотрудники', audit: 'Журнал действий' };
   function go(p) {
     document.querySelectorAll('#nav a').forEach(function (a) { a.classList.toggle('active', a.dataset.p === p); });
     el('ptitle').textContent = TITLES[p] || '';
     el('side').classList.remove('open'); el('scrim').classList.remove('on');
     var v = el('view'); v.innerHTML = '<div class="spin">Загрузка…</div>';
-    ({ dash: viewDash, leads: viewLeads, contacts: viewContacts, seo: viewSeo, staff: viewStaff, audit: viewAudit, baikonur_hero: viewBaikonurHero }[p] || function () { viewList(p); })(p);
+    ({ dash: viewDash, home: viewHome, leads: viewLeads, contacts: viewContacts, seo: viewSeo, staff: viewStaff, audit: viewAudit, baikonur_hero: viewBaikonurHero }[p] || function () { viewList(p); })(p);
   }
 
   /* ---------- DASHBOARD ---------- */
@@ -332,6 +388,87 @@
 
 
 
+
+  /* ---------- ГЛАВНАЯ СТРАНИЦА ---------- */
+  /* Плитки блока «Куда отправимся». Заголовки берутся из перевода сайта,
+     в админке меняется только картинка — чтобы нельзя было случайно
+     разъехаться с версткой и ссылками. */
+  var DEST_TILES = [
+    ['tours', 'Туры по Казахстану'],
+    ['baikonur', 'Байконур'],
+    ['foreign', 'Зарубежные туры'],
+    ['hotels', 'Отели'],
+    ['individual', 'Индивидуальные туры']
+  ];
+
+  function viewHome() {
+    // Справочник туров грузится в фоне при входе — если открыть раздел сразу,
+    // он может быть ещё пуст, поэтому запрашиваем его здесь ещё раз.
+    var toursReady = (CACHE.tours && CACHE.tours.length)
+      ? Promise.resolve(CACHE.tours)
+      : api('/admin/tours?per_page=200').then(function (tr) {
+          CACHE.tours = normalize(tr).map(function (x) { return { id: x.id, label: t(x.title) }; });
+          return CACHE.tours;
+        }).catch(function () { return []; });
+
+    Promise.all([api('/admin/settings'), toursReady]).then(function (res) {
+      var r = res[0];
+      var map = {}; normalize(r).forEach(function (x) { map[x.key] = x.value; });
+      var slider = Array.isArray(map.home_slider) ? map.home_slider : [];
+      var dest = {};
+      (Array.isArray(map.home_destinations) ? map.home_destinations : []).forEach(function (d) {
+        if (d && d.key) dest[d.key] = d.image || '';
+      });
+      var popular = Array.isArray(map.home_popular) ? map.home_popular.map(String) : [];
+      var tours = CACHE.tours || [];
+
+      var tiles = DEST_TILES.map(function (d) {
+        var row = {}; row['dest_' + d[0]] = dest[d[0]] || '';
+        return fieldHtml(f('dest_' + d[0], d[1], 'image'), row);
+      }).join('');
+
+      var picks = tours.length
+        ? '<div class="chk-list" data-multiref="home_popular">' + tours.map(function (o) {
+            var on = popular.indexOf(String(o.id)) >= 0;
+            return '<label class="chk"><input type="checkbox" value="' + o.id + '"' + (on ? ' checked' : '') + '><span>' + esc(o.label) + '</span></label>';
+          }).join('') + '</div>'
+        : '<div class="muted">Туров пока нет.</div>';
+
+      el('view').innerHTML =
+        '<div class="phead"><div class="t"><h2>Главная страница</h2>' +
+        '<p>Карусель в шапке, картинки блока «Куда отправимся» и подборка популярных туров.</p></div></div>' +
+        '<form class="form" id="homeForm">' +
+        '<div class="sechead">Карусель в шапке</div>' +
+        '<div class="grid2">' + fieldHtml(f('home_slider', 'Фотографии', 'photos', { hint: 'Сменяются автоматически. Если пусто — останутся снимки, зашитые в вёрстке.' }), { home_slider: slider }) + '</div>' +
+        '<div class="sechead" style="margin-top:18px">Куда отправимся</div>' +
+        '<div class="grid2">' + tiles + '</div>' +
+        '<div class="sechead" style="margin-top:18px">Популярные туры</div>' +
+        '<div class="fld" style="grid-column:span 2">' + picks +
+        '<small class="fld-hint">Отмеченные туры выводятся на главной. Если ничего не отмечено — показываются туры с галочкой «На главной».</small></div>' +
+        '<div class="form-foot"><button type="submit" class="btn btn-pri">Сохранить</button></div></form>';
+
+      $('#homeForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = $('#homeForm');
+        function urls(key) {
+          var c = form.querySelector('[data-up="' + key + '"]');
+          return c ? [].map.call(c.querySelectorAll('.up-th'), function (th) { return th.dataset.url; }) : [];
+        }
+        var settings = [
+          { key: 'home_slider', value: urls('home_slider'), group: 'home' },
+          { key: 'home_destinations', value: DEST_TILES.map(function (d) {
+              return { key: d[0], image: urls('dest_' + d[0])[0] || null };
+            }), group: 'home' },
+          { key: 'home_popular', value: [].map.call(
+              form.querySelectorAll('[data-multiref="home_popular"] input:checked'),
+              function (i) { return parseInt(i.value, 10); }), group: 'home' }
+        ];
+        api('/admin/settings', { method: 'PUT', body: { settings: settings } })
+          .then(function () { toast('Главная страница сохранена'); })
+          .catch(function (e) { toast(firstError(e) || 'Ошибка', true); });
+      });
+    }).catch(showErr);
+  }
 
   /* ---------- ШАПКА СТРАНИЦЫ БАЙКОНУРА ---------- */
   function viewBaikonurHero() {
@@ -554,7 +691,7 @@
   }
   function fieldHtml(fl, row) {
     var v = row ? row[fl.key] : (fl.def !== undefined ? fl.def : '');
-    var full = (fl.type === 'tr-textarea' || fl.type === 'photos' || fl.type === 'tr-text' || fl.type === 'dates' || fl.type === 'lines') ? ' style="grid-column:span 2"' : '';
+    var full = (fl.type === 'tr-textarea' || fl.type === 'photos' || fl.type === 'tr-text' || fl.type === 'dates' || fl.type === 'lines' || fl.type === 'multiref' || fl.type === 'tourpick') ? ' style="grid-column:span 2"' : '';
     var inner = '';
     if (fl.type === 'tr-text' || fl.type === 'tr-textarea') {
       inner = LANGS.map(function (l, i) {
@@ -580,6 +717,16 @@
     } else if (fl.type === 'ref') {
       var list = CACHE[fl.ref] || [];
       inner = '<select data-k="' + fl.key + '"><option value="">—</option>' + list.map(function (o) { return '<option value="' + o.id + '"' + (String(v) === String(o.id) ? ' selected' : '') + '>' + esc(o.label || t(o.name)) + '</option>'; }).join('') + '</select>';
+    } else if (fl.type === 'multiref') {
+      // Набор галочек: тур ссылается сразу на несколько записей справочника.
+      var all = CACHE[fl.ref] || [];
+      var picked = Array.isArray(v) ? v.map(String) : [];
+      inner = all.length
+        ? '<div class="chk-list" data-multiref="' + fl.key + '">' + all.map(function (o) {
+            var on = picked.indexOf(String(o.id)) >= 0;
+            return '<label class="chk"><input type="checkbox" value="' + o.id + '"' + (on ? ' checked' : '') + '><span>' + esc(o.label || t(o.name)) + '</span></label>';
+          }).join('') + '</div>'
+        : '<div class="muted" data-multiref="' + fl.key + '">Справочник пуст — сначала добавьте записи в разделе «Экскурсии».</div>';
     } else if (fl.type === 'toggle') {
       inner = '<div class="row-tg"><span class="sw ' + (v ? 'on' : '') + '" data-k="' + fl.key + '" data-toggle-field="1"></span><span class="muted">' + (v ? 'Включено' : 'Выключено') + '</span></div>';
     } else if (fl.type === 'date') {
@@ -589,7 +736,8 @@
     } else {
       inner = '<input data-k="' + fl.key + '" value="' + esc(v == null ? '' : v) + '">';
     }
-    return '<div class="fld"' + full + '><label>' + fl.label + (fl.req ? ' *' : '') + '</label>' + inner + '</div>';
+    var hint = fl.hint ? '<small class="fld-hint">' + esc(fl.hint) + '</small>' : '';
+    return '<div class="fld"' + full + '><label>' + fl.label + (fl.req ? ' *' : '') + '</label>' + inner + hint + '</div>';
   }
   function gather(formEl, res) {
     var data = {};
@@ -600,6 +748,10 @@
       else if (inp.dataset.photos != null || inp.dataset.lines != null) { data[k] = inp.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean); }
       else if (inp.type === 'number') { data[k] = inp.value === '' ? null : parseInt(inp.value, 10); }
       else { data[k] = inp.value === '' ? null : inp.value; }
+    });
+    // наборы галочек (экскурсии тура)
+    formEl.querySelectorAll('[data-multiref]').forEach(function (c) {
+      data[c.dataset.multiref] = [].map.call(c.querySelectorAll('input:checked'), function (i) { return parseInt(i.value, 10); });
     });
     // загруженные фото / одиночные изображения
     formEl.querySelectorAll('[data-up]').forEach(function (c) {

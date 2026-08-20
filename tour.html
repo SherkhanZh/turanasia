@@ -118,6 +118,19 @@
       if (!inner) return '';
       return '<details' + (open ? ' open' : '') + '><summary>' + title + '</summary><div class="acc-b">' + inner + '</div></details>';
     }
+    /* Экскурсии тура. Берутся из общего справочника — одна и та же экскурсия
+       входит в несколько туров, поэтому здесь только вывод, без цены:
+       она уже включена в стоимость тура. */
+    var excursions = (x.excursions || []).map(function (e) {
+      var pic = (e.photos && e.photos[0]) || '';
+      var text = e.short_description || e.description || '';
+      return '<div class="exc">' +
+        (pic ? '<div class="exc-ph"><img src="' + TA.esc(pic) + '" alt="' + TA.esc(e.title) + '" loading="lazy"></div>' : '') +
+        '<div class="exc-b"><b>' + TA.esc(e.title) + '</b>' +
+        (e.duration_hours ? '<span class="exc-h">' + TA.esc(e.duration_hours) + ' ' + TA.t('hours_short') + '</span>' : '') +
+        (text ? '<p>' + TA.text(text) + '</p>' : '') + '</div></div>';
+    }).join('');
+
     var onReq = x.date_mode === 'on_request';
     var dates = (x.dates || []).map(function (d) {
       return '<div class="lic"><div class="lg" style="background:#e7eef6">' + TA.esc((d.start_date || '').slice(8, 10) + '.' + (d.start_date || '').slice(5, 7)) + '</div>' +
@@ -139,6 +152,7 @@
           '<div class="acc" style="margin-top:22px">' +
             (x.description ? acc(TA.t('desc'), '<p>' + TA.text(x.description) + '</p>', true) : '') +
             (x.program ? acc(TA.t('program'), TA.program(x.program), !x.description) : '') +
+            (excursions ? acc(TA.t('excursions'), '<div class="exc-list">' + excursions + '</div>') : '') +
             (x.included ? acc(TA.t('included'), '<p>' + TA.text(x.included) + '</p>') : '') +
             (x.extras ? acc(TA.t('extras'), '<p>' + TA.text(x.extras) + '</p>') : '') +
             (dates ? acc(TA.t('dates_near'), '<div class="inc-grid">' + dates + '</div>') : '') +

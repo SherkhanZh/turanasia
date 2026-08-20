@@ -28,6 +28,8 @@ Route::prefix('v1')->group(function () {
     Route::get('banners', [ContentController::class, 'banners']);
     Route::get('contacts', [ContentController::class, 'contacts']);
     Route::get('filters', [ContentController::class, 'filters']);
+    Route::get('categories', [ContentController::class, 'categories']);
+    Route::get('home', [ContentController::class, 'home']);
     Route::get('seo/{page}', [ContentController::class, 'seo']);
 
     // Байконур (данные вводятся вручную в админке)
@@ -96,6 +98,12 @@ Route::prefix('v1/admin')
         Route::post('categories', [Admin\CategoryController::class, 'store']);
         Route::put('categories/{category}', [Admin\CategoryController::class, 'update']);
         Route::delete('categories/{category}', [Admin\CategoryController::class, 'destroy']);
+
+        // Экскурсии — общий справочник, повторяется в разных турах
+        Route::get('excursions', [Admin\ExcursionController::class, 'index']);
+        Route::post('excursions', [Admin\ExcursionController::class, 'store']);
+        Route::put('excursions/{excursion}', [Admin\ExcursionController::class, 'update']);
+        Route::delete('excursions/{excursion}', [Admin\ExcursionController::class, 'destroy']);
 
         // Заявки
         Route::get('leads', [Admin\LeadController::class, 'index']);

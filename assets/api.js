@@ -93,6 +93,7 @@ window.TA = (function () {
   var T = {
     ru: {
       desc: 'Описание', program: 'Программа тура', included: 'Что включено',
+      excursions: 'Экскурсии в программе', hours_short: 'ч',
       included_cond: 'Что включено / условия', extras: 'Стоимость и дополнительно',
       dates_near: 'Ближайшие даты', video: 'Видео',
       on_request: 'Даты — под запрос', scheduled: 'По расписанию',
@@ -126,6 +127,7 @@ window.TA = (function () {
     },
     kz: {
       desc: 'Сипаттама', program: 'Тур бағдарламасы', included: 'Бағаға не кіреді',
+      excursions: 'Бағдарламадағы экскурсиялар', hours_short: 'сағ',
       included_cond: 'Бағаға не кіреді / шарттар', extras: 'Құны және қосымша',
       dates_near: 'Жақын күндер', video: 'Бейне',
       on_request: 'Күндері — сұраныс бойынша', scheduled: 'Кесте бойынша',
@@ -159,6 +161,7 @@ window.TA = (function () {
     },
     en: {
       desc: 'Overview', program: 'Tour programme', included: "What's included",
+      excursions: 'Excursions included', hours_short: 'h',
       included_cond: "What's included / conditions", extras: 'Price & extras',
       dates_near: 'Upcoming dates', video: 'Video',
       on_request: 'Dates — on request', scheduled: 'Scheduled departures',

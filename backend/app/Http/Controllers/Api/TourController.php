@@ -38,7 +38,7 @@ class TourController extends Controller
     public function show(string $slug)
     {
         $tour = Tour::published()
-            ->with(['category', 'direction', 'dates'])
+            ->with(['category', 'direction', 'dates', 'excursions' => fn ($q) => $q->where('is_active', true)])
             ->where('slug', $slug)
             ->firstOrFail();
 

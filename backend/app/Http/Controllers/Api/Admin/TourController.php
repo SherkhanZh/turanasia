@@ -31,9 +31,9 @@ class TourController extends Controller
 
     public function show(Tour $tour)
     {
-        $tour->load(['category', 'direction', 'dates']);
+        $tour->load(['category', 'direction', 'dates', 'excursions']);
 
-        return response()->json(AdminSerializer::make($tour));
+        return response()->json($this->serialize($tour));
     }
 
     public function store(Request $request)
@@ -43,8 +43,9 @@ class TourController extends Controller
         $this->fill($tour, $data);
         $tour->save();
         $this->syncDates($tour, $data['dates'] ?? null);
+        $this->syncExcursions($tour, $data['excursion_ids'] ?? null);
 
-        return response()->json(AdminSerializer::make($tour->load('dates')), 201);
+        return response()->json($this->serialize($tour->load(['dates', 'excursions'])), 201);
     }
 
     public function update(Request $request, Tour $tour)
@@ -53,8 +54,40 @@ class TourController extends Controller
         $this->fill($tour, $data);
         $tour->save();
         $this->syncDates($tour, $data['dates'] ?? null);
+        $this->syncExcursions($tour, $data['excursion_ids'] ?? null);
 
-        return response()->json(AdminSerializer::make($tour->load('dates')));
+        return response()->json($this->serialize($tour->load(['dates', 'excursions'])));
+    }
+
+    /**
+     * К обычной сериализации добавляем список выбранных экскурсий,
+     * чтобы форма в админке открывалась уже с отмеченными пунктами.
+     */
+    private function serialize(Tour $tour): array
+    {
+        $data = AdminSerializer::make($tour);
+        $data['excursion_ids'] = $tour->relationLoaded('excursions')
+            ? $tour->excursions->pluck('id')->all()
+            : $tour->excursions()->pluck('excursions.id')->all();
+
+        return $data;
+    }
+
+    /**
+     * Экскурсии тура: порядок сохраняем тот, в котором их выбрали.
+     */
+    private function syncExcursions(Tour $tour, $ids): void
+    {
+        if ($ids === null) {
+            return;
+        }
+
+        $payload = [];
+        foreach (array_values(array_unique(array_map('intval', $ids))) as $i => $id) {
+            $payload[$id] = ['sort' => $i];
+        }
+
+        $tour->excursions()->sync($payload);
     }
 
     /**
@@ -99,17 +132,12 @@ class TourController extends Controller
 
     private function validateData(Request $request, ?int $id = null): array
     {
-        return $request->validate([
+        $rules = [
             'slug' => ['nullable', 'string', 'max:200'],
             'title' => ['required', 'array'],
             'title.ru' => ['required', 'string'],
             'title.kz' => ['nullable', 'string'],
             'title.en' => ['nullable', 'string'],
-            'short_description' => ['nullable', 'array'],
-            'description' => ['nullable', 'array'],
-            'program' => ['nullable', 'array'],
-            'included' => ['nullable', 'array'],
-            'extras' => ['nullable', 'array'],
             'direction_id' => ['nullable', 'exists:directions,id'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'section' => ['required', 'in:kazakhstan,foreign,baikonur'],
@@ -132,12 +160,27 @@ class TourController extends Controller
             'dates.*.end_date' => ['nullable', 'date'],
             'dates.*.seats' => ['nullable', 'integer', 'min:0'],
             'dates.*.price_override' => ['nullable', 'integer', 'min:0'],
-        ]);
+            'excursion_ids' => ['nullable', 'array'],
+            'excursion_ids.*' => ['integer', 'exists:excursions,id'],
+        ];
+
+        // Каждому переводимому полю — правило на все три языка.
+        // Laravel с excludeUnvalidatedArrayKeys вырезает из массива ключи без
+        // правил: стоит появиться одному 'description.ru' — и казахский с
+        // английским молча пропадут при сохранении. Перечисляем языки явно.
+        foreach (['short_description', 'description', 'program', 'included', 'extras'] as $key) {
+            $rules[$key] = ['nullable', 'array'];
+            foreach (['ru', 'kz', 'en'] as $lang) {
+                $rules[$key.'.'.$lang] = ['nullable', 'string'];
+            }
+        }
+
+        return $request->validate($rules);
     }
 
     private function fill(Tour $tour, array $data): void
     {
-        unset($data['dates']); // обрабатываются отдельно в syncDates
+        unset($data['dates'], $data['excursion_ids']); // сохраняются отдельными связями
 
         $translatable = ['title', 'short_description', 'description', 'program', 'included', 'extras'];
 

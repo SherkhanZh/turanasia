@@ -6,6 +6,7 @@ use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
@@ -49,6 +50,17 @@ class Tour extends Model
     public function dates(): HasMany
     {
         return $this->hasMany(TourDate::class)->orderBy('start_date');
+    }
+
+    /**
+     * Экскурсии тура. Одна экскурсия повторяется в нескольких турах,
+     * поэтому это общий справочник, а не вложенные записи.
+     */
+    public function excursions(): BelongsToMany
+    {
+        return $this->belongsToMany(Excursion::class)
+            ->withPivot('sort')
+            ->orderByPivot('sort');
     }
 
     /* --- Scopes --- */

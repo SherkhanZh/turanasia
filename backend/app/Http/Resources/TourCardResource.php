@@ -24,6 +24,7 @@ class TourCardResource extends JsonResource
             'photo' => is_array($this->photos) ? ($this->photos[0] ?? null) : null,
             'is_featured' => $this->is_featured,
             'is_fixed_price' => $this->is_fixed_price,
+            'category_id' => $this->category_id,
             'category' => $this->whenLoaded('category', fn () => $this->category?->name),
             'direction' => $this->whenLoaded('direction', fn () => $this->direction?->name),
         ];

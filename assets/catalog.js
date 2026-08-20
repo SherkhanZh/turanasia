@@ -50,7 +50,47 @@ window.TACatalog = (function () {
         '<option value="dur_desc">' + t.durDesc + '</option>' +
       '</select>';
 
-    var state = { q: '', trip: '', dates: '', sort: '' };
+    var state = { q: '', trip: '', dates: '', sort: '', cat: 'all' };
+
+    /* Категории раздела: кнопки под фильтрами и рассказ о выбранной категории.
+       Вставляем из скрипта, чтобы вёрстка страниц осталась нетронутой. */
+    var cbox = document.createElement('div');
+    cbox.className = 'gseg'; cbox.hidden = true;
+    var cnote = document.createElement('div');
+    cnote.className = 'catnote'; cnote.hidden = true;
+    grid.parentNode.insertBefore(cbox, grid);
+    grid.parentNode.insertBefore(cnote, grid);
+
+    var CATS = {};
+    function showCat() {
+      var c = CATS[state.cat];
+      var desc = c && c.description;
+      if (!c || (!desc && !c.image)) { cnote.hidden = true; cnote.innerHTML = ''; return; }
+      cnote.innerHTML =
+        (c.image ? '<div class="catnote-ph"><img src="' + TA.esc(c.image) + '" alt="' + TA.esc(c.name) + '"></div>' : '') +
+        '<div class="catnote-b"><h3>' + TA.esc(c.name) + '</h3>' +
+        (desc ? '<p>' + TA.text(desc) + '</p>' : '') + '</div>';
+      cnote.hidden = false;
+    }
+
+    TA.get('/categories?section=' + opts.section).then(function (r) {
+      var cats = TA.list(r);
+      if (!cats.length) return;   // категорий нет — кнопки не нужны
+      cats.forEach(function (c) { CATS[String(c.id)] = c; });
+      cbox.innerHTML = '<button class="on" data-c="all">' + TA.esc(t.all) + '</button>' +
+        cats.map(function (c) {
+          return '<button data-c="' + c.id + '">' + TA.esc(c.name) + '</button>';
+        }).join('');
+      cbox.hidden = false;
+      cbox.addEventListener('click', function (e) {
+        var b = e.target.closest('button');
+        if (!b) return;
+        cbox.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        state.cat = b.dataset.c;
+        showCat(); render();
+      });
+    }).catch(function () {});
 
     function card(x) {
       var url = 'tour.html?slug=' + encodeURIComponent(x.slug);
@@ -69,6 +109,7 @@ window.TACatalog = (function () {
 
     function render() {
       var rows = ALL.filter(function (x) {
+        if (state.cat !== 'all' && String(x.category_id) !== String(state.cat)) return false;
         if (state.trip && x.trip_type !== state.trip) return false;
         if (state.dates && (x.date_mode || 'fixed') !== state.dates) return false;
         if (state.q && String(x.title + ' ' + (x.short_description || '')).toLowerCase().indexOf(state.q.toLowerCase()) < 0) return false;

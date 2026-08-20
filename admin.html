@@ -143,6 +143,11 @@ tr:hover td{background:#fafbfc}
 .fld textarea{min-height:90px;resize:vertical}
 .fld .row-tg{display:flex;align-items:center;gap:10px}
 .sechead{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:6px 0 12px}
+.fld-hint{display:block;margin-top:6px;font-size:12px;color:var(--muted);line-height:1.45}
+.chk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 14px;border:1px solid var(--line);border-radius:9px;padding:12px;max-height:280px;overflow:auto;background:#fff}
+.chk{display:flex;align-items:flex-start;gap:9px;font-size:14px;cursor:pointer;padding:3px 0}
+.chk input{width:16px;height:16px;flex:0 0 16px;margin-top:2px;accent-color:var(--pri)}
+.chk span{line-height:1.35}
 .form-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
 .empty{padding:60px 20px;text-align:center;color:var(--muted)}
 .spin{padding:60px;text-align:center;color:var(--muted)}
@@ -200,8 +205,11 @@ tr:hover td{background:#fafbfc}
     <div class="brand"><span class="mk">TA</span><div><b>TURAN ASIA</b><small>Админ-панель</small></div></div>
     <nav class="nav" id="nav">
       <a class="active" data-p="dash">Дашборд</a>
+      <a data-p="home">Главная страница</a>
       <div class="lbl">Контент</div>
       <a data-p="tours">Туры <span class="cnt" id="c-tours"></span></a>
+      <a data-p="categories">— категории туров</a>
+      <a data-p="excursions">Экскурсии</a>
       <a data-p="baikonur">Байконур</a>
       <a data-p="baikonur_groups">— категории Байконура</a>
       <a data-p="baikonur_hero">— фото Байконура</a>
