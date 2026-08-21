@@ -19,7 +19,7 @@ class BaikonurController extends Controller
 
     public function show(BaikonurLaunch $launch)
     {
-        return response()->json(AdminSerializer::make($launch));
+        return response()->json($this->serialize($launch->load('excursions')));
     }
 
     public function store(Request $request)
@@ -27,16 +27,49 @@ class BaikonurController extends Controller
         $data = $this->validateData($request);
         $launch = new BaikonurLaunch;
         $this->fill($launch, $data)->save();
+        $this->syncExcursions($launch, $data['excursion_ids'] ?? null);
 
-        return response()->json(AdminSerializer::make($launch), 201);
+        return response()->json($this->serialize($launch->load('excursions')), 201);
     }
 
     public function update(Request $request, BaikonurLaunch $launch)
     {
         $data = $this->validateData($request);
         $this->fill($launch, $data)->save();
+        $this->syncExcursions($launch, $data['excursion_ids'] ?? null);
 
-        return response()->json(AdminSerializer::make($launch));
+        return response()->json($this->serialize($launch->load('excursions')));
+    }
+
+    /**
+     * К обычной сериализации добавляем выбранные экскурсии,
+     * чтобы форма открывалась уже с отмеченными пунктами.
+     */
+    private function serialize(BaikonurLaunch $launch): array
+    {
+        $data = AdminSerializer::make($launch);
+        $data['excursion_ids'] = $launch->relationLoaded('excursions')
+            ? $launch->excursions->pluck('id')->all()
+            : $launch->excursions()->pluck('excursions.id')->all();
+
+        return $data;
+    }
+
+    /**
+     * Экскурсии запуска: порядок сохраняем тот, в котором их выбрали.
+     */
+    private function syncExcursions(BaikonurLaunch $launch, $ids): void
+    {
+        if ($ids === null) {
+            return;
+        }
+
+        $payload = [];
+        foreach (array_values(array_unique(array_map('intval', $ids))) as $i => $id) {
+            $payload[$id] = ['sort' => $i];
+        }
+
+        $launch->excursions()->sync($payload);
     }
 
     public function destroy(BaikonurLaunch $launch)
@@ -48,7 +81,7 @@ class BaikonurController extends Controller
 
     private function validateData(Request $request): array
     {
-        return $request->validate([
+        $rules = [
             'title' => ['required', 'array'],
             'title.ru' => ['required', 'string'],
             'title.kz' => ['nullable', 'string'],
@@ -70,11 +103,27 @@ class BaikonurController extends Controller
             'status' => ['nullable', 'in:scheduled,published,hidden,completed'],
             'booking_enabled' => ['boolean'],
             'sort' => ['nullable', 'integer'],
-        ]);
+            'excursion_ids' => ['nullable', 'array'],
+            'excursion_ids.*' => ['integer', 'exists:excursions,id'],
+        ];
+
+        // Каждому переводимому полю — правило на все три языка: Laravel с
+        // excludeUnvalidatedArrayKeys вырезает ключи массива без правил, и
+        // стоит появиться одному 'description.ru', как kz и en пропадут.
+        foreach (['rocket', 'description', 'program', 'conditions'] as $key) {
+            $rules[$key] = ['nullable', 'array'];
+            foreach (['ru', 'kz', 'en'] as $lang) {
+                $rules[$key.'.'.$lang] = ['nullable', 'string'];
+            }
+        }
+
+        return $request->validate($rules);
     }
 
     private function fill(BaikonurLaunch $l, array $data): BaikonurLaunch
     {
+        unset($data['excursion_ids']);   // сохраняются отдельной связью
+
         foreach (['title', 'rocket', 'description', 'program', 'conditions'] as $field) {
             if (array_key_exists($field, $data)) {
                 $l->setTranslations($field, $data[$field] ?? []);

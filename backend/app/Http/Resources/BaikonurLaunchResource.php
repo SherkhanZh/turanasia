@@ -27,6 +27,17 @@ class BaikonurLaunchResource extends JsonResource
             'videos' => $this->videos ?? [],
             'date_mode' => $this->date_mode,
             'price_individual' => $this->price_individual,
+            'excursions' => $this->whenLoaded('excursions', fn () => $this->excursions->map(fn ($e) => [
+                'id' => $e->id,
+                'slug' => $e->slug,
+                'title' => $e->title,
+                'short_description' => $e->short_description,
+                'description' => $e->description,
+                'program' => $e->program,
+                'included' => $e->included,
+                'duration_hours' => $e->duration_hours,
+                'photos' => $e->photos ?? [],
+            ])),
             'status' => $this->status,
             // На этапе 1 — кнопка-заглушка (онлайн-оплата позже)
             'booking_enabled' => $this->booking_enabled,

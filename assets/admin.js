@@ -180,6 +180,7 @@
         f('rocket', 'Ракета-носитель', 'tr-text'),
         f('description', 'Описание', 'tr-textarea'),
         f('program', 'Программа', 'tr-textarea'),
+        f('excursion_ids', 'Экскурсии в программе', 'multiref', { ref: 'excursions', hint: 'Отметьте экскурсии из справочника. Одна экскурсия может входить и в туры, и в запуски.' }),
         f('conditions', 'Условия бронирования', 'tr-textarea'),
         f('launch_date', 'Дата запуска', 'date'),
         f('launch_time', 'Время', 'text'),
@@ -273,7 +274,7 @@
         { l: 'Экскурсия', g: function (r) { return cellPhoto(firstPhoto(r), t(r.title), t(r.short_description)); } },
         { l: 'Длительность', g: function (r) { return '<span class="muted">' + (r.duration_hours ? r.duration_hours + ' ч' : '—') + '</span>'; } },
         { l: 'Цена', g: function (r) { return r.price ? '<span class="price">' + fmt(r.price) + ' ' + (r.currency||'₸') + '</span>' : '—'; } },
-        { l: 'В турах', g: function (r) { return '<span class="muted">' + (r.tours_count || 0) + '</span>'; } },
+        { l: 'Где используется', g: function (r) { return '<span class="muted">' + ((r.tours_count || 0) + (r.launches_count || 0)) + '</span>'; } },
         { l: 'Активна', g: function (r) { return badgeBool(r.is_active); } }
       ],
       fields: [

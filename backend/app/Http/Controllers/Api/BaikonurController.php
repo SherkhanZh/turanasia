@@ -21,7 +21,10 @@ class BaikonurController extends Controller
 
     public function show(string $slug)
     {
-        $launch = BaikonurLaunch::published()->where('slug', $slug)->firstOrFail();
+        $launch = BaikonurLaunch::published()
+            ->with(['excursions' => fn ($q) => $q->where('is_active', true)])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         return new BaikonurLaunchResource($launch);
     }

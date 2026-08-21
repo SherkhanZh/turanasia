@@ -13,7 +13,7 @@ class ExcursionController extends Controller
     public function index()
     {
         $rows = Excursion::query()
-            ->withCount('tours')
+            ->withCount(['tours', 'launches'])
             ->orderBy('sort')->orderBy('id')
             ->get();
 
@@ -42,6 +42,7 @@ class ExcursionController extends Controller
     public function destroy(Excursion $excursion)
     {
         $excursion->tours()->detach();
+        $excursion->launches()->detach();
         $excursion->delete();
 
         return response()->json(['message' => 'Экскурсия удалена.']);

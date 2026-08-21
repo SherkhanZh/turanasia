@@ -89,6 +89,23 @@ window.TA = (function () {
   }
 
 
+  /** Экскурсии тура или запуска Байконура → карточки.
+      Цену не показываем: она уже включена в стоимость поездки. */
+  function excursions(list) {
+    if (!list || !list.length) return '';
+
+    return '<div class="exc-list">' + list.map(function (e) {
+      var pic = (e.photos && e.photos[0]) || '';
+      var body = e.short_description || e.description || '';
+      return '<div class="exc">' +
+        (pic ? '<div class="exc-ph"><img src="' + esc(pic) + '" alt="' + esc(e.title) + '" loading="lazy"></div>' : '') +
+        '<div class="exc-b"><b>' + esc(e.title) + '</b>' +
+        (e.duration_hours ? '<span class="exc-h">' + esc(e.duration_hours) + ' ' + t('hours_short') + '</span>' : '') +
+        (body ? '<p>' + text(body) + '</p>' : '') +
+        '</div></div>';
+    }).join('') + '</div>';
+  }
+
   /* ---- Интерфейсные подписи (заголовки разделов, кнопки, подсказки) ---- */
   var T = {
     ru: {
@@ -209,5 +226,5 @@ window.TA = (function () {
     if (el) el.innerHTML = '<div class="empty">' + esc(msg || t('tour_err')) + '</div>';
   }
 
-  return { langs: LANGS, base: BASE, get: get, list: list, esc: esc, text: text, program: program, money: money, date: date, lang: lang, t: t, fail: fail };
+  return { langs: LANGS, base: BASE, get: get, list: list, esc: esc, text: text, program: program, excursions: excursions, money: money, date: date, lang: lang, t: t, fail: fail };
 })();

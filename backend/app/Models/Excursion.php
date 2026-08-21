@@ -42,6 +42,11 @@ class Excursion extends Model
         return $this->belongsToMany(Tour::class)->withPivot('sort');
     }
 
+    public function launches(): BelongsToMany
+    {
+        return $this->belongsToMany(BaikonurLaunch::class)->withPivot('sort');
+    }
+
     public function scopeActive(Builder $q): Builder
     {
         return $q->where('is_active', true);

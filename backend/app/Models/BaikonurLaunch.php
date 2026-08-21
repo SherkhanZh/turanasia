@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class BaikonurLaunch extends Model
@@ -29,9 +31,20 @@ class BaikonurLaunch extends Model
         ];
     }
 
-    public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function group(): BelongsTo
     {
         return $this->belongsTo(BaikonurGroup::class, 'group_id');
+    }
+
+    /**
+     * Экскурсии из общего справочника: одна и та же экскурсия
+     * может входить и в тур, и в запуск.
+     */
+    public function excursions(): BelongsToMany
+    {
+        return $this->belongsToMany(Excursion::class)
+            ->withPivot('sort')
+            ->orderByPivot('sort');
     }
 
     public function scopePublished($query)
