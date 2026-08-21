@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Album;
 use App\Models\AlbumItem;
 use App\Models\BaikonurLaunch;
+use App\Models\Excursion;
 use App\Models\Tour;
 use App\Support\SiteUrl;
 use Illuminate\Http\Request;
@@ -39,6 +40,29 @@ class PageMetaController extends Controller
                 ?: $tour->getTranslation('description', $lang, true),
             'image' => $tour->photos[0] ?? null,
             'url' => SiteUrl::to('/tour').'?slug='.$tour->slug.($lang === 'ru' ? '' : '&lang='.$lang),
+            'lang' => $lang,
+        ]);
+    }
+
+    /**
+     * Страница экскурсии. Ссылку на неё присылают из программы тура,
+     * поэтому превью в мессенджерах нужно не меньше, чем у самого тура.
+     */
+    public function excursion(Request $request)
+    {
+        $lang = $this->lang($request);
+        $excursion = Excursion::active()->where('slug', $request->query('slug'))->first();
+
+        if (! $excursion) {
+            return $this->render('excursion.html', null);
+        }
+
+        return $this->render('excursion.html', [
+            'title' => $excursion->getTranslation('title', $lang, true),
+            'description' => $excursion->getTranslation('short_description', $lang, true)
+                ?: $excursion->getTranslation('description', $lang, true),
+            'image' => $excursion->photos[0] ?? null,
+            'url' => SiteUrl::to('/excursion').'?slug='.$excursion->slug.($lang === 'ru' ? '' : '&lang='.$lang),
             'lang' => $lang,
         ]);
     }

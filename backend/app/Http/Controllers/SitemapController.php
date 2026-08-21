@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BaikonurLaunch;
+use App\Models\Excursion;
 use App\Models\Tour;
 
 class SitemapController extends Controller
@@ -23,11 +24,16 @@ class SitemapController extends Controller
 
         $paths = ['/', '/tours', '/foreign', '/baikonur', '/individual', '/about', '/reviews', '/contacts'];
 
+        // Карточки открываются по слагу в параметре: /tour?slug=…, а не /tours/…
+        // Раньше здесь были адреса, которых на сайте не существует.
         foreach (Tour::published()->pluck('slug') as $slug) {
-            $paths[] = '/tours/'.$slug;
+            $paths[] = '/tour?slug='.$slug;
         }
         foreach (BaikonurLaunch::published()->pluck('slug') as $slug) {
-            $paths[] = '/baikonur/'.$slug;
+            $paths[] = '/launch?slug='.$slug;
+        }
+        foreach (Excursion::active()->pluck('slug') as $slug) {
+            $paths[] = '/excursion?slug='.$slug;
         }
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
@@ -37,7 +43,7 @@ class SitemapController extends Controller
             $xml .= "  <url>\n";
             $xml .= '    <loc>'.htmlspecialchars($front.$p).'</loc>'."\n";
             foreach ($this->locales as $loc) {
-                $href = $front.$p.($p === '/' ? '?' : '?').'lang='.$loc;
+                $href = $front.$p.(str_contains($p, '?') ? '&' : '?').'lang='.$loc;
                 $xml .= '    <xhtml:link rel="alternate" hreflang="'.$loc.'" href="'.htmlspecialchars($href).'"/>'."\n";
             }
             $xml .= '    <xhtml:link rel="alternate" hreflang="x-default" href="'.htmlspecialchars($front.$p).'"/>'."\n";

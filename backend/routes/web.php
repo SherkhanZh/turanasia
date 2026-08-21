@@ -20,5 +20,6 @@ Route::get('/robots.txt', [SitemapController::class, 'robots']);
 // мессенджеры и соцсети читают только исходный HTML, без JavaScript.
 Route::get('/tour', [PageMetaController::class, 'tour']);
 Route::get('/launch', [PageMetaController::class, 'launch']);
+Route::get('/excursion', [PageMetaController::class, 'excursion']);
 Route::get('/album', [PageMetaController::class, 'album']);
 Route::get('/media', [PageMetaController::class, 'media']);

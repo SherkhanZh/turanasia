@@ -9,7 +9,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"
 
-PAGES="tours tour foreign baikonur launch individual about reviews contacts hotels cruises offer gallery album media admin"
+PAGES="tours tour excursion foreign baikonur launch individual about reviews contacts hotels cruises offer gallery album media admin"
 
 rm -rf "$DIST"
 mkdir -p "$DIST/assets"
@@ -40,7 +40,7 @@ find "$DIST" -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' \) -prin
 # Красивые адреса внутренних страниц: tours.html → /tours.
 # Затрагиваем и .js — там собираются ссылки вида 'tour.html?slug=' + slug.
 # admin.html не трогаем: он живёт на поддомене панели и отдаётся как «/».
-CLEAN_PAGES="tours tour foreign baikonur launch individual about reviews contacts hotels cruises offer gallery album media"
+CLEAN_PAGES="tours tour excursion foreign baikonur launch individual about reviews contacts hotels cruises offer gallery album media"
 SED_ARGS=""
 for p in $CLEAN_PAGES; do
   SED_ARGS="$SED_ARGS -e s|${p}\.html|/${p}|g"

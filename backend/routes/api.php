@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BaikonurController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\DirectionController;
+use App\Http\Controllers\Api\ExcursionController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\TourController;
 use App\Http\Controllers\Api\Admin;
@@ -20,6 +21,9 @@ Route::prefix('v1')->group(function () {
     Route::get('tours', [TourController::class, 'index']);
     Route::get('tours/featured', [TourController::class, 'featured']);
     Route::get('tours/{slug}', [TourController::class, 'show']);
+
+    // Экскурсия открывается из программы тура — каталога экскурсий нет
+    Route::get('excursions/{slug}', [ExcursionController::class, 'show']);
 
     Route::get('directions', [DirectionController::class, 'index']);
     Route::get('directions/{slug}', [DirectionController::class, 'show']);

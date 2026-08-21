@@ -153,12 +153,15 @@ window.TA = (function () {
       if (e.time) when.push(e.time);
       if (!when.length && e.duration_hours) when.push(e.duration_hours + ' ' + t('hours_short'));
 
-      return '<div class="exc"' + (pic ? ' data-own-gallery="' + esc(e.id) + '"' : '') + '>' +
+      // data-own-gallery помечает снимок как «не из галереи тура»:
+      // без этого просмотрщик тура перехватывал бы клик и ссылка не срабатывала
+      var url = 'excursion.html?slug=' + encodeURIComponent(e.slug || '');
+      return '<a class="exc" href="' + url + '" data-own-gallery>' +
         (pic ? '<div class="exc-ph"><img src="' + esc(pic) + '" alt="' + esc(e.title) + '" loading="lazy"></div>' : '') +
         '<div class="exc-b"><b>' + esc(e.title) + '</b>' +
         (when.length ? '<span class="exc-h">' + esc(when.join(' · ')) + '</span>' : '') +
         (body ? '<p>' + text(body) + '</p>' : '') +
-        '</div></div>';
+        '</div></a>';
     }).join('') + '</div>';
   }
 
@@ -181,6 +184,8 @@ window.TA = (function () {
       days_short: 'дн.', group_upto: 'Группа до {n} чел.', seats: 'Мест', seats_free: 'Свободно {n} мест',
       cosmodrome: 'Космодром Байконур', more: 'Подробнее',
       loading: 'Загрузка…',
+      exc_nf: 'Экскурсия не найдена.', exc_err: 'Не удалось загрузить экскурсию.', exc_nospec: 'Экскурсия не указана.',
+      exc_program: 'Программа экскурсии', exc_extras: 'Дополнительно', back_to_tour: 'Назад к туру',
       tour_nf: 'Тур не найден.', tour_err: 'Не удалось загрузить тур.', tour_nospec: 'Тур не указан.',
       launch_nf: 'Запуск не найден.', launch_err: 'Не удалось загрузить запуск.', launch_nospec: 'Запуск не указан.',
       launches_err: 'Не удалось загрузить список запусков.',
@@ -215,6 +220,8 @@ window.TA = (function () {
       days_short: 'күн', group_upto: '{n} адамға дейінгі топ', seats: 'Орын', seats_free: '{n} орын бос',
       cosmodrome: 'Байқоңыр ғарыш айлағы', more: 'Толығырақ',
       loading: 'Жүктелуде…',
+      exc_nf: 'Экскурсия табылмады.', exc_err: 'Экскурсияны жүктеу мүмкін болмады.', exc_nospec: 'Экскурсия көрсетілмеген.',
+      exc_program: 'Экскурсия бағдарламасы', exc_extras: 'Қосымша', back_to_tour: 'Турға оралу',
       tour_nf: 'Тур табылмады.', tour_err: 'Турды жүктеу мүмкін болмады.', tour_nospec: 'Тур көрсетілмеген.',
       launch_nf: 'Ұшыру табылмады.', launch_err: 'Ұшыруды жүктеу мүмкін болмады.', launch_nospec: 'Ұшыру көрсетілмеген.',
       launches_err: 'Ұшырулар тізімін жүктеу мүмкін болмады.',
@@ -249,6 +256,8 @@ window.TA = (function () {
       days_short: 'days', group_upto: 'Group up to {n} people', seats: 'Seats', seats_free: '{n} seats left',
       cosmodrome: 'Baikonur Cosmodrome', more: 'Details',
       loading: 'Loading…',
+      exc_nf: 'Excursion not found.', exc_err: 'Could not load the excursion.', exc_nospec: 'No excursion specified.',
+      exc_program: 'Excursion programme', exc_extras: 'Additional info', back_to_tour: 'Back to the tour',
       tour_nf: 'Tour not found.', tour_err: 'Could not load the tour.', tour_nospec: 'No tour specified.',
       launch_nf: 'Launch not found.', launch_err: 'Could not load the launch.', launch_nospec: 'No launch specified.',
       launches_err: 'Could not load the launch list.',
