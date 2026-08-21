@@ -82,7 +82,7 @@ body.dark .gseg button.on{background:var(--pri);color:#fff}
 .exc{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:start;
   border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
 .exc:not(:has(.exc-ph)){grid-template-columns:1fr}
-.exc[data-own-gallery]{cursor:zoom-in}
+.exc[data-own-gallery]{cursor:pointer}
 .exc-ph{border-radius:10px;overflow:hidden;height:82px}
 .exc-ph img{width:100%;height:100%;object-fit:cover;display:block}
 .exc-b b{display:block;font-size:15px;font-weight:700;margin-bottom:3px}
