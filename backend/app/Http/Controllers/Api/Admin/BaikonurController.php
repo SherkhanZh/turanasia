@@ -27,7 +27,7 @@ class BaikonurController extends Controller
         $data = $this->validateData($request);
         $launch = new BaikonurLaunch;
         $this->fill($launch, $data)->save();
-        $this->syncExcursions($launch, $data['excursion_ids'] ?? null);
+        $this->syncExcursions($launch, $data['excursions'] ?? null);
 
         return response()->json($this->serialize($launch->load('excursions')), 201);
     }
@@ -36,7 +36,7 @@ class BaikonurController extends Controller
     {
         $data = $this->validateData($request);
         $this->fill($launch, $data)->save();
-        $this->syncExcursions($launch, $data['excursion_ids'] ?? null);
+        $this->syncExcursions($launch, $data['excursions'] ?? null);
 
         return response()->json($this->serialize($launch->load('excursions')));
     }
@@ -48,25 +48,37 @@ class BaikonurController extends Controller
     private function serialize(BaikonurLaunch $launch): array
     {
         $data = AdminSerializer::make($launch);
-        $data['excursion_ids'] = $launch->relationLoaded('excursions')
-            ? $launch->excursions->pluck('id')->all()
-            : $launch->excursions()->pluck('excursions.id')->all();
+        $data['excursions'] = $launch->excursions->map(fn ($e) => [
+            'id' => $e->id,
+            'day' => $e->pivot->day,
+            'time' => $e->pivot->time,
+        ])->values()->all();
 
         return $data;
     }
 
     /**
-     * Экскурсии запуска: порядок сохраняем тот, в котором их выбрали.
+     * Экскурсии запуска: порядок, день и время.
+     * Приходит списком [{id, day, time}] — день и время относятся к связке,
+     * потому что одна экскурсия в разных поездках стоит в разные дни.
      */
-    private function syncExcursions(BaikonurLaunch $launch, $ids): void
+    private function syncExcursions(BaikonurLaunch $launch, $rows): void
     {
-        if ($ids === null) {
+        if ($rows === null) {
             return;
         }
 
         $payload = [];
-        foreach (array_values(array_unique(array_map('intval', $ids))) as $i => $id) {
-            $payload[$id] = ['sort' => $i];
+        foreach (array_values($rows) as $i => $row) {
+            $id = (int) ($row['id'] ?? 0);
+            if (! $id || isset($payload[$id])) {
+                continue;
+            }
+            $payload[$id] = [
+                'sort' => $i,
+                'day' => isset($row['day']) && $row['day'] !== '' ? (int) $row['day'] : null,
+                'time' => $row['time'] ?? null,
+            ];
         }
 
         $launch->excursions()->sync($payload);
@@ -103,8 +115,10 @@ class BaikonurController extends Controller
             'status' => ['nullable', 'in:scheduled,published,hidden,completed'],
             'booking_enabled' => ['boolean'],
             'sort' => ['nullable', 'integer'],
-            'excursion_ids' => ['nullable', 'array'],
-            'excursion_ids.*' => ['integer', 'exists:excursions,id'],
+            'excursions' => ['nullable', 'array'],
+            'excursions.*.id' => ['required', 'integer', 'exists:excursions,id'],
+            'excursions.*.day' => ['nullable', 'integer', 'min:1', 'max:365'],
+            'excursions.*.time' => ['nullable', 'string', 'regex:/^\d{1,2}:\d{2}$/'],
         ];
 
         // Каждому переводимому полю — правило на все три языка: Laravel с
@@ -122,7 +136,7 @@ class BaikonurController extends Controller
 
     private function fill(BaikonurLaunch $l, array $data): BaikonurLaunch
     {
-        unset($data['excursion_ids']);   // сохраняются отдельной связью
+        unset($data['excursions']);   // сохраняются отдельной связью
 
         foreach (['title', 'rocket', 'description', 'program', 'conditions'] as $field) {
             if (array_key_exists($field, $data)) {

@@ -118,8 +118,11 @@
       if (!inner) return '';
       return '<details' + (open ? ' open' : '') + '><summary>' + title + '</summary><div class="acc-b">' + inner + '</div></details>';
     }
-    // Экскурсии тура — общая вёрстка с карточкой запуска Байконура
-    var excursions = TA.excursions(x.excursions);
+    // Экскурсии встраиваются в ленту программы под своим днём.
+    // Те, у кого дня нет (или программа не размечена по дням), уходят
+    // в отдельный блок — иначе они бы просто пропали со страницы.
+    var prog = TA.programWith(x.program, x.excursions);
+    var excursions = TA.excursions(prog.rest);
 
     var onReq = x.date_mode === 'on_request';
     var dates = (x.dates || []).map(function (d) {
@@ -141,7 +144,7 @@
           '</div>' +
           '<div class="acc" style="margin-top:22px">' +
             (x.description ? acc(TA.t('desc'), '<p>' + TA.text(x.description) + '</p>', true) : '') +
-            (x.program ? acc(TA.t('program'), TA.program(x.program), !x.description) : '') +
+            (prog.html ? acc(TA.t('program'), prog.html, !x.description) : '') +
             (excursions ? acc(TA.t('excursions'), excursions) : '') +
             (x.included ? acc(TA.t('included'), '<p>' + TA.text(x.included) + '</p>') : '') +
             (x.extras ? acc(TA.t('extras'), '<p>' + TA.text(x.extras) + '</p>') : '') +
@@ -163,6 +166,7 @@
       '</div>';
 
     TAG.bind(view, mediaList);
+    TAG.bindOwn(view, x.excursions);   // у экскурсии открываются её снимки, а не тура
 
     document.getElementById('bk-send').addEventListener('click', function () {
       var btn = this, msg = document.getElementById('bk-msg');

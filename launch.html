@@ -125,9 +125,9 @@
     function block(title, body, open) {
       return body ? acc(title, '<p>' + TA.text(body) + '</p>', open) : '';
     }
-    function progBlock(title, body, open) {
-      return body ? acc(title, TA.program(body), open) : '';
-    }
+    // Экскурсии встают под свой день программы; для тех, кому дня не нашлось,
+    // остаётся отдельный блок ниже.
+    var prog = TA.programWith(l.program, l.excursions);
 
     view.innerHTML = gallery +
       '<div class="detail" style="margin-top:30px">' +
@@ -141,8 +141,8 @@
           '</div>' +
           '<div class="acc" style="margin-top:22px">' +
             block(TA.t('desc'), l.description, true) +
-            progBlock(TA.t('program'), l.program) +
-            acc(TA.t('excursions'), TA.excursions(l.excursions)) +
+            (prog.html ? acc(TA.t('program'), prog.html) : '') +
+            acc(TA.t('excursions'), TA.excursions(prog.rest)) +
             block(TA.t('included_cond'), l.conditions) +
           '</div>' +
         '</div>' +
@@ -162,6 +162,7 @@
 
     // Отправка заявки в админку
     TAG.bind(view, mediaList);
+    TAG.bindOwn(view, l.excursions);   // у экскурсии открываются её снимки, а не запуска
 
     document.getElementById('bk-send').addEventListener('click', function () {
       var btn = this, msg = document.getElementById('bk-msg');

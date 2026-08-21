@@ -148,6 +148,19 @@ tr:hover td{background:#fafbfc}
 .chk{display:flex;align-items:flex-start;gap:9px;font-size:14px;cursor:pointer;padding:3px 0}
 .chk input{width:16px;height:16px;flex:0 0 16px;margin-top:2px;accent-color:var(--pri)}
 .chk span{line-height:1.35}
+.exc-pick{border:1px solid var(--line);border-radius:9px;padding:6px;max-height:320px;overflow:auto;background:#fff}
+.exc-row{display:grid;grid-template-columns:18px 1fr 84px 106px;gap:10px;align-items:center;
+  padding:7px 9px;border-radius:7px;cursor:pointer;font-size:14px}
+.exc-row:hover{background:var(--alt)}
+.exc-row.on{background:var(--pri-soft)}
+.exc-row input[type=checkbox]{width:16px;height:16px;margin:0;accent-color:var(--pri)}
+.exc-row .exc-nm{line-height:1.35;min-width:0}
+.exc-row .exc-day,.exc-row .exc-time{padding:5px 8px;font-size:13px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.exc-row .exc-day{text-align:center}
+@media(max-width:640px){
+  .exc-row{grid-template-columns:18px 1fr;row-gap:6px}
+  .exc-row .exc-day,.exc-row .exc-time{grid-column:2}
+}
 .form-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
 .empty{padding:60px 20px;text-align:center;color:var(--muted)}
 .spin{padding:60px;text-align:center;color:var(--muted)}

@@ -43,7 +43,7 @@ class TourController extends Controller
         $this->fill($tour, $data);
         $tour->save();
         $this->syncDates($tour, $data['dates'] ?? null);
-        $this->syncExcursions($tour, $data['excursion_ids'] ?? null);
+        $this->syncExcursions($tour, $data['excursions'] ?? null);
 
         return response()->json($this->serialize($tour->load(['dates', 'excursions'])), 201);
     }
@@ -54,7 +54,7 @@ class TourController extends Controller
         $this->fill($tour, $data);
         $tour->save();
         $this->syncDates($tour, $data['dates'] ?? null);
-        $this->syncExcursions($tour, $data['excursion_ids'] ?? null);
+        $this->syncExcursions($tour, $data['excursions'] ?? null);
 
         return response()->json($this->serialize($tour->load(['dates', 'excursions'])));
     }
@@ -66,25 +66,37 @@ class TourController extends Controller
     private function serialize(Tour $tour): array
     {
         $data = AdminSerializer::make($tour);
-        $data['excursion_ids'] = $tour->relationLoaded('excursions')
-            ? $tour->excursions->pluck('id')->all()
-            : $tour->excursions()->pluck('excursions.id')->all();
+        $data['excursions'] = $tour->excursions->map(fn ($e) => [
+            'id' => $e->id,
+            'day' => $e->pivot->day,
+            'time' => $e->pivot->time,
+        ])->values()->all();
 
         return $data;
     }
 
     /**
-     * Экскурсии тура: порядок сохраняем тот, в котором их выбрали.
+     * Экскурсии тура: порядок, день и время.
+     * Приходит списком [{id, day, time}] — день и время относятся к связке,
+     * потому что одна экскурсия в разных турах стоит в разные дни.
      */
-    private function syncExcursions(Tour $tour, $ids): void
+    private function syncExcursions(Tour $tour, $rows): void
     {
-        if ($ids === null) {
+        if ($rows === null) {
             return;
         }
 
         $payload = [];
-        foreach (array_values(array_unique(array_map('intval', $ids))) as $i => $id) {
-            $payload[$id] = ['sort' => $i];
+        foreach (array_values($rows) as $i => $row) {
+            $id = (int) ($row['id'] ?? 0);
+            if (! $id || isset($payload[$id])) {
+                continue;
+            }
+            $payload[$id] = [
+                'sort' => $i,
+                'day' => isset($row['day']) && $row['day'] !== '' ? (int) $row['day'] : null,
+                'time' => $row['time'] ?? null,
+            ];
         }
 
         $tour->excursions()->sync($payload);
@@ -160,8 +172,10 @@ class TourController extends Controller
             'dates.*.end_date' => ['nullable', 'date'],
             'dates.*.seats' => ['nullable', 'integer', 'min:0'],
             'dates.*.price_override' => ['nullable', 'integer', 'min:0'],
-            'excursion_ids' => ['nullable', 'array'],
-            'excursion_ids.*' => ['integer', 'exists:excursions,id'],
+            'excursions' => ['nullable', 'array'],
+            'excursions.*.id' => ['required', 'integer', 'exists:excursions,id'],
+            'excursions.*.day' => ['nullable', 'integer', 'min:1', 'max:365'],
+            'excursions.*.time' => ['nullable', 'string', 'regex:/^\d{1,2}:\d{2}$/'],
         ];
 
         // Каждому переводимому полю — правило на все три языка.
@@ -180,7 +194,7 @@ class TourController extends Controller
 
     private function fill(Tour $tour, array $data): void
     {
-        unset($data['dates'], $data['excursion_ids']); // сохраняются отдельными связями
+        unset($data['dates'], $data['excursions']); // сохраняются отдельными связями
 
         $translatable = ['title', 'short_description', 'description', 'program', 'included', 'extras'];
 

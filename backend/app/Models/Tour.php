@@ -59,7 +59,9 @@ class Tour extends Model
     public function excursions(): BelongsToMany
     {
         return $this->belongsToMany(Excursion::class)
-            ->withPivot('sort')
+            ->withPivot(['sort', 'day', 'time'])
+            ->orderByPivot('day')
+            ->orderByPivot('time')
             ->orderByPivot('sort');
     }
 

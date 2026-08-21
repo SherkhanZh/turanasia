@@ -51,6 +51,8 @@ class TourResource extends JsonResource
                 'included' => $e->included,
                 'duration_hours' => $e->duration_hours,
                 'photos' => $e->photos ?? [],
+                'day' => $e->pivot->day,
+                'time' => $e->pivot->time,
             ])),
             'dates' => $this->whenLoaded('dates', fn () => $this->dates->map(fn ($d) => [
                 'start_date' => $d->start_date?->toDateString(),

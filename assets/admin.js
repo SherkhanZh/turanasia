@@ -158,7 +158,7 @@
         f('dates', 'Даты выездов', 'dates'),
         f('photos', 'Галерея — фотографии', 'photos'),
         f('videos', 'Галерея — видео (по ссылке в строке)', 'lines'),
-        f('excursion_ids', 'Экскурсии в программе', 'multiref', { ref: 'excursions', hint: 'Отметьте экскурсии из справочника. Одна экскурсия может входить в несколько туров.' }),
+        f('excursions', 'Экскурсии в программе', 'exclist', { ref: 'excursions', hint: 'Отметьте экскурсии и укажите, на какой день тура и во сколько они приходятся. День и время можно не заполнять.' }),
         f('category_id', 'Категория', 'ref', { ref: 'categories' }),
         f('direction_id', 'Направление', 'ref', { ref: 'directions' }),
         f('status', 'Статус', 'select', { options: opt([['published','Опубликован'],['hidden','Скрыт'],['archived','Архив']]) }),
@@ -180,7 +180,7 @@
         f('rocket', 'Ракета-носитель', 'tr-text'),
         f('description', 'Описание', 'tr-textarea'),
         f('program', 'Программа', 'tr-textarea'),
-        f('excursion_ids', 'Экскурсии в программе', 'multiref', { ref: 'excursions', hint: 'Отметьте экскурсии из справочника. Одна экскурсия может входить и в туры, и в запуски.' }),
+        f('excursions', 'Экскурсии в программе', 'exclist', { ref: 'excursions', hint: 'Отметьте экскурсии и укажите день поездки и время. Одна экскурсия может входить и в туры, и в запуски.' }),
         f('conditions', 'Условия бронирования', 'tr-textarea'),
         f('launch_date', 'Дата запуска', 'date'),
         f('launch_time', 'Время', 'text'),
@@ -692,7 +692,7 @@
   }
   function fieldHtml(fl, row) {
     var v = row ? row[fl.key] : (fl.def !== undefined ? fl.def : '');
-    var full = (fl.type === 'tr-textarea' || fl.type === 'photos' || fl.type === 'tr-text' || fl.type === 'dates' || fl.type === 'lines' || fl.type === 'multiref' || fl.type === 'tourpick') ? ' style="grid-column:span 2"' : '';
+    var full = (fl.type === 'tr-textarea' || fl.type === 'photos' || fl.type === 'tr-text' || fl.type === 'dates' || fl.type === 'lines' || fl.type === 'multiref' || fl.type === 'exclist' || fl.type === 'tourpick') ? ' style="grid-column:span 2"' : '';
     var inner = '';
     if (fl.type === 'tr-text' || fl.type === 'tr-textarea') {
       inner = LANGS.map(function (l, i) {
@@ -718,6 +718,23 @@
     } else if (fl.type === 'ref') {
       var list = CACHE[fl.ref] || [];
       inner = '<select data-k="' + fl.key + '"><option value="">—</option>' + list.map(function (o) { return '<option value="' + o.id + '"' + (String(v) === String(o.id) ? ' selected' : '') + '>' + esc(o.label || t(o.name)) + '</option>'; }).join('') + '</select>';
+    } else if (fl.type === 'exclist') {
+      // Экскурсии: галочка плюс день и время — они относятся к связке,
+      // одна и та же экскурсия в разных турах приходится на разные дни.
+      var all = CACHE[fl.ref] || [];
+      var picked = {};
+      (Array.isArray(v) ? v : []).forEach(function (x) { picked[String(x.id)] = x; });
+      inner = all.length
+        ? '<div class="exc-pick" data-exclist="' + fl.key + '">' + all.map(function (o) {
+            var cur = picked[String(o.id)];
+            return '<label class="exc-row' + (cur ? ' on' : '') + '">' +
+              '<input type="checkbox" value="' + o.id + '"' + (cur ? ' checked' : '') + '>' +
+              '<span class="exc-nm">' + esc(o.label || t(o.name)) + '</span>' +
+              '<input class="exc-day" type="number" min="1" placeholder="день" value="' + esc(cur && cur.day != null ? cur.day : '') + '">' +
+              '<input class="exc-time" type="time" value="' + esc(cur && cur.time ? cur.time : '') + '">' +
+              '</label>';
+          }).join('') + '</div>'
+        : '<div class="muted" data-exclist="' + fl.key + '">Справочник пуст — сначала добавьте записи в разделе «Экскурсии».</div>';
     } else if (fl.type === 'multiref') {
       // Набор галочек: тур ссылается сразу на несколько записей справочника.
       var all = CACHE[fl.ref] || [];
@@ -750,9 +767,23 @@
       else if (inp.type === 'number') { data[k] = inp.value === '' ? null : parseInt(inp.value, 10); }
       else { data[k] = inp.value === '' ? null : inp.value; }
     });
-    // наборы галочек (экскурсии тура)
+    // наборы галочек
     formEl.querySelectorAll('[data-multiref]').forEach(function (c) {
       data[c.dataset.multiref] = [].map.call(c.querySelectorAll('input:checked'), function (i) { return parseInt(i.value, 10); });
+    });
+    // экскурсии: отмеченные вместе с днём и временем
+    formEl.querySelectorAll('[data-exclist]').forEach(function (c) {
+      data[c.dataset.exclist] = [].filter.call(c.querySelectorAll('.exc-row'), function (row) {
+        return row.querySelector('input[type=checkbox]').checked;
+      }).map(function (row) {
+        var day = row.querySelector('.exc-day').value;
+        var time = row.querySelector('.exc-time').value;
+        return {
+          id: parseInt(row.querySelector('input[type=checkbox]').value, 10),
+          day: day === '' ? null : parseInt(day, 10),
+          time: time || null
+        };
+      });
     });
     // загруженные фото / одиночные изображения
     formEl.querySelectorAll('[data-up]').forEach(function (c) {
@@ -910,6 +941,9 @@
   /* ---------- global events ---------- */
   document.addEventListener('click', function (e) {
     var ux = e.target.closest('.up-x'); if (ux) { ux.closest('.up-th').remove(); return; }
+    // подсветка отмеченной экскурсии
+    var er = e.target.closest('.exc-row');
+    if (er) { setTimeout(function () { er.classList.toggle('on', er.querySelector('input[type=checkbox]').checked); }, 0); }
     var ar = e.target.closest('[data-addrow]'); if (ar) { ar.insertAdjacentHTML('beforebegin', dateRow({})); return; }
     var dr = e.target.closest('[data-delrow]'); if (dr) { dr.closest('.drow').remove(); return; }
     var cp = e.target.closest('[data-copy]'); if (cp) { copyText(cp.dataset.copy); return; }

@@ -67,40 +67,96 @@ window.TA = (function () {
   }
 
 
-  /** Текст программы из БД → timeline «по дням» (.prog). Если дней не найдено — обычный абзац. */
-  function program(src) {
-    if (!src) return '';
-    var lines = String(src).split(/\r?\n/);
+  /** Номер дня из заголовка: «День 2», «Day 3:», «3-күн».
+      Дата в начале строки («08.09 День 1») не должна приниматься за номер. */
+  function dayNumber(title) {
+    var s = String(title);
+    var m = s.match(/(?:день|day|күн)\s*(\d+)/i) || s.match(/(\d+)\s*[-–—]?\s*күн/i);
+    return m ? parseInt(m[1], 10) : null;
+  }
+
+  /**
+   * Текст программы из БД → timeline «по дням» (.prog), с экскурсиями
+   * под своими днями. Если дней не найдено — обычный абзац.
+   *
+   * Возвращает { html, rest }: rest — экскурсии, которым не нашлось дня.
+   * Их нужно показать отдельно, иначе при неразмеченной программе они
+   * просто исчезнут со страницы.
+   */
+  function programWith(src, list) {
+    list = (list || []).slice();
+
+    var lines = String(src || '').split(/\r?\n/);
     // «08.09 День 1. …», «День 2 — …», «Day 3:», «3-күн»
     var re = /^\s*(?:\d{1,2}[.\-\/]\d{1,2}\.?\s*)?(?:день|day|күн)\s*\d+|^\s*\d+\s*[-–—]?\s*күн/i;
     var pre = [], days = [], cur = null;
+
     lines.forEach(function (ln) {
-      var t = ln.trim();
-      if (re.test(t)) { cur = { title: t, body: [] }; days.push(cur); }
-      else if (!t) { return; }
-      else if (cur) { cur.body.push(t); }
-      else { pre.push(t); }
+      var s = ln.trim();
+      if (re.test(s)) { cur = { title: s, body: [] }; days.push(cur); }
+      else if (!s) { return; }
+      else if (cur) { cur.body.push(s); }
+      else { pre.push(s); }
     });
-    var html = pre.length ? '<p style="color:#475569;margin-bottom:18px">' + esc(pre.join('\n')).replace(/\n/g, '<br>') + '</p>' : '';
-    if (days.length < 2) return html || '<p style="color:#475569">' + text(src) + '</p>';
-    return html + '<ul class="prog">' + days.map(function (d) {
-      return '<li><b>' + esc(d.title) + '</b><p>' + esc(d.body.join('\n')).replace(/\n/g, '<br>') + '</p></li>';
-    }).join('') + '</ul>';
+
+    var head = pre.length
+      ? '<p style="color:#475569;margin-bottom:18px">' + esc(pre.join('\n')).replace(/\n/g, '<br>') + '</p>'
+      : '';
+
+    if (!src) head = '';
+
+    if (days.length < 2) {
+      return {
+        html: head || (src ? '<p style="color:#475569">' + text(src) + '</p>' : ''),
+        rest: list
+      };
+    }
+
+    var used = [];
+    var body = days.map(function (d) {
+      var num = dayNumber(d.title);
+      var mine = num === null ? [] : list.filter(function (e) { return e.day === num; });
+      mine.forEach(function (e) { used.push(e); });
+
+      return '<li><b>' + esc(d.title) + '</b>' +
+        (d.body.length ? '<p>' + esc(d.body.join('\n')).replace(/\n/g, '<br>') + '</p>' : '') +
+        excursions(mine, { hideDay: true }) +
+        '</li>';
+    }).join('');
+
+    return {
+      html: head + '<ul class="prog">' + body + '</ul>',
+      rest: list.filter(function (e) { return used.indexOf(e) < 0; })
+    };
+  }
+
+  /** Программа без экскурсий — прежнее поведение. */
+  function program(src) {
+    return src ? programWith(src, []).html : '';
   }
 
 
   /** Экскурсии тура или запуска Байконура → карточки.
-      Цену не показываем: она уже включена в стоимость поездки. */
-  function excursions(list) {
+      Цену не показываем: она уже включена в стоимость поездки.
+      opts.hideDay — внутри ленты программы номер дня уже стоит в заголовке. */
+  function excursions(list, opts) {
     if (!list || !list.length) return '';
+    opts = opts || {};
 
     return '<div class="exc-list">' + list.map(function (e) {
       var pic = (e.photos && e.photos[0]) || '';
       var body = e.short_description || e.description || '';
-      return '<div class="exc">' +
+
+      // Когда экскурсия расписана по времени, это важнее длительности
+      var when = [];
+      if (!opts.hideDay && e.day) when.push(t('day_n', { n: e.day }));
+      if (e.time) when.push(e.time);
+      if (!when.length && e.duration_hours) when.push(e.duration_hours + ' ' + t('hours_short'));
+
+      return '<div class="exc"' + (pic ? ' data-own-gallery="' + esc(e.id) + '"' : '') + '>' +
         (pic ? '<div class="exc-ph"><img src="' + esc(pic) + '" alt="' + esc(e.title) + '" loading="lazy"></div>' : '') +
         '<div class="exc-b"><b>' + esc(e.title) + '</b>' +
-        (e.duration_hours ? '<span class="exc-h">' + esc(e.duration_hours) + ' ' + t('hours_short') + '</span>' : '') +
+        (when.length ? '<span class="exc-h">' + esc(when.join(' · ')) + '</span>' : '') +
         (body ? '<p>' + text(body) + '</p>' : '') +
         '</div></div>';
     }).join('') + '</div>';
@@ -110,7 +166,7 @@ window.TA = (function () {
   var T = {
     ru: {
       desc: 'Описание', program: 'Программа тура', included: 'Что включено',
-      excursions: 'Экскурсии в программе', hours_short: 'ч',
+      excursions: 'Экскурсии в программе', hours_short: 'ч', day_n: 'День {n}',
       included_cond: 'Что включено / условия', extras: 'Стоимость и дополнительно',
       dates_near: 'Ближайшие даты', video: 'Видео',
       on_request: 'Даты — под запрос', scheduled: 'По расписанию',
@@ -144,7 +200,7 @@ window.TA = (function () {
     },
     kz: {
       desc: 'Сипаттама', program: 'Тур бағдарламасы', included: 'Бағаға не кіреді',
-      excursions: 'Бағдарламадағы экскурсиялар', hours_short: 'сағ',
+      excursions: 'Бағдарламадағы экскурсиялар', hours_short: 'сағ', day_n: '{n}-күн',
       included_cond: 'Бағаға не кіреді / шарттар', extras: 'Құны және қосымша',
       dates_near: 'Жақын күндер', video: 'Бейне',
       on_request: 'Күндері — сұраныс бойынша', scheduled: 'Кесте бойынша',
@@ -178,7 +234,7 @@ window.TA = (function () {
     },
     en: {
       desc: 'Overview', program: 'Tour programme', included: "What's included",
-      excursions: 'Excursions included', hours_short: 'h',
+      excursions: 'Excursions included', hours_short: 'h', day_n: 'Day {n}',
       included_cond: "What's included / conditions", extras: 'Price & extras',
       dates_near: 'Upcoming dates', video: 'Video',
       on_request: 'Dates — on request', scheduled: 'Scheduled departures',
@@ -226,5 +282,5 @@ window.TA = (function () {
     if (el) el.innerHTML = '<div class="empty">' + esc(msg || t('tour_err')) + '</div>';
   }
 
-  return { langs: LANGS, base: BASE, get: get, list: list, esc: esc, text: text, program: program, excursions: excursions, money: money, date: date, lang: lang, t: t, fail: fail };
+  return { langs: LANGS, base: BASE, get: get, list: list, esc: esc, text: text, program: program, programWith: programWith, excursions: excursions, money: money, date: date, lang: lang, t: t, fail: fail };
 })();

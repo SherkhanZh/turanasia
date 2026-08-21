@@ -37,6 +37,8 @@ class BaikonurLaunchResource extends JsonResource
                 'included' => $e->included,
                 'duration_hours' => $e->duration_hours,
                 'photos' => $e->photos ?? [],
+                'day' => $e->pivot->day,
+                'time' => $e->pivot->time,
             ])),
             'status' => $this->status,
             // На этапе 1 — кнопка-заглушка (онлайн-оплата позже)

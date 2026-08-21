@@ -233,15 +233,44 @@ window.TAG = (function () {
         open(norm, parseInt(cell.getAttribute('data-i'), 10) || 0);
         return;
       }
-      // галерея без сетки (например, страница Байконура)
+      // галерея без сетки (например, страница Байконура).
+      // Снимки со своим набором (карточки экскурсий) сюда не попадают:
+      // иначе клик по фото экскурсии открывал бы галерею тура.
       var img = e.target.closest('img');
-      if (img && root.contains(img)) {
-        var all = Array.prototype.map.call(root.querySelectorAll('img'), function (n) { return n.src; });
+      if (img && root.contains(img) && !img.closest('[data-own-gallery]')) {
+        var all = [];
+        Array.prototype.forEach.call(root.querySelectorAll('img'), function (n) {
+          if (!n.closest('[data-own-gallery]')) all.push(n.src);
+        });
         e.preventDefault();
         open(norm.length ? norm : all, all.indexOf(img.src));
       }
     });
   }
 
-  return { html: html, bind: bind, open: open, media: media, video: video, fromItems: fromItems };
+  /**
+   * Блоки со своим набором снимков внутри общей страницы — экскурсии.
+   * Ищем по идентификатору, а не по порядковому номеру: список экскурсий
+   * разложен по дням программы и сплошной нумерации у него нет.
+   */
+  function bindOwn(root, items) {
+    if (!root || !items || !items.length) return;
+
+    var byId = {};
+    items.forEach(function (x) { byId[String(x.id)] = x; });
+
+    root.addEventListener('click', function (e) {
+      var box = e.target.closest('[data-own-gallery]');
+      if (!box || !root.contains(box)) return;
+
+      var x = byId[box.getAttribute('data-own-gallery')];
+      var pics = (x && x.photos) || [];
+      if (!pics.length) return;
+
+      e.preventDefault();
+      open(media(pics, x.videos), 0);
+    });
+  }
+
+  return { html: html, bind: bind, bindOwn: bindOwn, open: open, media: media, video: video, fromItems: fromItems };
 })();
